@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4846E3B925A5A306005F6383 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4846E3B825A5A306005F6383 /* UIColor+Extension.swift */; };
 		48F16E6025A1B9800036D9A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F16E5F25A1B9800036D9A3 /* AppDelegate.swift */; };
 		48F16E6425A1B9800036D9A3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F16E6325A1B9800036D9A3 /* ViewController.swift */; };
 		48F16E6725A1B9800036D9A3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48F16E6525A1B9800036D9A3 /* Main.storyboard */; };
@@ -18,9 +19,16 @@
 		48F16E8425A1C0F60036D9A3 /* Task+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F16E8025A1C0F60036D9A3 /* Task+CoreDataClass.swift */; };
 		48F16E8625A1C0F60036D9A3 /* Cateogry+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F16E8225A1C0F60036D9A3 /* Cateogry+CoreDataClass.swift */; };
 		48F16E9025A1C17D0036D9A3 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 48F16E8F25A1C17D0036D9A3 /* .swiftlint.yml */; };
+		94109973787358C591BBA337 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941063E36AD2F08ECD7D471B /* UIView+Extension.swift */; };
+		9412028BB7AEE07AE06E31C6 /* HomeRadiusListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9415E7001A48C856F9A95406 /* HomeRadiusListDataSource.swift */; };
+		94182E2ED5BD23355894F3B0 /* HomeRadiusListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9411A8F49EB3F4BC34B211AE /* HomeRadiusListCollectionView.swift */; };
+		94193E174454CE6F5B10AB07 /* R.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941C127D23ABF367A1893227 /* R.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4846E3B825A5A306005F6383 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		48DCE90D25AA8B9000178790 /* HomeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListView.swift; sourceTree = "<group>"; };
+		48DCE91225AA8CEB00178790 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		48F16E5C25A1B9800036D9A3 /* Reminder-Clone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Reminder-Clone.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		48F16E5F25A1B9800036D9A3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		48F16E6325A1B9800036D9A3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -34,6 +42,12 @@
 		48F16E8025A1C0F60036D9A3 /* Task+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+CoreDataClass.swift"; sourceTree = "<group>"; };
 		48F16E8225A1C0F60036D9A3 /* Cateogry+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cateogry+CoreDataClass.swift"; sourceTree = "<group>"; };
 		48F16E8F25A1C17D0036D9A3 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		941063E36AD2F08ECD7D471B /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
+		9411A8F49EB3F4BC34B211AE /* HomeRadiusListCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeRadiusListCollectionView.swift; sourceTree = "<group>"; };
+		9411ED48508C7FCFECA4EA40 /* HomeTableList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTableList.swift; sourceTree = "<group>"; };
+		941254E79B7E40666A4ECD38 /* HomeRadiusListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeRadiusListCell.swift; sourceTree = "<group>"; };
+		9415E7001A48C856F9A95406 /* HomeRadiusListDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeRadiusListDataSource.swift; sourceTree = "<group>"; };
+		941C127D23ABF367A1893227 /* R.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,14 +81,23 @@
 			isa = PBXGroup;
 			children = (
 				48F16E8F25A1C17D0036D9A3 /* .swiftlint.yml */,
+				48DCE90D25AA8B9000178790 /* HomeListView.swift */,
 				48F16E7725A1BA4F0036D9A3 /* Model */,
 				48F16E5F25A1B9800036D9A3 /* AppDelegate.swift */,
 				48F16E6325A1B9800036D9A3 /* ViewController.swift */,
+				4846E3B825A5A306005F6383 /* UIColor+Extension.swift */,
 				48F16E6525A1B9800036D9A3 /* Main.storyboard */,
 				48F16E6B25A1B9820036D9A3 /* Assets.xcassets */,
 				48F16E6D25A1B9820036D9A3 /* LaunchScreen.storyboard */,
 				48F16E7025A1B9820036D9A3 /* Info.plist */,
 				48F16E6825A1B9800036D9A3 /* Reminder_Clone.xcdatamodeld */,
+				941254E79B7E40666A4ECD38 /* HomeRadiusListCell.swift */,
+				9415E7001A48C856F9A95406 /* HomeRadiusListDataSource.swift */,
+				48DCE91225AA8CEB00178790 /* Extension.swift */,
+				9411A8F49EB3F4BC34B211AE /* HomeRadiusListCollectionView.swift */,
+				941C127D23ABF367A1893227 /* R.swift */,
+				941063E36AD2F08ECD7D471B /* UIView+Extension.swift */,
+				9411ED48508C7FCFECA4EA40 /* HomeTableList.swift */,
 			);
 			path = "Reminder-Clone";
 			sourceTree = "<group>";
@@ -183,6 +206,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48DCE90E25AA8B9000178790 /* HomeListView.swift in Sources */,
 				48F16E6425A1B9800036D9A3 /* ViewController.swift in Sources */,
 				48F16E6A25A1B9800036D9A3 /* Reminder_Clone.xcdatamodeld in Sources */,
 				48F16E8625A1C0F60036D9A3 /* Cateogry+CoreDataClass.swift in Sources */,
@@ -190,6 +214,14 @@
 				48F16E6025A1B9800036D9A3 /* AppDelegate.swift in Sources */,
 				48F16E7E25A1BB080036D9A3 /* CategoryColor.swift in Sources */,
 				48F16E7925A1BA700036D9A3 /* CateogoryIcon.swift in Sources */,
+				4846E3B925A5A306005F6383 /* UIColor+Extension.swift in Sources */,
+				48DCE91325AA8CEB00178790 /* Extension.swift in Sources */,
+				941AF5D0002192E160D85D32 /* HomeRadiusListCell.swift in Sources */,
+				9412028BB7AEE07AE06E31C6 /* HomeRadiusListDataSource.swift in Sources */,
+				94182E2ED5BD23355894F3B0 /* HomeRadiusListCollectionView.swift in Sources */,
+				94193E174454CE6F5B10AB07 /* R.swift in Sources */,
+				94109973787358C591BBA337 /* UIView+Extension.swift in Sources */,
+				941DC4926A18300DF2E37B7B /* HomeTableList.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,7 +298,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -321,7 +353,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -339,10 +371,14 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 78X32W2D44;
 				INFOPLIST_FILE = "Reminder-Clone/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				"OTHER_LDFLAGS[sdk=iphonesimulator*]" = (
+					"-Xlinker",
+					"-interposable",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "dev.sonjk.Reminder-Clone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -359,7 +395,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 78X32W2D44;
 				INFOPLIST_FILE = "Reminder-Clone/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
