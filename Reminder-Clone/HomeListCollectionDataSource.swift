@@ -4,7 +4,7 @@
 
 import UIKit
 
-class HomeRadiusListDataSource: NSObject {
+class HomeListCollectionDataSource: NSObject {
 	private var newData: [HomeRadiusList]
 	required override init() {
 		newData = [
@@ -24,14 +24,14 @@ class HomeRadiusListDataSource: NSObject {
 	#endif
 }
 
-extension HomeRadiusListDataSource: UICollectionViewDataSource {
+extension HomeListCollectionDataSource: UICollectionViewDataSource {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		newData.count
+    newData.count
 	}
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		if let customCell = collectionView.dequeueReusableCell (
-			withReuseIdentifier: HomeRadiusListCell.describe, for: indexPath) as? HomeRadiusListCell {
+			withReuseIdentifier: HomeListCollectionViewCell.describe, for: indexPath) as? HomeListCollectionViewCell {
 			let cell = customCell
 			let data = newData[indexPath.row]
 			customCell.configCell(with: data)

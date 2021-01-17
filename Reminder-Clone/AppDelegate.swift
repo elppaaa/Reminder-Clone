@@ -76,7 +76,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
   
 }
-#if DEBUG
+
 func inject() {
 	//change vc
   let vc = ViewController()
@@ -86,4 +86,3 @@ func inject() {
   //swiftlint:disable force_unwrapping
   UIApplication.shared.windows.first!.rootViewController = navigation
 }
-#endif

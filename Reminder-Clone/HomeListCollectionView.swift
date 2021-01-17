@@ -4,9 +4,9 @@
 
 import UIKit
 
-class HomeRadiusListCollectionView: UICollectionView {
+class HomeListCollectionView: UICollectionView {
 
-	let bindDataSource = HomeRadiusListDataSource()
+	let bindDataSource = HomeListCollectionDataSource()
 
 	required init?(coder: NSCoder) {
 		let layout = Self.createLayout()
@@ -34,7 +34,7 @@ class HomeRadiusListCollectionView: UICollectionView {
 	#endif
 }
 
-extension HomeRadiusListCollectionView {
+extension HomeListCollectionView {
 	static func createLayout() -> UICollectionViewFlowLayout {
 		let layout = UICollectionViewFlowLayout()
 		layout.minimumLineSpacing = 10
@@ -52,7 +52,7 @@ extension HomeRadiusListCollectionView {
 
 	func configLayout() {
 		backgroundColor = .clear
-		register(HomeRadiusListCell.self, forCellWithReuseIdentifier: HomeRadiusListCell.describe)
+		register(HomeListCollectionViewCell.self, forCellWithReuseIdentifier: HomeListCollectionViewCell.describe)
 	}
   
 }

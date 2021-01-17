@@ -10,7 +10,7 @@ import UIKit
 class ViewController: UIViewController {
   
   let controller = UISearchController(searchResultsController: nil)
-  let collection = HomeRadiusListCollectionView()
+  let collection = HomeListCollectionView()
   var searchBar = UISearchBar()
 
   override func viewDidLoad() {
@@ -49,6 +49,12 @@ class ViewController: UIViewController {
     // ListView
     
   }
+  private let stack: UIStackView = {
+    let stack = UIStackView()
+		stack.translatesAutoresizingMaskIntoConstraints = false
+    return stack
+  }()
+
   #if DEBUG
   @objc func injected() {
     inject()

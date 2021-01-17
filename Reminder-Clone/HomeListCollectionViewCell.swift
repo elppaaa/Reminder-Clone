@@ -4,7 +4,7 @@
 
 import UIKit
 
-class HomeRadiusListCell: UICollectionViewCell, HomeListCellViewType {
+class HomeListCollectionViewCell: UICollectionViewCell, HomeListCellViewType {
 	static let size: CGFloat = 35.0
 
 	override init(frame: CGRect = .zero) {
