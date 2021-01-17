@@ -16,8 +16,8 @@ extension UILabel {
 		label.text = title
 		return label
 	}
-	static func makeView(color: UIColor = .black,
-											 font: UIFont = UIFont.systemFont(ofSize: 13, weight: .regular)
+	static func makeView(
+    color: UIColor = .black, font: UIFont = UIFont.systemFont(ofSize: 13, weight: .regular)
 	) -> UILabel {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false

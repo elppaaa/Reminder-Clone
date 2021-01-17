@@ -7,30 +7,42 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-  
+protocol NavigationControllerDelegate { }
+
+class ViewController: UIViewController, ViewControllerConfig {
   let controller = UISearchController(searchResultsController: nil)
   let collection = HomeListCollectionView()
-	let table = HomeListTableView()
+  let table = HomeListTableView()
   var searchBar = UISearchBar()
 
-  let mainStack: UIStackView = {
+  fileprivate let mainStack: UIStackView = {
     let stack = UIStackView()
     stack.translatesAutoresizingMaskIntoConstraints = false
     stack.axis = .vertical
     stack.distribution = .fillEqually
     return stack
   }()
+  
+  fileprivate let scrollView: UIScrollView = {
+    let scrollView = UIScrollView()
+    scrollView.translatesAutoresizingMaskIntoConstraints = false
+    scrollView.isScrollEnabled = true
+    return scrollView
+  }()
+  
+  override func viewWillAppear(_ animated: Bool) {
+    globalVCConfig()
+    title = nil
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    // Do any additional setup after loading the view.
-    view.backgroundColor = R.color.applicationBackground
-
+    table.viewController = self
+    view.backgroundColor = R.Color.applicationBackground
     searchBarSetting()
     configLayout()
   }
-  
+
   func searchBarSetting() {
     searchBar = controller.searchBar
 //    searchBar.translatesAutoresizingMaskIntoConstraints = false
@@ -45,10 +57,11 @@ class ViewController: UIViewController {
 
   // MARK: - config Layout
   func configLayout() {
-    // collectionView
-		mainStack.addArrangedSubview(collection)
-    mainStack.addArrangedSubview(table)
-
+    /// add to stack
+    // TODO: - UIScrollView 코드로 작성하는 방법 찾기.
+    		mainStack.addArrangedSubview(collection)
+        mainStack.addArrangedSubview(table)
+    
     view.addSubview(mainStack)
     NSLayoutConstraint.activate([
       mainStack.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 20),
@@ -57,21 +70,18 @@ class ViewController: UIViewController {
       mainStack.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
     ])
     
-//    searchBar.leadingAnchor.constraint(equalTo: UINavigationBar.appearance().leadingAnchor).isActive = true
-//    searchBar.trailingAnchor.constraint(equalTo: UINavigationBar.appearance().trailingAnchor).isActive = true
-
     // ListView
-    
   }
-  private let stack: UIStackView = {
-    let stack = UIStackView()
-		stack.translatesAutoresizingMaskIntoConstraints = false
-    return stack
-  }()
+  
+//  private let stack: UIStackView = {
+//    let stack = UIStackView()
+//		stack.translatesAutoresizingMaskIntoConstraints = false
+//    return stack
+//  }()
 
   #if DEBUG
   @objc func injected() {
-    inject()
+    homeInject()
   }
   #endif
 }

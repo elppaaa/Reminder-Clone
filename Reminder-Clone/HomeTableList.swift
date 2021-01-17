@@ -14,7 +14,8 @@ import UIKit
 // MARK: -
 class HomeListTableView: UITableView {
 	let bindDataSource = HomeListTableDataSource()
-
+  weak var viewController: UIViewController?
+  
 	required init?(coder: NSCoder) {
 		fatalError("ERROR WHEN CREATE TABLEVIEW")
 	}
@@ -22,14 +23,16 @@ class HomeListTableView: UITableView {
 	override init(frame: CGRect, style: Style = .plain) {
 		super.init(frame: frame, style: style)
 		dataSource = bindDataSource
+    delegate = self
 		register(HomeListTableCell.self, forCellReuseIdentifier: HomeListTableCell.describe)
 		configLayout()
 		reloadData()
 	}
 
-	convenience init() {
+  convenience init() {
 		self.init(frame: .zero)
 		dataSource = bindDataSource
+    delegate = self
 		register(HomeListTableCell.self, forCellReuseIdentifier: HomeListTableCell.describe)
     configLayout()
     reloadData()
@@ -47,6 +50,7 @@ class HomeListTableView: UITableView {
     showsHorizontalScrollIndicator = false
     isScrollEnabled = false
     layer.cornerRadius = 20
+    tableFooterView = UIView(frame: .zero)
   }
   
   #if DEBUG
@@ -67,9 +71,15 @@ class HomeListTableView: UITableView {
 
 }
 
-//extension HomeListTableView: UITableViewDelegate {
-//
-//}
+extension HomeListTableView: UITableViewDelegate {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//    if let vc = viewController {
+//      let reminderVC = RemindersViewController()
+//      vc.navigationController?.pushViewController(reminderVC, animated: true)
+//    }
+//    tableView.deselectRow(at: indexPath, animated: true)
+  }
+}
 
 // MARK: -
 class HomeListTableDataSource: NSObject, HomeListDataSource {

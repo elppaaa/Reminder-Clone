@@ -32,7 +32,7 @@ class HomeListCollectionView: UICollectionView {
   
 	#if DEBUG
 	@objc func injected() {
-		inject()
+    homeInject()
 	}
 	#endif
 }

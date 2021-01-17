@@ -26,7 +26,7 @@ class HomeListCollectionDataSource: NSObject, HomeListDataSource {
 
 	#if DEBUG
 	@objc func injected() {
-		inject()
+    homeInject()
 	}
 	#endif
 }

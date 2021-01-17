@@ -49,23 +49,13 @@ class HomeListCollectionViewCell: UICollectionViewCell, HomeListCellViewType {
 		return imageView
 	}()
 
-	var countLabel: UILabel = {
-		let label = UILabel.makeView(
-			font: .systemFont(ofSize: (size * 0.8), weight: .bold))
+	var countLabel: UILabel = UILabel.makeView(font: .systemFont(ofSize: (size * 0.8), weight: .bold))
 
-		return label
-	}()
-
-	var titleLabel: UILabel = {
-		let label = UILabel.makeView(color: .gray, font:
-		.systemFont(ofSize: (size * 0.5), weight: .semibold))
-
-		return label
-	}()
+	var titleLabel: UILabel = UILabel.makeView(color: .gray, font: .systemFont(ofSize: (size * 0.5), weight: .semibold))
 
   // MARK: - configureLayout
 	func configLayout() {
-		backgroundColor = R.color.systemBackground
+		backgroundColor = R.Color.systemBackground
 		translatesAutoresizingMaskIntoConstraints = false
 		clipsToBounds = true
 		layer.cornerRadius = 10
@@ -87,6 +77,6 @@ class HomeListCollectionViewCell: UICollectionViewCell, HomeListCellViewType {
 	}
 
 	@objc func injected() {
-    inject()
+    homeInject()
   }
 }

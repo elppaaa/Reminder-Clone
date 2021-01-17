@@ -1,4 +1,3 @@
-//
 //  AppDelegate.swift
 //  Reminder-Clone
 //
@@ -14,20 +13,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     // Override point for customization after application launch.
     // remove top line
-
-     #if DEBUG
-     Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")?.load()
-     #endif
-
-    window = UIWindow(frame: UIScreen.main.bounds)
     
-//    let vc = ViewController()
-//    vc.view.backgroundColor = R.color.applicationBackground
+    #if DEBUG
+    Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")?.load()
+    #endif
+    
+    window = UIWindow(frame: UIScreen.main.bounds)
     window?.rootViewController = UINavigationController(rootViewController: ViewController())
     window?.makeKeyAndVisible()
     
     return true
-    
   }
   
   // MARK: - Core Data stack
@@ -77,12 +72,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
 }
 
-func inject() {
-	//change vc
-  let vc = ViewController()
-  let navigation = UINavigationController(rootViewController: vc)
+func homeInject(_ vc: UIViewController = ViewController()) {
+  //change vc
   //swiftlint:disable force_unwrapping
   UIApplication.shared.windows.first!.rootViewController = nil
   //swiftlint:disable force_unwrapping
-  UIApplication.shared.windows.first!.rootViewController = navigation
+  UIApplication.shared.windows.first!.rootViewController = UINavigationController(rootViewController: vc)
 }

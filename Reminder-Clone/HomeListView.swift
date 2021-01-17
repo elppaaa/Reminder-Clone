@@ -36,9 +36,9 @@ struct HomeRadiusList {
 }
 
 //class HomeListCategoryCell: UITableViewCell, HomeListCellViewType {
-////  var titleLabel: UILabel
-////  var countLabel: UILabel
-////  var iconView: UIImageView
+//  var titleLabel: UILabel
+//  var countLabel: UILabel
+//  var iconView: UIImageView
 //
 //  required init?(coder: NSCoder) {
 //    super.init(coder: coder)
