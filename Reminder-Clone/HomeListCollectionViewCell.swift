@@ -40,7 +40,6 @@ class HomeListCollectionViewCell: UICollectionViewCell, HomeListCellViewType {
 	var iconView: UIImageView = {
 		let imageView = UIImageView()
 		imageView.translatesAutoresizingMaskIntoConstraints = false
-//		imageView.image = UIImage()
 		imageView.backgroundColor = .white
 		imageView.layer.cornerRadius = size / 2
 		imageView.heightAnchor.constraint(equalToConstant: size).isActive = true
@@ -69,8 +68,6 @@ class HomeListCollectionViewCell: UICollectionViewCell, HomeListCellViewType {
 		translatesAutoresizingMaskIntoConstraints = false
 		clipsToBounds = true
 		layer.cornerRadius = 10
-		frame.size.height = 100
-		frame.size.width = 180
 
 		stack.addArrangedSubview(iconView)
 		stack.addArrangedSubview(countLabel)
@@ -85,10 +82,10 @@ class HomeListCollectionViewCell: UICollectionViewCell, HomeListCellViewType {
 			mainStack.leadingAnchor.constraint(equalTo: leadingAnchor),
 			mainStack.trailingAnchor.constraint(equalTo: trailingAnchor),
 		])
-		widthAnchor.constraint(greaterThanOrEqualToConstant: 165).isActive = true
+
 	}
 
-  @objc func injected() {
+	@objc func injected() {
     inject()
   }
 }
