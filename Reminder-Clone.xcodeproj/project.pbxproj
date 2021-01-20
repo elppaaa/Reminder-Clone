@@ -62,6 +62,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		48D90A4C25AFA798008D0006 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				941C127D23ABF367A1893227 /* R.swift */,
+				4846E3B825A5A306005F6383 /* UIColor+Extension.swift */,
+				941063E36AD2F08ECD7D471B /* UIView+Extension.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		48F16E5325A1B9800036D9A3 = {
 			isa = PBXGroup;
 			children = (
@@ -83,20 +93,17 @@
 			children = (
 				48F16E8F25A1C17D0036D9A3 /* .swiftlint.yml */,
 				48DCE90D25AA8B9000178790 /* HomeListView.swift */,
+				48D90A4C25AFA798008D0006 /* Extension */,
 				48F16E7725A1BA4F0036D9A3 /* Model */,
 				48F16E5F25A1B9800036D9A3 /* AppDelegate.swift */,
 				48F16E6325A1B9800036D9A3 /* ViewController.swift */,
-				4846E3B825A5A306005F6383 /* UIColor+Extension.swift */,
 				48F16E6525A1B9800036D9A3 /* Main.storyboard */,
 				48F16E6B25A1B9820036D9A3 /* Assets.xcassets */,
 				48F16E6D25A1B9820036D9A3 /* LaunchScreen.storyboard */,
 				48F16E7025A1B9820036D9A3 /* Info.plist */,
-				48F16E6825A1B9800036D9A3 /* Reminder_Clone.xcdatamodeld */,
 				941254E79B7E40666A4ECD38 /* HomeListCollectionViewCell.swift */,
 				9415E7001A48C856F9A95406 /* HomeListCollectionDataSource.swift */,
 				9411A8F49EB3F4BC34B211AE /* HomeListCollectionView.swift */,
-				941C127D23ABF367A1893227 /* R.swift */,
-				941063E36AD2F08ECD7D471B /* UIView+Extension.swift */,
 				9411ED48508C7FCFECA4EA40 /* HomeTableList.swift */,
 			);
 			path = "Reminder-Clone";
@@ -105,6 +112,7 @@
 		48F16E7725A1BA4F0036D9A3 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				48F16E6825A1B9800036D9A3 /* Reminder_Clone.xcdatamodeld */,
 				48F16E8025A1C0F60036D9A3 /* Task+CoreDataClass.swift */,
 				48F16E8225A1C0F60036D9A3 /* Cateogry+CoreDataClass.swift */,
 				48F16E7825A1BA700036D9A3 /* CateogoryIcon.swift */,
@@ -212,6 +220,7 @@
 				48F16E8625A1C0F60036D9A3 /* Cateogry+CoreDataClass.swift in Sources */,
 				48F16E8425A1C0F60036D9A3 /* Task+CoreDataClass.swift in Sources */,
 				48F16E6025A1B9800036D9A3 /* AppDelegate.swift in Sources */,
+				48F9FBF425AD00AC00EAA68A /* HomeTableList.swift in Sources */,
 				488FD90125ABC2B600318C93 /* HomeListCollectionViewCell.swift in Sources */,
 				48F16E7E25A1BB080036D9A3 /* CategoryColor.swift in Sources */,
 				48F16E7925A1BA700036D9A3 /* CateogoryIcon.swift in Sources */,
@@ -369,7 +378,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 78X32W2D44;
 				INFOPLIST_FILE = "Reminder-Clone/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -393,7 +402,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 78X32W2D44;
 				INFOPLIST_FILE = "Reminder-Clone/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -29,6 +29,7 @@ class HomeListCollectionView: UICollectionView {
 		configLayout()
 		reloadData()
 	}
+  
 	#if DEBUG
 	@objc func injected() {
 		inject()
@@ -37,7 +38,7 @@ class HomeListCollectionView: UICollectionView {
 }
 
 extension HomeListCollectionView {
-	static func createLayout() -> UICollectionViewFlowLayout {
+	fileprivate static func createLayout() -> UICollectionViewFlowLayout {
 		let layout = UICollectionViewFlowLayout()
 		layout.minimumLineSpacing = 10
 		layout.minimumInteritemSpacing = 10
@@ -45,7 +46,7 @@ extension HomeListCollectionView {
 		return layout
 	}
 
-	func configLayout() {
+	fileprivate func configLayout() {
 		backgroundColor = .clear
 		register(HomeListCollectionViewCell.self, forCellWithReuseIdentifier: HomeListCollectionViewCell.describe)
 	}
@@ -54,8 +55,8 @@ extension HomeListCollectionView {
 extension HomeListCollectionView: UICollectionViewDelegateFlowLayout {
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 		if let dataSource = collectionView.dataSource as? HomeListCollectionDataSource {
-			if dataSource.count - 1 == indexPath.row,
-				 dataSource.count % 2 == 1 {
+			if dataSource.data.count - 1 == indexPath.row,
+				 dataSource.data.count % 2 == 1 {
 				return .init(width: 340, height: 85)
 			}
 		}
