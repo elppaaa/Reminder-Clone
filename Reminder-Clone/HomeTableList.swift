@@ -73,11 +73,11 @@ class HomeListTableView: UITableView {
 
 extension HomeListTableView: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//    if let vc = viewController {
-//      let reminderVC = RemindersViewController()
-//      vc.navigationController?.pushViewController(reminderVC, animated: true)
-//    }
-//    tableView.deselectRow(at: indexPath, animated: true)
+    if let vc = viewController {
+      let reminderVC = RemindersViewController()
+      vc.navigationController?.pushViewController(reminderVC, animated: true)
+    }
+    tableView.deselectRow(at: indexPath, animated: true)
   }
 }
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		482300CF25B43F8D0032DF20 /* RemindersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485E636625AFECA5002868C7 /* RemindersViewController.swift */; };
 		4846E3B925A5A306005F6383 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4846E3B825A5A306005F6383 /* UIColor+Extension.swift */; };
 		485E637A25B14DCD002868C7 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485E637925B14DCD002868C7 /* UIViewController+Extension.swift */; };
 		488FD90125ABC2B600318C93 /* HomeListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941254E79B7E40666A4ECD38 /* HomeListCollectionViewCell.swift */; };
@@ -232,6 +233,7 @@
 				48F16E8425A1C0F60036D9A3 /* Task+CoreDataClass.swift in Sources */,
 				48F16E6025A1B9800036D9A3 /* AppDelegate.swift in Sources */,
 				48F9FBF425AD00AC00EAA68A /* HomeTableList.swift in Sources */,
+				482300CF25B43F8D0032DF20 /* RemindersViewController.swift in Sources */,
 				488FD90125ABC2B600318C93 /* HomeListCollectionViewCell.swift in Sources */,
 				48F16E7E25A1BB080036D9A3 /* CategoryColor.swift in Sources */,
 				48F16E7925A1BA700036D9A3 /* CateogoryIcon.swift in Sources */,
