@@ -8,20 +8,13 @@
 import UIKit
 
 protocol ViewControllerConfig: UIViewController {
-  func globalVCConfig(title: String?)
+  func globalVCConfig()
 }
 
 extension ViewControllerConfig {
-  func globalVCConfig(title _title: String? = nil) {
+  func globalVCConfig() {
     navigationController?.navigationBar.backgroundColor = .clear
     navigationController?.toolbar.backgroundColor = .clear
     navigationController?.isToolbarHidden = false
-    
-    if let _title = _title {
-      title = _title
-      navigationController?.navigationBar.prefersLargeTitles = true
-    } else {
-      navigationController?.navigationBar.prefersLargeTitles = false
-    }
   }
 }

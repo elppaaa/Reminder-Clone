@@ -10,6 +10,7 @@ import UIKit
 protocol NavigationControllerDelegate { }
 
 class ViewController: UIViewController, ViewControllerConfig {
+
   let controller = UISearchController(searchResultsController: nil)
   let collection = HomeListCollectionView()
   let table = HomeListTableView()
@@ -32,6 +33,7 @@ class ViewController: UIViewController, ViewControllerConfig {
   
   override func viewWillAppear(_ animated: Bool) {
     globalVCConfig()
+    navigationController?.navigationBar.prefersLargeTitles = false
     title = nil
   }
 
