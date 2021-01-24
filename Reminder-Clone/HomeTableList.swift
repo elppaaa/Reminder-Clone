@@ -74,7 +74,9 @@ class HomeListTableView: UITableView {
 extension HomeListTableView: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     if let vc = viewController {
-      let reminderVC = RemindersViewController()
+      let data = bindDataSource.data[indexPath.row]
+      let reminderVC = RemindersViewController(primaryColor: data.color)
+      reminderVC.title = data.title
       vc.navigationController?.pushViewController(reminderVC, animated: true)
     }
     tableView.deselectRow(at: indexPath, animated: true)

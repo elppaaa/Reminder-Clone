@@ -9,18 +9,28 @@ import UIKit
 
 // TODO: Get from core data
 struct MyTask {
+  var id: Int
   var title: String
   var isDone: Bool = false
 }
 
 class RemindersViewController: UITableViewController, ViewControllerConfig {
   // TODO: Get from core data
-  let pagePrimaryColor: UIColor = .systemPink
-  var tasks: [MyTask] = [
-    MyTask(title: "title"),
-    MyTask(title: "one"),
-    MyTask(title: "two"),
+  var pagePrimaryColor: UIColor = .clear
+  fileprivate var tasks: [MyTask] = [
+    MyTask(id: 0, title: "title"),
+    MyTask(id: 1, title: "one"),
+    MyTask(id: 2, title: "two"),
   ]
+  
+  required init?(coder: NSCoder) {
+    fatalError("Not Used")
+  }
+  
+  init(primaryColor color: UIColor) {
+    super.init(style: .plain)
+    self.pagePrimaryColor = color
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -30,17 +40,39 @@ class RemindersViewController: UITableViewController, ViewControllerConfig {
     tableView.estimatedRowHeight = 20
 
     configLayout()
+    
+    NotificationCenter.default.addObserver(self, selector: #selector(updateArray), name: Notification.sendisDone, object: nil)
   }
   
   override func viewWillAppear(_ animated: Bool) {
-    globalVCConfig(title: "미리 알림")
+    globalVCConfig()
+    navigationController?.navigationBar.prefersLargeTitles = true
+    print("📌 color! \(pagePrimaryColor.description)")
+
     let attribute = [NSAttributedString.Key.foregroundColor:pagePrimaryColor]
     navigationController?.navigationBar.largeTitleTextAttributes = attribute
+  }
+  
+  deinit {
+    NotificationCenter.default.removeObserver(self)
+  }
+  
+  @objc func updateArray(_ noti: Notification) {
+    guard let data = noti.object as?  MyTask else { return }
+    self.tasks = tasks.map { task -> MyTask in
+      var task = task
+      if task.id == data.id {
+        task.isDone.toggle()
+      }
+      return task
+    }
+    
+    tableView.reloadData()
   }
 
   #if DEBUG
   @objc func injected() {
-    let vc = RemindersViewController()
+    let vc = RemindersViewController(primaryColor: .blue)
     homeInject(vc)
   }
   #endif
@@ -48,7 +80,7 @@ class RemindersViewController: UITableViewController, ViewControllerConfig {
 
 // MARK: - Layout, Gesture setting
 extension RemindersViewController {
-  func configLayout() {
+  fileprivate func configLayout() {
     tableView.tableFooterView = UIView()
     tableView.tableHeaderView = UIView()
   }
@@ -57,15 +89,8 @@ extension RemindersViewController {
 
 // MARK: - TableView setting
 extension RemindersViewController {
-  // TODO: imageView - toggle 로 변경 예정.
-  /*
-   toggle 시 2-3 초 뒤에 숨기기 적용되도록 함.
-   show complete 을 통해서 완료된 항목도 볼 수 있어야 함으로 삭제하지 않음.
-   */
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    
-    tasks[indexPath.row].isDone.toggle()
-    tableView.reloadRows(at: [indexPath], with: .automatic)
+    // TODO: UILabel -> UITextView로 변경 (CustomUI)
   }
 }
 
@@ -80,41 +105,63 @@ extension RemindersViewController {
             withIdentifier: ReminderTableViewCell.describe, for: indexPath) as? ReminderTableViewCell else {
       fatalError("Cell Not Founded")
     }
-    
     let data = tasks[indexPath.row]
-    cell.configCell(with: data)
+    cell.config(color: pagePrimaryColor)
+    cell.config(data: data)
     return cell
   }
 
 }
 
+extension RemindersViewController {
+  @objc func checkDoneStatus() {
+    
+  }
+}
+
 class ReminderTableViewCell: UITableViewCell {
-  var data: MyTask = MyTask(title: "") {
+  var color: UIColor = .clear
+  var data: MyTask? = nil {
     didSet {
+      guard let data = data else { return }
       self.textLabel?.text = data.title
       if data.isDone {
         self.textLabel?.textColor = .gray
+        self.imageView?.tintColor = color
         self.imageView?.image = R.Image.largeCircle
-        self.imageView?.tintColor = .systemPink
       } else {
         self.textLabel?.textColor = .black
-        self.imageView?.image = R.Image.emptyCircle
         self.imageView?.tintColor = .gray
+        self.imageView?.image = R.Image.emptyCircle
       }
     }
   }
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: .subtitle, reuseIdentifier: Self.describe)
+    super.init(style: style, reuseIdentifier: Self.describe)
+    imageView?.contentMode = .scaleAspectFill
+    imageView?.isUserInteractionEnabled = true
+    imageView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(notifyIndex)))
   }
   
   required init?(coder: NSCoder) {
     fatalError("Not used Initializer")
   }
-
-  func configCell(with data: MyTask) {
+  
+  func config(color: UIColor) {
+    self.color = color
+  }
+  
+  func config(data: MyTask) {
     self.data = data
-    
   }
 
+  @objc func notifyIndex() {
+    NotificationCenter.default.post(name: Notification.sendisDone, object: data)
+  }
+  
+}
+
+fileprivate extension Notification {
+  static let sendisDone = NSNotification.Name(rawValue: "SendDone")
 }
