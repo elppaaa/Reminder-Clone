@@ -50,7 +50,7 @@ class HomeListTableView: UITableView {
     showsHorizontalScrollIndicator = false
     isScrollEnabled = false
     layer.cornerRadius = 20
-    tableFooterView = UIView(frame: .zero)
+    tableFooterView = UIView()
   }
   
   #if DEBUG
@@ -75,7 +75,8 @@ extension HomeListTableView: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     if let vc = viewController {
       let data = bindDataSource.data[indexPath.row]
-      let reminderVC = RemindersViewController(primaryColor: data.color)
+      let reminderVC = RemindersTableViewController()
+			reminderVC.pagePrimaryColor = data.color
       reminderVC.title = data.title
       vc.navigationController?.pushViewController(reminderVC, animated: true)
     }

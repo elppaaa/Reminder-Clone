@@ -47,7 +47,6 @@ class ViewController: UIViewController, ViewControllerConfig {
 
   func searchBarSetting() {
     searchBar = controller.searchBar
-//    searchBar.translatesAutoresizingMaskIntoConstraints = false
     searchBar.backgroundColor = .clear
     
     navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: nil)
@@ -71,7 +70,7 @@ class ViewController: UIViewController, ViewControllerConfig {
       mainStack.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
       mainStack.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
     ])
-    
+
     // ListView
   }
   

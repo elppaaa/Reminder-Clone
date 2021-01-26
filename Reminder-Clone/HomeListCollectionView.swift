@@ -14,7 +14,6 @@ class HomeListCollectionView: UICollectionView {
 		dataSource = bindDataSource
     delegate = self
 		translatesAutoresizingMaskIntoConstraints = false
-    autoresizesSubviews = true
 		configLayout()
 		reloadData()
 	}
@@ -25,7 +24,6 @@ class HomeListCollectionView: UICollectionView {
 		dataSource = bindDataSource
     delegate = self
 		translatesAutoresizingMaskIntoConstraints = false
-    autoresizesSubviews = true
 		configLayout()
 		reloadData()
 	}
@@ -40,8 +38,8 @@ class HomeListCollectionView: UICollectionView {
 extension HomeListCollectionView {
 	fileprivate static func createLayout() -> UICollectionViewFlowLayout {
 		let layout = UICollectionViewFlowLayout()
-		layout.minimumLineSpacing = 10
-		layout.minimumInteritemSpacing = 10
+		layout.minimumLineSpacing = 8
+		layout.minimumInteritemSpacing = 8
 		layout.sectionInset = .zero
 		return layout
 	}
@@ -49,18 +47,23 @@ extension HomeListCollectionView {
 	fileprivate func configLayout() {
 		backgroundColor = .clear
 		register(HomeListCollectionViewCell.self, forCellWithReuseIdentifier: HomeListCollectionViewCell.describe)
+    scrollIndicatorInsets = .zero
+    layoutMargins = .zero
+    isScrollEnabled = false
+    clipsToBounds = true
 	}
 }
 
 extension HomeListCollectionView: UICollectionViewDelegateFlowLayout {
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    guard let width = superview?.frame.width else { fatalError("SuperView Not Founded") }
 		if let dataSource = collectionView.dataSource as? HomeListCollectionDataSource {
 			if dataSource.data.count - 1 == indexPath.row,
 				 dataSource.data.count % 2 == 1 {
-				return .init(width: 340, height: 85)
+				return .init(width: width, height: 85)
 			}
 		}
-		return .init(width: 165, height: 85)
+		return .init(width: (width - 8) / 2, height: 85)
 	}
 
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
