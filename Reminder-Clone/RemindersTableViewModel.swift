@@ -28,6 +28,10 @@ class RemindersTableViewModel: NSObject, UITableViewDataSource {
     MyTask(id: 2, title: "two"),
   ]
   
+  func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    true
+  }
+  
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     tasks.count
   }
@@ -41,8 +45,6 @@ class RemindersTableViewModel: NSObject, UITableViewDataSource {
     
     if let color = primaryColor {
       cell.config(color: color)
-    } else {
-      print("🌝 COLOR NOT FOUNDED")
     }
     
     cell.config(data: data)

@@ -12,24 +12,69 @@ class ReminderTableViewCell: UITableViewCell {
   var data: MyTask? = nil {
     didSet {
       guard let data = data else { return }
-      self.textLabel?.text = data.title
+      title.text = data.title
       if data.isDone {
-        self.textLabel?.textColor = .gray
-        self.imageView?.tintColor = color
-        self.imageView?.image = R.Image.largeCircle
+        title.textColor = .gray
+        toggleImage.tintColor = color
+        toggleImage.image = R.Image.largeCircle
       } else {
-        self.textLabel?.textColor = .black
-        self.imageView?.tintColor = .gray
-        self.imageView?.image = R.Image.emptyCircle
+        title.textColor = .black
+        toggleImage.tintColor = .gray
+        toggleImage.image = R.Image.emptyCircle
       }
     }
   }
   
+  let toggleImage: UIImageView = {
+    let image = UIImageView(frame: .init(x: 0, y: 0, width: 30, height: 30))
+    image.translatesAutoresizingMaskIntoConstraints = false
+    image.clipsToBounds = true
+    image.contentMode = .scaleAspectFill
+    image.isUserInteractionEnabled = true
+    return image
+  }()
+  
+  let title: UITextField = {
+    let textfield = UITextField()
+    textfield.translatesAutoresizingMaskIntoConstraints = false
+    textfield.isUserInteractionEnabled = true
+    return textfield
+  }()
+  
+  let mainStack: UIStackView = {
+    let stack = UIStackView()
+    stack.translatesAutoresizingMaskIntoConstraints = false
+    stack.axis = .horizontal
+    stack.distribution = .fill
+    stack.alignment = .fill
+    return stack
+  }()
+
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: Self.describe)
-    imageView?.contentMode = .scaleAspectFill
-    imageView?.isUserInteractionEnabled = true
-    imageView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(notifyIndex)))
+    configLayout()
+  }
+
+  func configLayout() {
+    contentMode = .scaleToFill
+
+    contentView.addSubview(toggleImage)
+    contentView.addSubview(title)
+
+    NSLayoutConstraint.activate([
+      toggleImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+      toggleImage.widthAnchor.constraint(equalToConstant: 30),
+      toggleImage.heightAnchor.constraint(equalTo: toggleImage.widthAnchor, multiplier: 1.0),
+      
+      title.leadingAnchor.constraint(equalTo: toggleImage.trailingAnchor, constant: 10),
+      title.trailingAnchor.constraint(greaterThanOrEqualTo: contentView.trailingAnchor, constant: 10),
+    ])
+    
+    contentView.subviews.forEach { (v) in
+      v.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+    }
+    
+    toggleImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(notifyIndex)))
     selectionStyle = .none
   }
   

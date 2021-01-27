@@ -157,7 +157,7 @@ class HomeListTableCell: UITableViewCell, HomeListCellViewType {
     contentView.addSubview(iconView)
     contentView.addSubview(titleLabel)
     contentView.addSubview(countLabel)
-    _ = contentView.subviews.map { v in
+    contentView.subviews.forEach { v in
       v.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
     }
     

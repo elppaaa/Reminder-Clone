@@ -104,7 +104,6 @@
 		48F16E5E25A1B9800036D9A3 /* Reminder-Clone */ = {
 			isa = PBXGroup;
 			children = (
-				4866690725B81C9C005A1451 /* RemindersTableViewCell.swift */,
 				4866690F25B81DAF005A1451 /* Notification+Extension.swift */,
 				48F16E8F25A1C17D0036D9A3 /* .swiftlint.yml */,
 				48DCE90D25AA8B9000178790 /* HomeListView.swift */,
@@ -114,6 +113,7 @@
 				482300BA25B305070032DF20 /* CoreDataManager.swift */,
 				48F16E6325A1B9800036D9A3 /* ViewController.swift */,
 				485E636625AFECA5002868C7 /* RemindersTableViewController.swift */,
+				4866690725B81C9C005A1451 /* RemindersTableViewCell.swift */,
 				483E581225B6D3DF004DF782 /* RemindersTableViewModel.swift */,
 				482300C125B401920032DF20 /* ToggleButton.swift */,
 				485E637925B14DCD002868C7 /* UIViewController+Extension.swift */,
