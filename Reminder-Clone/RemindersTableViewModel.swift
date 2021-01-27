@@ -52,13 +52,10 @@ class RemindersTableViewModel: NSObject, UITableViewDataSource {
   }
   
   @objc func updateArray(_ noti: Notification) {
-    guard let data = noti.object as?  MyTask else { return }
-    self.tasks = tasks.map { task -> MyTask in
-      var task = task
-      if task.id == data.id {
-        task.isDone.toggle()
-      }
-      return task
+    guard let _data = noti.object as?  MyTask else { return }
+    
+    if let index = tasks.firstIndex(where: { $0.id == _data.id }) {
+      tasks[index] = _data
     }
     parent?.reloadData()
   }

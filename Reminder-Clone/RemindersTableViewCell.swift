@@ -9,9 +9,17 @@ import UIKit
 
 class ReminderTableViewCell: UITableViewCell {
   var color: UIColor = .clear
-  var data: MyTask? = nil {
-    didSet {
-      guard let data = data else { return }
+  var _data: MyTask? = nil
+  var data: MyTask? {
+    get {
+      if let data = _data {
+        return data
+      } else {
+        fatalError("ERROR")
+      }
+    }
+    set {
+      guard let data = newValue else { return }
       title.text = data.title
       if data.isDone {
         title.textColor = .gray
@@ -22,9 +30,11 @@ class ReminderTableViewCell: UITableViewCell {
         toggleImage.tintColor = .gray
         toggleImage.image = R.Image.emptyCircle
       }
+      title.text = newValue?.title
+      _data = newValue
     }
   }
-  
+
   let toggleImage: UIImageView = {
     let image = UIImageView(frame: .init(x: 0, y: 0, width: 30, height: 30))
     image.translatesAutoresizingMaskIntoConstraints = false
@@ -53,6 +63,9 @@ class ReminderTableViewCell: UITableViewCell {
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: Self.describe)
     configLayout()
+    toggleImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(toggleIsDone)))
+    title.addTarget(self, action: #selector(changedTitleText), for: .editingDidEnd)
+    title.addTarget(self, action: #selector(changedTitleText), for: .touchUpOutside)
   }
 
   func configLayout() {
@@ -74,7 +87,6 @@ class ReminderTableViewCell: UITableViewCell {
       v.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
     }
     
-    toggleImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(notifyIndex)))
     selectionStyle = .none
   }
   
@@ -90,8 +102,25 @@ class ReminderTableViewCell: UITableViewCell {
     self.data = data
   }
   
-  @objc func notifyIndex() {
-    NotificationCenter.default.post(name: Notification.sendisDone, object: data)
+  @objc func toggleIsDone() {
+    data?.isDone.toggle()
+    notifyDataChanged()
   }
   
+  @objc func changedTitleText() {
+    if let text = title.text {
+      data?.title = text
+      print("📌 Title Text Changed \(text)")
+      notifyDataChanged()
+    }
+  }
+  
+  func notifyDataChanged() {
+    NotificationCenter.default.post(name: Notification.sendisDone, object: data)
+  }
+
+  @objc func setDetailAccessory() {
+    accessoryType = .none
+  }
+
 }
