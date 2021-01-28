@@ -65,7 +65,7 @@ class ReminderTableViewCell: UITableViewCell {
     configLayout()
     toggleImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(toggleIsDone)))
     title.addTarget(self, action: #selector(changedTitleText), for: .editingDidEnd)
-    title.addTarget(self, action: #selector(changedTitleText), for: .touchUpOutside)
+    title.addTarget(self, action: #selector(changedTitleText), for: .valueChanged)
   }
 
   func configLayout() {
@@ -75,12 +75,12 @@ class ReminderTableViewCell: UITableViewCell {
     contentView.addSubview(title)
 
     NSLayoutConstraint.activate([
-      toggleImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+      toggleImage.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
       toggleImage.widthAnchor.constraint(equalToConstant: 30),
       toggleImage.heightAnchor.constraint(equalTo: toggleImage.widthAnchor, multiplier: 1.0),
       
       title.leadingAnchor.constraint(equalTo: toggleImage.trailingAnchor, constant: 10),
-      title.trailingAnchor.constraint(greaterThanOrEqualTo: contentView.trailingAnchor, constant: 10),
+      title.trailingAnchor.constraint(greaterThanOrEqualTo: contentView.layoutMarginsGuide.trailingAnchor, constant: 10),
     ])
     
     contentView.subviews.forEach { (v) in

@@ -57,7 +57,7 @@ class RemindersTableViewModel: NSObject, UITableViewDataSource {
     if let index = tasks.firstIndex(where: { $0.id == _data.id }) {
       tasks[index] = _data
     }
-    parent?.reloadData()
+//    parent?.reloadData()
   }
   
   deinit {
