@@ -19,7 +19,8 @@ class RemindersTableViewController: UITableViewController, ViewControllerConfig 
     tableView.register(ReminderTableViewCell.self, forCellReuseIdentifier: ReminderTableViewCell.describe)
     customDataSource.primaryColor = pagePrimaryColor
     tableView.dataSource = customDataSource
-    customDataSource.parent = tableView
+    tableView.delegate = customDataSource
+    customDataSource.parent = self
     tableView.estimatedRowHeight = 20
     tableView.allowsMultipleSelectionDuringEditing = true
   }
@@ -57,17 +58,3 @@ extension RemindersTableViewController {
   }
   
 }
-
-// MARK: - TableView DataSource
-extension RemindersTableViewController {
-
-}
-
-extension RemindersTableViewController {
-  @objc func checkDoneStatus() {
-    
-  }
-}
-
-// MARK: -
-// MARK: -

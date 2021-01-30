@@ -13,10 +13,10 @@ struct MyTask {
   var isDone: Bool = false
 }
 
-class RemindersTableViewModel: NSObject, UITableViewDataSource {
-  unowned var parent: UITableView?
+class RemindersTableViewModel: NSObject {
+  unowned var parent: UIViewController?
   var primaryColor: UIColor?
-  
+
   override init() {
     super.init()
   }
@@ -26,7 +26,9 @@ class RemindersTableViewModel: NSObject, UITableViewDataSource {
     MyTask(id: 1, title: "one"),
     MyTask(id: 2, title: "two"),
   ]
-  
+}
+
+extension RemindersTableViewModel: UITableViewDataSource {
   func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
     true
   }
@@ -48,7 +50,14 @@ class RemindersTableViewModel: NSObject, UITableViewDataSource {
     cell.config(data: data)
     return cell
   }
+}
 
+extension RemindersTableViewModel: UITableViewDelegate {
+  public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+		let vc = ReminderDetailViewController()
+    vc.data = tasks[indexPath.row]
+    parent?.present(vc, animated: true, completion: nil)
+  }
 }
 
 extension RemindersTableViewModel: RemindersTableViewModelDelegate {
@@ -57,8 +66,10 @@ extension RemindersTableViewModel: RemindersTableViewModelDelegate {
       tasks[index] = data
     }
   }
+  
 }
 
 protocol RemindersTableViewModelDelegate {
   func changeData(with data: MyTask)
+//  func pushViewController(with data: MyTask)
 }

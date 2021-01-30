@@ -127,5 +127,4 @@ class ReminderTableViewCell: UITableViewCell {
   @objc func changeAccessoryType() {
     accessoryType = title.isEditing ? .detailButton : .none
   }
-
 }

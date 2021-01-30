@@ -15,6 +15,8 @@
 		4866691025B81DAF005A1451 /* Notification+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4866690F25B81DAF005A1451 /* Notification+Extension.swift */; };
 		488FD90125ABC2B600318C93 /* HomeListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941254E79B7E40666A4ECD38 /* HomeListCollectionViewCell.swift */; };
 		488FD90325ABC2E500318C93 /* HomeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DCE90D25AA8B9000178790 /* HomeListView.swift */; };
+		48DAFDE725BBE30400DE9D2E /* ReminderDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DAFDE625BBE30400DE9D2E /* ReminderDetailViewController.swift */; };
+		48DAFDEA25BBE31A00DE9D2E /* ReminderDetailTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DAFDE925BBE31A00DE9D2E /* ReminderDetailTableView.swift */; };
 		48F16E6025A1B9800036D9A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F16E5F25A1B9800036D9A3 /* AppDelegate.swift */; };
 		48F16E6425A1B9800036D9A3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F16E6325A1B9800036D9A3 /* ViewController.swift */; };
 		48F16E6725A1B9800036D9A3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48F16E6525A1B9800036D9A3 /* Main.storyboard */; };
@@ -42,6 +44,8 @@
 		485E637925B14DCD002868C7 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		4866690725B81C9C005A1451 /* RemindersTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersTableViewCell.swift; sourceTree = "<group>"; };
 		4866690F25B81DAF005A1451 /* Notification+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extension.swift"; sourceTree = "<group>"; };
+		48DAFDE625BBE30400DE9D2E /* ReminderDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderDetailViewController.swift; sourceTree = "<group>"; };
+		48DAFDE925BBE31A00DE9D2E /* ReminderDetailTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderDetailTableView.swift; sourceTree = "<group>"; };
 		48DCE90D25AA8B9000178790 /* HomeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListView.swift; sourceTree = "<group>"; };
 		48F16E5C25A1B9800036D9A3 /* Reminder-Clone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Reminder-Clone.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		48F16E5F25A1B9800036D9A3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -104,6 +108,8 @@
 		48F16E5E25A1B9800036D9A3 /* Reminder-Clone */ = {
 			isa = PBXGroup;
 			children = (
+				48DAFDE625BBE30400DE9D2E /* ReminderDetailViewController.swift */,
+				48DAFDE925BBE31A00DE9D2E /* ReminderDetailTableView.swift */,
 				4866690F25B81DAF005A1451 /* Notification+Extension.swift */,
 				48F16E8F25A1C17D0036D9A3 /* .swiftlint.yml */,
 				48DCE90D25AA8B9000178790 /* HomeListView.swift */,
@@ -234,6 +240,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48DAFDEA25BBE31A00DE9D2E /* ReminderDetailTableView.swift in Sources */,
+				48DAFDE725BBE30400DE9D2E /* ReminderDetailViewController.swift in Sources */,
 				485E637A25B14DCD002868C7 /* UIViewController+Extension.swift in Sources */,
 				48F16E6425A1B9800036D9A3 /* ViewController.swift in Sources */,
 				488FD90325ABC2E500318C93 /* HomeListView.swift in Sources */,
@@ -330,7 +338,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -385,7 +393,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
