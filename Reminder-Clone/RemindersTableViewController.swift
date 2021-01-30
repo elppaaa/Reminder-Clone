@@ -21,7 +21,7 @@ class RemindersTableViewController: UITableViewController, ViewControllerConfig 
     tableView.dataSource = customDataSource
     customDataSource.parent = tableView
     tableView.estimatedRowHeight = 20
-    tableView.allowsSelectionDuringEditing = true
+    tableView.allowsMultipleSelectionDuringEditing = true
   }
 
   override func viewDidLoad() {

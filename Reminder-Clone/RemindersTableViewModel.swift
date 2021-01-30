@@ -19,7 +19,6 @@ class RemindersTableViewModel: NSObject, UITableViewDataSource {
   
   override init() {
     super.init()
-    NotificationCenter.default.addObserver(self, selector: #selector(updateArray), name: Notification.sendisDone, object: nil)
   }
 
   var tasks: [MyTask] = [
@@ -42,25 +41,24 @@ class RemindersTableViewModel: NSObject, UITableViewDataSource {
       fatalError("Cell Not Founded")
     }
     let data = tasks[indexPath.row]
-    
+    cell.delegate = self
     if let color = primaryColor {
       cell.config(color: color)
     }
-    
     cell.config(data: data)
     return cell
   }
-  
-  @objc func updateArray(_ noti: Notification) {
-    guard let _data = noti.object as?  MyTask else { return }
-    
-    if let index = tasks.firstIndex(where: { $0.id == _data.id }) {
-      tasks[index] = _data
+
+}
+
+extension RemindersTableViewModel: RemindersTableViewModelDelegate {
+  func changeData(with data: MyTask) {
+    if let index = tasks.firstIndex(where: { $0.id == data.id }) {
+      tasks[index] = data
     }
-//    parent?.reloadData()
   }
-  
-  deinit {
-    NotificationCenter.default.removeObserver(self)
-  }
+}
+
+protocol RemindersTableViewModelDelegate {
+  func changeData(with data: MyTask)
 }

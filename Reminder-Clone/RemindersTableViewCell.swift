@@ -8,6 +8,7 @@
 import UIKit
 
 class ReminderTableViewCell: UITableViewCell {
+  var delegate: RemindersTableViewModelDelegate?
   var color: UIColor = .clear
   var _data: MyTask? = nil
   var data: MyTask? {
@@ -64,8 +65,9 @@ class ReminderTableViewCell: UITableViewCell {
     super.init(style: style, reuseIdentifier: Self.describe)
     configLayout()
     toggleImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(toggleIsDone)))
-    title.addTarget(self, action: #selector(changedTitleText), for: .editingDidEnd)
-    title.addTarget(self, action: #selector(changedTitleText), for: .valueChanged)
+    title.addTarget(self, action: #selector(didEditingStatusChanged), for: .editingChanged)
+    title.addTarget(self, action: #selector(changeAccessoryType), for: .allEditingEvents)
+
   }
 
   func configLayout() {
@@ -104,23 +106,26 @@ class ReminderTableViewCell: UITableViewCell {
   
   @objc func toggleIsDone() {
     data?.isDone.toggle()
-    notifyDataChanged()
-  }
-  
-  @objc func changedTitleText() {
-    if let text = title.text {
-      data?.title = text
-      print("📌 Title Text Changed \(text)")
-      notifyDataChanged()
+    if let data = data {
+      delegate?.changeData(with: data)
     }
   }
   
-  func notifyDataChanged() {
-    NotificationCenter.default.post(name: Notification.sendisDone, object: data)
+  @objc func didEditingStatusChanged() {
+    updateTitle()
+  }
+  
+  func updateTitle() {
+    if let text = title.text {
+      data?.title = text
+      if let data = data {
+        delegate?.changeData(with: data)
+      }
+    }
   }
 
-  @objc func setDetailAccessory() {
-    accessoryType = .none
+  @objc func changeAccessoryType() {
+    accessoryType = title.isEditing ? .detailButton : .none
   }
 
 }
