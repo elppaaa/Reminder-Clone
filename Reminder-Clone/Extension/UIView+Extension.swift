@@ -6,7 +6,7 @@ import UIKit
 
 extension UILabel {
 	static func makeView(_ title: String,
-											 color: UIColor = .black,
+                       color: UIColor = R.Color.label,
 											 font: UIFont = UIFont.systemFont(ofSize: 13, weight: .regular)
 	) -> UILabel {
 		let label = UILabel()
@@ -17,7 +17,7 @@ extension UILabel {
 		return label
 	}
 	static func makeView(
-    color: UIColor = .black, font: UIFont = UIFont.systemFont(ofSize: 13, weight: .regular)
+    color: UIColor = R.Color.label, font: UIFont = UIFont.systemFont(ofSize: 13, weight: .regular)
 	) -> UILabel {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false

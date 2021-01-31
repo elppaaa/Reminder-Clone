@@ -9,7 +9,7 @@ import UIKit
 
 // TODO: Get from core data
 
-class RemindersTableViewController: UITableViewController, ViewControllerConfig {
+class RemindersTableViewController: UITableViewController {
   // TODO: Get from core data
   var pagePrimaryColor: UIColor = .clear
   let customDataSource = RemindersTableViewModel()
@@ -21,7 +21,7 @@ class RemindersTableViewController: UITableViewController, ViewControllerConfig 
     tableView.dataSource = customDataSource
     tableView.delegate = customDataSource
     customDataSource.parent = self
-    tableView.estimatedRowHeight = 20
+    tableView.estimatedRowHeight = 40
     tableView.allowsMultipleSelectionDuringEditing = true
   }
 
@@ -33,7 +33,7 @@ class RemindersTableViewController: UITableViewController, ViewControllerConfig 
   }
   
   override func viewWillAppear(_ animated: Bool) {
-    globalVCConfig()
+    defaultNavigationConfig()
     navigationController?.navigationBar.prefersLargeTitles = true
 
     let attribute = [NSAttributedString.Key.foregroundColor:pagePrimaryColor]
@@ -56,5 +56,4 @@ extension RemindersTableViewController {
     tableView.tableFooterView = UIView()
     tableView.tableHeaderView = UIView()
   }
-  
 }

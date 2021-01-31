@@ -7,14 +7,13 @@
 
 import UIKit
 
-protocol ViewControllerConfig: UIViewController {
-  func globalVCConfig()
-}
-
-extension ViewControllerConfig {
-  func globalVCConfig() {
+extension UIViewController {
+  func defaultNavigationConfig() {
     navigationController?.navigationBar.backgroundColor = .clear
-    navigationController?.toolbar.backgroundColor = .clear
     navigationController?.isToolbarHidden = false
+    navigationController?.toolbar.isTranslucent = true
+    navigationController?.toolbar.isOpaque = true
+    navigationController?.toolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+    navigationController?.toolbar.barTintColor = self.view.backgroundColor
   }
 }

@@ -3,16 +3,17 @@
 //
 
 import UIKit
-//swiftlint:disable type_name
+// swiftlint:disable type_name force_unwrapping
 struct R {
 	struct Color {
-		static let systemBackground = UIColor(named: "systemBackground")
-		static let applicationBackground = UIColor(named: "applicationBackground")
-		static let systemGray6 = UIColor(named: "systemGray6")
-    static let defaultBackgorund = UIColor(named: "defaultBackground")
+		static let systemBackground = UIColor(named: "systemBackground")!
+		static let applicationBackground = UIColor(named: "applicationBackground")!
+		static let systemGray6 = UIColor(named: "systemGray6")!
+    static let defaultBackgorund = UIColor(named: "defaultBackground")!
+    static let label = UIColor(named: "label")!
 	}
   
-  //swiftlint:disable all
+  // swiftlint:disable force_unwrapping
   struct Image {
     static let largeCircle = UIImage(named: "largecircle.fill.circle")!
     static let emptyCircle = UIImage(named: "circle")!

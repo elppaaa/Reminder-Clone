@@ -1,5 +1,4 @@
-//
-//  RemindersViewControllerDataSource.swift
+////  RemindersViewControllerDataSource.swift
 //  Reminder-Clone
 //
 //  Created by JK on 2021/01/19.
@@ -56,7 +55,7 @@ extension RemindersTableViewModel: UITableViewDelegate {
   public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
 		let vc = ReminderDetailViewController()
     vc.data = tasks[indexPath.row]
-    parent?.present(vc, animated: true, completion: nil)
+    parent?.present(UINavigationController(rootViewController: vc), animated: true)
   }
 }
 
@@ -66,7 +65,7 @@ extension RemindersTableViewModel: RemindersTableViewModelDelegate {
       tasks[index] = data
     }
   }
-  
+
 }
 
 protocol RemindersTableViewModelDelegate {
