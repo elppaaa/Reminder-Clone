@@ -7,42 +7,51 @@
 
 import UIKit
 
-protocol NavigationControllerDelegate { }
+class ViewController: UIViewController {
+  
+  fileprivate let controller = UISearchController(searchResultsController: nil)
+  fileprivate let collection = HomeListCollectionView()
+  fileprivate let table = HomeListTableView()
+  fileprivate var searchBar = UISearchBar()
+  fileprivate var observeBag = [NSKeyValueObservation]()
 
-class ViewController: UIViewController, ViewControllerConfig {
-
-  let controller = UISearchController(searchResultsController: nil)
-  let collection = HomeListCollectionView()
-  let table = HomeListTableView()
-  var searchBar = UISearchBar()
-
-  fileprivate let mainStack: UIStackView = {
-    let stack = UIStackView()
-    stack.translatesAutoresizingMaskIntoConstraints = false
-    stack.axis = .vertical
-    stack.distribution = .fillEqually
-    return stack
-  }()
+  fileprivate var collectionViewHeight: NSLayoutConstraint?
+  fileprivate var tableViewHeight: NSLayoutConstraint?
+  fileprivate var contentViewHeight: NSLayoutConstraint?
   
   fileprivate let scrollView: UIScrollView = {
-    let scrollView = UIScrollView()
+    let scrollView = UIScrollView(frame: .zero)
     scrollView.translatesAutoresizingMaskIntoConstraints = false
+    scrollView.showsHorizontalScrollIndicator = false
+    scrollView.showsVerticalScrollIndicator = false
     scrollView.isScrollEnabled = true
+    scrollView.alwaysBounceVertical = true
+    scrollView.isPagingEnabled = true
     return scrollView
   }()
   
+  fileprivate let contentView: UIView = {
+    let v = UIView()
+    v.translatesAutoresizingMaskIntoConstraints = false
+    return v
+  }()
+  
   override func viewWillAppear(_ animated: Bool) {
-    globalVCConfig()
+    defaultNavigationConfig()
     navigationController?.navigationBar.prefersLargeTitles = false
     title = nil
   }
-
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     table.viewController = self
     view.backgroundColor = R.Color.applicationBackground
     searchBarSetting()
     configLayout()
+  }
+  
+  override func viewDidLayoutSubviews() {
+    scrollView.contentSize = contentView.frame.size
   }
 
   func searchBarSetting() {
@@ -55,31 +64,83 @@ class ViewController: UIViewController, ViewControllerConfig {
     navigationItem.searchController?.isActive = true
     navigationItem.hidesSearchBarWhenScrolling = true
   }
-
+  
   // MARK: - config Layout
   func configLayout() {
-    /// add to stack
-    // TODO: - UIScrollView 코드로 작성하는 방법 찾기.
-    		mainStack.addArrangedSubview(collection)
-        mainStack.addArrangedSubview(table)
+    // TODO: 스크롤 뷰 내 스크롤 안되는 현상 수정
     
-    view.addSubview(mainStack)
+    view.addSubview(scrollView)
+    
     NSLayoutConstraint.activate([
-      mainStack.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 20),
-      mainStack.bottomAnchor.constraint(greaterThanOrEqualTo: view.bottomAnchor, constant: -10),
-      mainStack.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-      mainStack.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+      scrollView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
+      scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      scrollView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+      scrollView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+    ])
+    
+    scrollView.addSubview(contentView)
+    
+    NSLayoutConstraint.activate([
+      contentView.topAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.topAnchor),
+      contentView.leadingAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.leadingAnchor),
+      contentView.trailingAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.trailingAnchor),
+      contentView.bottomAnchor.constraint(greaterThanOrEqualTo: scrollView.safeAreaLayoutGuide.bottomAnchor, constant: 0)
     ])
 
-    // ListView
+    contentView.addSubview(collection)
+    contentView.addSubview(table)
+    
+    NSLayoutConstraint.activate([
+      collection.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
+      collection.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+      collection.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+    ])
+    
+    table.topAnchor.constraint(equalTo: collection.bottomAnchor, constant: 10).isActive = true
+    if #available(iOS 13, *) {
+      NSLayoutConstraint.activate([
+        table.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: -20),
+        table.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 20),
+      ])
+    } else {
+      NSLayoutConstraint.activate([
+        table.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+        table.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+      ])
+    }
+
+    tableViewHeight = table.heightAnchor.constraint(equalToConstant: table.contentSize.height)
+    collectionViewHeight = collection.heightAnchor.constraint(equalToConstant: collection.contentSize.height)
+    contentViewHeight = contentView.heightAnchor.constraint(
+      equalToConstant: table.contentSize.height + collection.contentSize.height)
+    
+    tableViewHeight?.isActive = true
+    collectionViewHeight?.isActive = true
+    contentViewHeight?.isActive = true
+    
+    observeBag.append(
+      table.observe(\.contentSize, options: [.new, .prior]) { (_, change) in
+        if let height = change.newValue?.height, height != 0 {
+          print("📌 TableView Height \(height)")
+          self.tableViewHeight?.constant = height
+//          self.contentViewHeight?.constant = height + self.collection.contentSize.height
+          self.updateViewConstraints()
+        }
+      }
+    )
+    
+    observeBag.append(
+      collection.observe(\.contentSize, options: [.new, .prior], changeHandler: { (_, change) in
+        if let height = change.newValue?.height, height != 0 {
+          print("📌 CollectionView Height \(height)")
+          self.collectionViewHeight?.constant = height
+//          self.contentViewHeight?.constant = height + self.table.contentSize.height
+          self.updateViewConstraints()
+        }
+      })
+    )
   }
   
-//  private let stack: UIStackView = {
-//    let stack = UIStackView()
-//		stack.translatesAutoresizingMaskIntoConstraints = false
-//    return stack
-//  }()
-
   #if DEBUG
   @objc func injected() {
     homeInject()

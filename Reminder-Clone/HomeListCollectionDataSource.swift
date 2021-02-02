@@ -12,6 +12,7 @@ class HomeListCollectionDataSource: NSObject, HomeListDataSource {
 	var data: [HomeRadiusList] {
 		_data
 	}
+
 	private var _data: [HomeRadiusList] = [
 		HomeRadiusList(title: "Today", icon: "folder.circle.fill", color: .systemBlue, count: 5),
 		HomeRadiusList(title: "Scheduled", icon: "calendar.circle.fill", color: .red, count: 9),

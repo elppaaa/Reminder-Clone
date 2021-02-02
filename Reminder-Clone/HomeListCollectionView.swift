@@ -5,28 +5,38 @@
 import UIKit
 
 class HomeListCollectionView: UICollectionView {
-
 	let bindDataSource = HomeListCollectionDataSource()
-
+  @objc dynamic var height: CGFloat {
+    frame.height
+  }
+  // TODO: will delete
 	required init?(coder: NSCoder) {
-		let layout = Self.createLayout()
+    let layout = FlowLayout()
 		super.init(frame: .zero, collectionViewLayout: layout)
 		dataSource = bindDataSource
-    delegate = self
+    delegate = layout
 		translatesAutoresizingMaskIntoConstraints = false
 		configLayout()
-		reloadData()
 	}
-
+  
 	init() {
-		let layout = Self.createLayout()
+    let layout = FlowLayout()
 		super.init(frame: .zero, collectionViewLayout: layout)
 		dataSource = bindDataSource
-    delegate = self
+    delegate = layout
+    configLayout()
 		translatesAutoresizingMaskIntoConstraints = false
-		configLayout()
-		reloadData()
 	}
+  
+  fileprivate func configLayout() {
+    backgroundColor = .clear
+    register(HomeListCollectionViewCell.self, forCellWithReuseIdentifier: HomeListCollectionViewCell.describe)
+    scrollIndicatorInsets = .zero
+    layoutMargins = .zero
+//    isScrollEnabled = false
+    isScrollEnabled = true
+    clipsToBounds = true
+  }
   
 	#if DEBUG
 	@objc func injected() {
@@ -35,39 +45,27 @@ class HomeListCollectionView: UICollectionView {
 	#endif
 }
 
-extension HomeListCollectionView {
-	fileprivate static func createLayout() -> UICollectionViewFlowLayout {
-		let layout = UICollectionViewFlowLayout()
-		layout.minimumLineSpacing = 8
-		layout.minimumInteritemSpacing = 8
-		layout.sectionInset = .zero
-		return layout
-	}
+fileprivate class FlowLayout: UICollectionViewFlowLayout, UICollectionViewDelegateFlowLayout {
+  required init?(coder: NSCoder) {
+    fatalError("NOT USED")
+  }
+  
+  override init() {
+    super.init()
+    estimatedItemSize = .zero
+    minimumLineSpacing = 8
+    minimumInteritemSpacing = 8
+    sectionInset = .zero
+  }
 
-	fileprivate func configLayout() {
-		backgroundColor = .clear
-		register(HomeListCollectionViewCell.self, forCellWithReuseIdentifier: HomeListCollectionViewCell.describe)
-    scrollIndicatorInsets = .zero
-    layoutMargins = .zero
-    isScrollEnabled = false
-    clipsToBounds = true
-	}
-}
-
-extension HomeListCollectionView: UICollectionViewDelegateFlowLayout {
-	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    guard let width = superview?.frame.width else { fatalError("SuperView Not Founded") }
-		if let dataSource = collectionView.dataSource as? HomeListCollectionDataSource {
-			if dataSource.data.count - 1 == indexPath.row,
-				 dataSource.data.count % 2 == 1 {
-				return .init(width: width, height: 85)
-			}
-		}
-		return .init(width: (width - 8) / 2, height: 85)
-	}
-
-	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-		// TODO: - Touch Down Event
-		print(indexPath.row)
-	}
+func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+   let size = collectionView.layoutMarginsGuide.layoutFrame.size
+        if let dataSource = collectionView.dataSource as? HomeListCollectionDataSource {
+          if dataSource.data.count - 1 == indexPath.row,
+             dataSource.data.count % 2 == 1 {
+            return .init(width: size.width , height: 85)
+          }
+        }
+    return .init(width: (size.width - 8) / 2, height: 85)
+  }
 }

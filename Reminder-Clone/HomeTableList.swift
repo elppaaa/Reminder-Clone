@@ -15,41 +15,42 @@ import UIKit
 class HomeListTableView: UITableView {
 	let bindDataSource = HomeListTableDataSource()
   weak var viewController: UIViewController?
+  @objc dynamic var height: CGFloat {
+    contentSize.height
+  }
   
 	required init?(coder: NSCoder) {
 		fatalError("ERROR WHEN CREATE TABLEVIEW")
 	}
-
-	override init(frame: CGRect, style: Style = .plain) {
-		super.init(frame: frame, style: style)
+  
+	override init(frame: CGRect, style: Style = .grouped) {
+    if #available(iOS 13, *) {
+      super.init(frame: frame, style: .insetGrouped)
+    } else {
+      super.init(frame: frame, style: style)
+    }
 		dataSource = bindDataSource
     delegate = self
 		register(HomeListTableCell.self, forCellReuseIdentifier: HomeListTableCell.describe)
 		configLayout()
 		reloadData()
 	}
-
+  
   convenience init() {
-		self.init(frame: .zero)
+    self.init(frame: .zero)
 		dataSource = bindDataSource
     delegate = self
 		register(HomeListTableCell.self, forCellReuseIdentifier: HomeListTableCell.describe)
     configLayout()
-    reloadData()
 	}
   
   func configLayout() {
     translatesAutoresizingMaskIntoConstraints = false
-    estimatedRowHeight = 80
-    rowHeight = 50
-    let tableViewHeight = CGFloat(50 * bindDataSource.data.count)
-    heightAnchor.constraint(equalToConstant: tableViewHeight).isActive = true
-    
     backgroundColor = .none
+    rowHeight = CGFloat(50)
     showsVerticalScrollIndicator = false
     showsHorizontalScrollIndicator = false
-    isScrollEnabled = false
-    layer.cornerRadius = 20
+    isScrollEnabled = true
     tableFooterView = UIView()
   }
   
@@ -103,9 +104,6 @@ extension HomeListTableDataSource: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
     1
   }
-//  func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//    "My Lists"
-//  }
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		data.count
 	}
@@ -116,7 +114,9 @@ extension HomeListTableDataSource: UITableViewDataSource {
 			fatalError("ERROR WHEN CREATE CELL")
 		}
 		let data = _data[indexPath.row]
+    tableView.beginUpdates()
 		cell.configCell(with: data)
+    tableView.endUpdates()
 		return cell
 	}
 }
@@ -151,6 +151,7 @@ class HomeListTableCell: UITableViewCell, HomeListCellViewType {
 
 	fileprivate func configLayout() {
 		translatesAutoresizingMaskIntoConstraints = false
+    backgroundColor = R.Color.systemBackground
 
 		accessoryType = .disclosureIndicator
     
