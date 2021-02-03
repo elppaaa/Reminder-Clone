@@ -33,8 +33,7 @@ class HomeListCollectionView: UICollectionView {
     register(HomeListCollectionViewCell.self, forCellWithReuseIdentifier: HomeListCollectionViewCell.describe)
     scrollIndicatorInsets = .zero
     layoutMargins = .zero
-//    isScrollEnabled = false
-    isScrollEnabled = true
+    isScrollEnabled = false
     clipsToBounds = true
   }
   

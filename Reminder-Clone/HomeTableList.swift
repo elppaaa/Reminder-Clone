@@ -50,7 +50,7 @@ class HomeListTableView: UITableView {
     rowHeight = CGFloat(50)
     showsVerticalScrollIndicator = false
     showsHorizontalScrollIndicator = false
-    isScrollEnabled = true
+    isScrollEnabled = false
     tableFooterView = UIView()
   }
   

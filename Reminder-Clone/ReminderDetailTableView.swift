@@ -72,7 +72,6 @@ extension ReminderDetailTableViewDataSource: UITableViewDelegate {
 }
 
 class ReminderDetailTableViewCell: UITableViewCell {
-  var _data: TaskElement?
   required init?(coder: NSCoder) {
     fatalError("DO NOT USE THIS INITIALIZER")
   }

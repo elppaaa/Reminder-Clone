@@ -33,12 +33,12 @@ class RemindersTableViewController: UITableViewController {
   }
   
   override func viewWillAppear(_ animated: Bool) {
-    defaultNavigationConfig()
     navigationController?.navigationBar.prefersLargeTitles = true
-
+    defaultNavigationConfig()
     let attribute = [NSAttributedString.Key.foregroundColor:pagePrimaryColor]
     navigationController?.navigationBar.largeTitleTextAttributes = attribute
     tableView.reloadData()
+    super.viewWillAppear(true)
   }
 
   #if DEBUG

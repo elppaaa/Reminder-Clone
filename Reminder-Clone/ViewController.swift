@@ -12,12 +12,11 @@ class ViewController: UIViewController {
   fileprivate let controller = UISearchController(searchResultsController: nil)
   fileprivate let collection = HomeListCollectionView()
   fileprivate let table = HomeListTableView()
-  fileprivate var searchBar = UISearchBar()
   fileprivate var observeBag = [NSKeyValueObservation]()
 
   fileprivate var collectionViewHeight: NSLayoutConstraint?
   fileprivate var tableViewHeight: NSLayoutConstraint?
-  fileprivate var contentViewHeight: NSLayoutConstraint?
+//  fileprivate var contentViewHeight: NSLayoutConstraint?
   
   fileprivate let scrollView: UIScrollView = {
     let scrollView = UIScrollView(frame: .zero)
@@ -26,7 +25,7 @@ class ViewController: UIViewController {
     scrollView.showsVerticalScrollIndicator = false
     scrollView.isScrollEnabled = true
     scrollView.alwaysBounceVertical = true
-    scrollView.isPagingEnabled = true
+//    scrollView.isPagingEnabled = true
     return scrollView
   }()
   
@@ -37,27 +36,25 @@ class ViewController: UIViewController {
   }()
   
   override func viewWillAppear(_ animated: Bool) {
-    defaultNavigationConfig()
-    navigationController?.navigationBar.prefersLargeTitles = false
     title = nil
+    navigationController?.navigationBar.prefersLargeTitles = false
+    super.viewWillAppear(true)
   }
   
   override func viewDidLoad() {
-    super.viewDidLoad()
     table.viewController = self
     view.backgroundColor = R.Color.applicationBackground
+    defaultNavigationConfig()
     searchBarSetting()
     configLayout()
-  }
-  
-  override func viewDidLayoutSubviews() {
-    scrollView.contentSize = contentView.frame.size
+    super.viewDidLoad()
   }
 
+//  override func viewDidLayoutSubviews() {
+//    scrollView.contentSize = contentView.frame.size
+//  }
+
   func searchBarSetting() {
-    searchBar = controller.searchBar
-    searchBar.backgroundColor = .clear
-    
     navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: nil)
     
     navigationItem.searchController = controller
@@ -111,17 +108,16 @@ class ViewController: UIViewController {
 
     tableViewHeight = table.heightAnchor.constraint(equalToConstant: table.contentSize.height)
     collectionViewHeight = collection.heightAnchor.constraint(equalToConstant: collection.contentSize.height)
-    contentViewHeight = contentView.heightAnchor.constraint(
-      equalToConstant: table.contentSize.height + collection.contentSize.height)
+//    contentViewHeight = contentView.heightAnchor.constraint(
+//      equalToConstant: table.contentSize.height + collection.contentSize.height)
     
     tableViewHeight?.isActive = true
     collectionViewHeight?.isActive = true
-    contentViewHeight?.isActive = true
+//    contentViewHeight?.isActive = true
     
     observeBag.append(
       table.observe(\.contentSize, options: [.new, .prior]) { (_, change) in
         if let height = change.newValue?.height, height != 0 {
-          print("📌 TableView Height \(height)")
           self.tableViewHeight?.constant = height
 //          self.contentViewHeight?.constant = height + self.collection.contentSize.height
           self.updateViewConstraints()
@@ -132,7 +128,6 @@ class ViewController: UIViewController {
     observeBag.append(
       collection.observe(\.contentSize, options: [.new, .prior], changeHandler: { (_, change) in
         if let height = change.newValue?.height, height != 0 {
-          print("📌 CollectionView Height \(height)")
           self.collectionViewHeight?.constant = height
 //          self.contentViewHeight?.constant = height + self.table.contentSize.height
           self.updateViewConstraints()
