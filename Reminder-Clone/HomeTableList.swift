@@ -92,11 +92,11 @@ class HomeListTableDataSource: NSObject, HomeListDataSource {
 	}
 
 	private var _data: [HomeRadiusList] = [
-		HomeRadiusList(title: "Today", icon: "folder.circle.fill", color: .systemBlue, count: 5),
-		HomeRadiusList(title: "Scheduled", icon: "calendar.circle.fill", color: .red, count: 9),
-		HomeRadiusList(title: "All", icon: "tray.circle.fill", color: .gray, count: 8),
-		HomeRadiusList(title: "Flagged", icon: "flag.circle.fill", color: .systemOrange, count: 7),
-		HomeRadiusList(title: "Flagged", icon: "flag.circle.fill", color: .systemOrange, count: 7),
+    HomeRadiusList(title: "Today", icon: .folderCircle, color: .systemBlue, count: 5),
+    HomeRadiusList(title: "Scheduled", icon: .calenderCircle, color: .red, count: 9),
+    HomeRadiusList(title: "All", icon: .trayCircle, color: .gray, count: 8),
+    HomeRadiusList(title: "Flagged", icon: .flagCircle, color: .systemOrange, count: 7),
+    HomeRadiusList(title: "Flagged", icon: .flagCircle, color: .systemOrange, count: 7),
 	]
 }
 

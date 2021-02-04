@@ -20,7 +20,7 @@ extension HomeListCellViewType  {
   func configCell(with data: HomeRadiusList) {
     titleLabel.text = data.title
     countLabel.text = "\(data.count)"
-    iconView.image = UIImage(named: data.icon)
+    iconView.image = data.icon.image()
     iconView.tintColor = data.color
   }
 }
@@ -30,7 +30,7 @@ protocol HomeListViewType {
 
 struct HomeRadiusList {
   let title: String
-  let icon: String
+  let icon: R.ImageAsset
   let color: UIColor
   let count: Int
 }
