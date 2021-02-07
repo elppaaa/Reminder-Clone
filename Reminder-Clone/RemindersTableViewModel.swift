@@ -13,8 +13,8 @@ struct MyTask {
 }
 
 class RemindersTableViewModel: NSObject {
-  unowned var parent: UIViewController?
   var primaryColor: UIColor?
+  var present: ( (_ vc: UINavigationController) -> Void )?
 
   override init() {
     super.init()
@@ -55,7 +55,7 @@ extension RemindersTableViewModel: UITableViewDelegate {
   public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
 		let vc = ReminderDetailViewController()
     vc.data = tasks[indexPath.row]
-    parent?.present(UINavigationController(rootViewController: vc), animated: true)
+    present?(UINavigationController(rootViewController: vc))
   }
 }
 

@@ -20,9 +20,9 @@ class RemindersTableViewController: UITableViewController {
     customDataSource.primaryColor = pagePrimaryColor
     tableView.dataSource = customDataSource
     tableView.delegate = customDataSource
-    customDataSource.parent = self
     tableView.estimatedRowHeight = 40
     tableView.allowsMultipleSelectionDuringEditing = true
+    tableView.keyboardDismissMode = .interactive
   }
 
   override func viewDidLoad() {
@@ -30,6 +30,7 @@ class RemindersTableViewController: UITableViewController {
     view.backgroundColor = R.Color.defaultBackgorund
 
     configLayout()
+    configClosure()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -39,6 +40,12 @@ class RemindersTableViewController: UITableViewController {
     navigationController?.navigationBar.largeTitleTextAttributes = attribute
     tableView.reloadData()
     super.viewWillAppear(true)
+  }
+  
+  func configClosure() {
+    customDataSource.present = { (vc) in
+      self.navigationController?.present(vc, animated: true)
+    }
   }
 
   #if DEBUG

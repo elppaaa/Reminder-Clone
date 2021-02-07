@@ -9,8 +9,7 @@ import UIKit
 
 class ReminderDetailTableView: UITableView {
   let bindDataSource = ReminderDetailTableViewDataSource()
-  weak var viewController: UIViewController?
-  
+
   required init?(coder: NSCoder) {
     fatalError("ERROR WHEN CREATE TABLEVIEW")
   }
@@ -50,8 +49,8 @@ class ReminderDetailTableView: UITableView {
 struct Icon {
   let image: UIImage
   let color: UIColor
-  init(_ image: R.ImageAsset, _ color: UIColor) {
-    self.image = image.image()
+  init(_ image: UIImage, _ color: UIColor) {
+    self.image = image
     self.color = color
   }
 }
@@ -177,7 +176,6 @@ class SelectTypeCell: UITableViewCell {
     imageView?.translatesAutoresizingMaskIntoConstraints = false
     imageView?.heightAnchor.constraint(equalToConstant: 35).isActive = true
     imageView?.widthAnchor.constraint(equalToConstant: 35).isActive = true
-//    imageView?.contentMode = .fit
     imageView?.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
     imageView?.layoutMargins = .init(top: 8, left: 8, bottom: 8, right: 8)
     imageView?.contentMode = .center
@@ -222,6 +220,13 @@ class InputTextField: UITableViewCell {
   
   func config(placeholder: String) {
     textField.placeholder = placeholder
+    if placeholder == "URL" {
+      textField.keyboardType = .URL
+    }
   }
   
 }
+
+/// keyboard type
+/// URL input.
+///

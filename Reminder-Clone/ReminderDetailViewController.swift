@@ -19,6 +19,7 @@ class ReminderDetailViewController: UIViewController {
     view.backgroundColor = R.Color.applicationBackground
     configLayout()
     configNavigationBar()
+    tableView.keyboardDismissMode = .interactive
 	}
   
   override func viewWillAppear(_ animated: Bool) {
