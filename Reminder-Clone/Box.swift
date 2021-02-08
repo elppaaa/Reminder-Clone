@@ -7,8 +7,6 @@
 
 import UIKit
 
-
-
 class Box<T> {
   typealias Listener = (T) -> Void
   var listener: Listener?

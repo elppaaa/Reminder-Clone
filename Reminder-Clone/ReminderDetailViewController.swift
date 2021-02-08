@@ -8,7 +8,7 @@
 import UIKit
 
 class ReminderDetailViewController: UIViewController {
-	let tableView = ReminderDetailTableView()
+  let tableView = DetailTaskTableView()
   var tableViewHeight: NSLayoutConstraint?
   var observeBag = [NSKeyValueObservation]()
   var data: MyTask?
@@ -74,5 +74,10 @@ extension ReminderDetailViewController {
   @objc func didRightNavigationBarButtonClicked() {
     // TODO: save to core data
     dismiss(animated: true)
+  }
+
+  @objc func injected() {
+    let vc = ReminderDetailViewController()
+    homeInject(vc)
   }
 }

@@ -120,11 +120,11 @@ extension ReminderDetailTableViewDataSource: UITableViewDataSource {
 
 extension ReminderDetailTableViewDataSource: UITableViewDelegate {
   public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-		UITableView.automaticDimension
+    CGFloat(44)
   }
 
   public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		CGFloat(55)
+    UITableView.automaticDimension
   }
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -190,43 +190,94 @@ class SelectTypeCell: UITableViewCell {
   
 }
 
+// MARK: -
 class InputTextField: UITableViewCell {
+  var minHeight: CGFloat?
   fileprivate typealias DataType = ReminderDetailTableViewDataSource.DataType
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: .value1, reuseIdentifier: Self.describe)
+    super.init(style: style, reuseIdentifier: Self.describe)
+    textView.isScrollEnabled = false
+    textView.delegate = self
     configLayout()
     selectionStyle = .none
+  }
+
+  var textString: String {
+    get {
+      textView.text
+    }
+    set {
+      textView.text = newValue
+      textViewDidChange(textView)
+    }
   }
   
   required init?(coder: NSCoder) {
     fatalError("NOT USED CELL")
   }
   
-  fileprivate let textField: UITextField = {
-    let t = UITextField()
+  fileprivate let textView: UITextView = {
+    let t = UITextView()
     t.translatesAutoresizingMaskIntoConstraints = false
+    t.font = .preferredFont(forTextStyle: .body)
     return t
   }()
 
   fileprivate func configLayout() {
-    contentView.addSubview(textField)
+    contentView.addSubview(textView)
+    
     NSLayoutConstraint.activate([
-      textField.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
-      textField.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
-      textField.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
-      textField.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
+      textView.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
+      textView.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
+      textView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+      textView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
     ])
   }
   
   func config(placeholder: String) {
-    textField.placeholder = placeholder
     if placeholder == "URL" {
-      textField.keyboardType = .URL
+      textView.keyboardType = .URL
     }
   }
-  
+
+  override func setSelected(_ selected: Bool, animated: Bool) {
+    super.setSelected(selected, animated: animated)
+    if selected {
+      textView.becomeFirstResponder()
+    } else {
+      textView.resignFirstResponder()
+    }
+  }
+}
+
+extension InputTextField: UITextViewDelegate {
+  func textViewDidChange(_ textView: UITextView) {
+    let size = textView.bounds.size
+      let newSize = textView.sizeThatFits(size)
+      if size.height != newSize.height {
+        UIView.setAnimationsEnabled(false)
+        tableView?.beginUpdates()
+        tableView?.endUpdates()
+        UIView.setAnimationsEnabled(true)
+        if let thisIndexPath = tableView?.indexPath(for: self) {
+          tableView?.scrollToRow(at: thisIndexPath, at: .bottom, animated: false)
+        }
+      }
+    }
 }
 
 /// keyboard type
 /// URL input.
 ///
+
+fileprivate extension UITableViewCell {
+  var tableView: UITableView? {
+    get {
+      var table: UIView? = superview
+      while !(table is UITableView) && table != nil {
+        table = table?.superview
+      }
+      return table as? UITableView
+    }
+  }
+}
