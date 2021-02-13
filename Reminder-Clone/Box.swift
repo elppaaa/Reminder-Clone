@@ -25,4 +25,8 @@ class Box<T> {
     self.listener = listener
     listener?(value)
   }
+  
+  func setValue(_ value: T) {
+    self.value = value
+  }
 }
