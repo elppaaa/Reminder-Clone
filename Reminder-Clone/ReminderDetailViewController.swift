@@ -8,7 +8,7 @@
 import UIKit
 
 class ReminderDetailViewController: UIViewController {
-  let tableView = DetailTaskTableView()
+  let tableView = DetailReminderTableView()
   var tableViewHeight: NSLayoutConstraint?
   var observeBag = [NSKeyValueObservation]()
   var data: MyTask?
@@ -42,7 +42,7 @@ class ReminderDetailViewController: UIViewController {
     tableViewHeight = tableView.heightAnchor.constraint(equalToConstant: tableView.contentSize.height)
     tableViewHeight?.isActive = true
     
-    observeBag.append(tableView.observe(\.contentSize, options: [.new, .prior]) { (_, changed) in
+    observeBag.append(tableView.observe(\.contentSize, options: [.new, .prior]) { [unowned self] (_, changed) in
       if let height = changed.newValue?.height {
         self.tableViewHeight?.constant = max(height, self.view.frame.height)
         self.updateViewConstraints()

@@ -11,12 +11,13 @@ class HomeListCollectionView: UICollectionView {
   }
   // TODO: will delete
 	required init?(coder: NSCoder) {
-    let layout = FlowLayout()
-		super.init(frame: .zero, collectionViewLayout: layout)
-		dataSource = bindDataSource
-    delegate = layout
-		translatesAutoresizingMaskIntoConstraints = false
-		configLayout()
+    fatalError("Do not use this initializer")
+//    let layout = FlowLayout()
+//		super.init(frame: .zero, collectionViewLayout: layout)
+//		dataSource = bindDataSource
+//    delegate = layout
+//		translatesAutoresizingMaskIntoConstraints = false
+//		configLayout()
 	}
   
 	init() {
