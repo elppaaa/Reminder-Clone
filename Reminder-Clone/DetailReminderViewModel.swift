@@ -11,13 +11,11 @@ import UIKit
 class DetailReminderViewModel: NSObject {
 	var _tableView: UITableView?
 
-
 }
-
 
 extension DetailReminderViewModel: UITableViewDataSource {
 	func numberOfSections(in tableView: UITableView) -> Int {
-		2
+		3
 	}
 
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -27,6 +25,8 @@ extension DetailReminderViewModel: UITableViewDataSource {
 			return 3
 		case 1:
 			return 2
+		case 2:
+			return 1
 		default:
 			return 1
 		}
@@ -40,6 +40,7 @@ extension DetailReminderViewModel: UITableViewDataSource {
 			let cell = DetailReminderInputCell()
 			cell.delegate = self
 			return cell
+
 		case 1:
 			switch indexPath.row {
 			case 0:
@@ -49,6 +50,10 @@ extension DetailReminderViewModel: UITableViewDataSource {
 			default:
 				return UITableViewCell()
 			}
+
+		case 2:
+			return DetailReminderToggleCell(
+				title: "Date", image: .clock, color: .systemBlue, delegate: self)
 		default:
 			return UITableViewCell()
 		}
