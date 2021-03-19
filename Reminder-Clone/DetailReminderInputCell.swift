@@ -24,7 +24,7 @@ class DetailReminderInputCell: UITableViewCell {
     textView.delegate = self
     commonInit()
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("Do not use this initializer")
   }
@@ -54,8 +54,8 @@ extension DetailReminderInputCell: UITextViewDelegate {
     let size = CGSize(width: contentView.frame.width, height: .infinity)
     let estimatedSize = textView.sizeThatFits(size)
     cellHeightAnchor?.constant = estimatedSize.height
-    delegate?.beginUpdates()
-    delegate?.endUpdates()
+    delegate?.tableView??.beginUpdates()
+    delegate?.tableView??.endUpdates()
     UIView.setAnimationsEnabled(false)
   }
 }

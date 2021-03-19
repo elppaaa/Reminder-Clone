@@ -36,6 +36,7 @@
 		94109973787358C591BBA337 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941063E36AD2F08ECD7D471B /* UIView+Extension.swift */; };
 		9412028BB7AEE07AE06E31C6 /* HomeListCollectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9415E7001A48C856F9A95406 /* HomeListCollectionDataSource.swift */; };
 		94182E2ED5BD23355894F3B0 /* HomeListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9411A8F49EB3F4BC34B211AE /* HomeListCollectionView.swift */; };
+		9418D4260F254B9DC4BCB690 /* DetailReminderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941A4E0ED4931CB19BB5ED24 /* DetailReminderViewModel.swift */; };
 		94193E174454CE6F5B10AB07 /* R.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941C127D23ABF367A1893227 /* R.swift */; };
 /* End PBXBuildFile section */
 
@@ -73,6 +74,7 @@
 		9411ED48508C7FCFECA4EA40 /* HomeTableList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTableList.swift; sourceTree = "<group>"; };
 		941254E79B7E40666A4ECD38 /* HomeListCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeListCollectionViewCell.swift; sourceTree = "<group>"; };
 		9415E7001A48C856F9A95406 /* HomeListCollectionDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeListCollectionDataSource.swift; sourceTree = "<group>"; };
+		941A4E0ED4931CB19BB5ED24 /* DetailReminderViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailReminderViewModel.swift; sourceTree = "<group>"; };
 		941C127D23ABF367A1893227 /* R.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -143,6 +145,7 @@
 				48FD18F62603245000F0E642 /* DetailReminderInputCell.swift */,
 				48FD18F82603259700F0E642 /* DetailReminderDateCell.swift */,
 				48BD406F25FEF4C20012A476 /* DetailReminderTableView.swift */,
+				941A4E0ED4931CB19BB5ED24 /* DetailReminderViewModel.swift */,
 			);
 			path = "Reminder-Clone";
 			sourceTree = "<group>";
@@ -278,6 +281,7 @@
 				482B51B225C4F4DF006845BA /* Box.swift in Sources */,
 				48FD18F92603259700F0E642 /* DetailReminderDateCell.swift in Sources */,
 				48FD18F72603245000F0E642 /* DetailReminderInputCell.swift in Sources */,
+				9418D4260F254B9DC4BCB690 /* DetailReminderViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
