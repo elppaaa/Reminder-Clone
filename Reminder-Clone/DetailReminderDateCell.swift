@@ -30,12 +30,13 @@ class DetailReminderDateCell: UITableViewCell {
     commonInit()
   }
   
-  init(isTimePicker: Bool = false) {
+  init(isTimePicker: Bool = false, delegate: DetailReminderTableViewDelegate) {
     datePicker.datePickerMode = isTimePicker ? .time : .date
+		self.delegate = delegate
     super.init(style: .default, reuseIdentifier: Self.describe)
     commonInit()
   }
-  
+
   func commonInit() {
     contentView.addSubview(datePicker)
 

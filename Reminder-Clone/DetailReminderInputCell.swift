@@ -9,9 +9,10 @@ import UIKit
 
 // MARK: - Create Custom Cell
 class DetailReminderInputCell: UITableViewCell {
-  var delegate: DetailReminderTableViewDelegate?
-  var cellHeightAnchor: NSLayoutConstraint?
-  let textView: UITextView = {
+  private var delegate: DetailReminderTableViewDelegate?
+  private var cellHeightAnchor: NSLayoutConstraint?
+  private var textViewPlaceholder: String = ""
+  private let textView: UITextView = {
     let t = UITextView()
     t.translatesAutoresizingMaskIntoConstraints = false
     t.font = .preferredFont(forTextStyle: .body)
@@ -19,14 +20,16 @@ class DetailReminderInputCell: UITableViewCell {
     return t
   }()
   
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: Self.describe)
-    textView.delegate = self
-    commonInit()
-  }
-
   required init?(coder: NSCoder) {
     fatalError("Do not use this initializer")
+  }
+  
+  init(placeHolder: String, delegate: DetailReminderTableViewDelegate) {
+    super.init(style: .default, reuseIdentifier: Self.describe)
+    self.delegate = delegate
+    textViewPlaceholder = placeHolder
+    textView.delegate = self
+    commonInit()
   }
   
   func commonInit() {
@@ -43,6 +46,8 @@ class DetailReminderInputCell: UITableViewCell {
     ])
     
     textViewDidChange(textView)
+    textView.text = textViewPlaceholder
+    textView.textColor = .lightGray
     textView.resignFirstResponder()
   }
   
@@ -57,5 +62,19 @@ extension DetailReminderInputCell: UITextViewDelegate {
     delegate?.tableView??.beginUpdates()
     delegate?.tableView??.endUpdates()
     UIView.setAnimationsEnabled(false)
+  }
+  
+  func textViewDidBeginEditing(_ textView: UITextView) {
+    if textView.textColor == UIColor.lightGray {
+      textView.text = nil
+      textView.textColor = UIColor.black
+    }
+  }
+  
+  func textViewDidEndEditing(_ textView: UITextView) {
+    if textView.text.isEmpty {
+      textView.text = textViewPlaceholder
+      textView.textColor = UIColor.lightGray
+    }
   }
 }

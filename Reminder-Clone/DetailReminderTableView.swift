@@ -27,10 +27,12 @@ class DetailReminderTableView: UITableView {
     register(DetailReminderInputCell.self, forCellReuseIdentifier: DetailReminderInputCell.describe)
     register(DetailReminderDateCell.self, forCellReuseIdentifier: DetailReminderDateCell.describe)
     register(DetailReminderToggleCell.self, forCellReuseIdentifier: DetailReminderToggleCell.describe)
-
+    
     dataSource = viewModel
     delegate = viewModel
     viewModel._tableView = self
+    
+    allowsMultipleSelectionDuringEditing = true
     
     commonInit()
   }
@@ -44,7 +46,7 @@ class DetailReminderTableView: UITableView {
     rowHeight = Self.automaticDimension
     estimatedRowHeight = 50
   }
-
+  
   class DetailReminderDateView: UIView {
     required init?(coder: NSCoder) {
       fatalError("Do not use this initializer")
