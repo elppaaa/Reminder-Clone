@@ -27,7 +27,7 @@ class RemindersTableViewController: UITableViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    view.backgroundColor = R.Color.defaultBackgorund
+    view.backgroundColor = R.Color.defaultBackground
 
     configLayout()
     configClosure()

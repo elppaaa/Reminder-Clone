@@ -7,9 +7,7 @@
 
 import UIKit
 
-class DetailReminderDateCell: UITableViewCell {
-  var delegate: DetailReminderTableViewDelegate?
-  
+class DetailReminderDateCell: DetailReminderViewCellBase {
   let datePicker: UIDatePicker = {
     let p = UIDatePicker()
     p.translatesAutoresizingMaskIntoConstraints = false
@@ -30,9 +28,8 @@ class DetailReminderDateCell: UITableViewCell {
     commonInit()
   }
   
-  init(isTimePicker: Bool = false, delegate: DetailReminderTableViewDelegate) {
+  init(isTimePicker: Bool = false) {
     datePicker.datePickerMode = isTimePicker ? .time : .date
-		self.delegate = delegate
     super.init(style: .default, reuseIdentifier: Self.describe)
     commonInit()
   }

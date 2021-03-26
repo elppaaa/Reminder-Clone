@@ -8,8 +8,7 @@
 import UIKit
 
 // MARK: - Create Custom Cell
-class DetailReminderInputCell: UITableViewCell {
-  private var delegate: DetailReminderTableViewDelegate?
+class DetailReminderInputCell: DetailReminderViewCellBase {
   private var cellHeightAnchor: NSLayoutConstraint?
   private var textViewPlaceholder: String = ""
   private let textView: UITextView = {
@@ -24,9 +23,8 @@ class DetailReminderInputCell: UITableViewCell {
     fatalError("Do not use this initializer")
   }
   
-  init(placeHolder: String, delegate: DetailReminderTableViewDelegate) {
+  init(placeHolder: String) {
     super.init(style: .default, reuseIdentifier: Self.describe)
-    self.delegate = delegate
     textViewPlaceholder = placeHolder
     textView.delegate = self
     commonInit()
@@ -59,8 +57,8 @@ extension DetailReminderInputCell: UITextViewDelegate {
     let size = CGSize(width: contentView.frame.width, height: .infinity)
     let estimatedSize = textView.sizeThatFits(size)
     cellHeightAnchor?.constant = estimatedSize.height
-    delegate?.tableView??.beginUpdates()
-    delegate?.tableView??.endUpdates()
+    delegate?.tableView?.beginUpdates()
+    delegate?.tableView?.endUpdates()
     UIView.setAnimationsEnabled(false)
   }
   

@@ -4,10 +4,9 @@
 
 import UIKit
 
-class DetailReminderToggleCell: UITableViewCell {
+class DetailReminderToggleCell: DetailReminderViewCellBase {
   let toggle = UISwitch()
-  var delegate: DetailReminderTableViewDelegate?
-  
+
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: Self.describe)
     commonInit()
@@ -20,15 +19,12 @@ class DetailReminderToggleCell: UITableViewCell {
   convenience init(
     title: String,
     image: UIImage,
-    color: UIColor,
-    delegate: DetailReminderTableViewDelegate
+    color: UIColor
   ) {
     self.init(style: .default, reuseIdentifier: Self.describe)
     textLabel?.text = title
     imageView?.image = image
     imageView?.backgroundColor = color
-    self.delegate = delegate
-    
   }
   
   func commonInit() {
