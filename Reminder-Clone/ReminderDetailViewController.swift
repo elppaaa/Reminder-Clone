@@ -10,7 +10,6 @@ import UIKit
 class ReminderDetailViewController: UIViewController {
   let tableView = DetailReminderTableView()
   var tableViewHeight: NSLayoutConstraint?
-  var observeBag = [NSKeyValueObservation]()
   var data: MyTask?
 
 	override func viewDidLoad() {
@@ -29,26 +28,14 @@ class ReminderDetailViewController: UIViewController {
 
 	fileprivate func configLayout() {
     view.addSubview(tableView)
-//    tableView.layer.cornerRadius = 20
     tableView.layer.masksToBounds = true
-
-//    tableView.autoresizingMask = .flexibleHeight
 
 		NSLayoutConstraint.activate([
       tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-			tableView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 10),
+			tableView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
+      tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 		])
-    
-    tableViewHeight = tableView.heightAnchor.constraint(equalToConstant: tableView.contentSize.height)
-    tableViewHeight?.isActive = true
-    
-    observeBag.append(tableView.observe(\.contentSize, options: [.new, .prior]) { [unowned self] (_, changed) in
-      if let height = changed.newValue?.height {
-        self.tableViewHeight?.constant = max(height, self.view.frame.height)
-        self.updateViewConstraints()
-      }
-    })
 	}
 
 }

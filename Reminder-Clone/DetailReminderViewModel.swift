@@ -15,7 +15,7 @@ class DetailReminderViewModel: NSObject {
 
 extension DetailReminderViewModel: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
-    4
+    5
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -26,6 +26,10 @@ extension DetailReminderViewModel: UITableViewDataSource {
       return 4
     case 2:
       return 1
+    case 3:
+      return 1
+    case 4:
+      return 2
     default:
       return 1
     }

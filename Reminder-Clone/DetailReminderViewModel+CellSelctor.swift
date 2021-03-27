@@ -26,7 +26,7 @@ extension DetailReminderViewModel {
 			cell = DetailReminderToggleCell(
 				title: "Date", image: .calendar, color: .systemRed)
 		case (1, 1):
-			cell = DetailReminderDateCell()
+			cell = DetailReminderDateCell(isTimePicker: false)
 		case (1, 2):
 			cell = DetailReminderToggleCell(
 				title: "Time", image: .clock, color: .systemBlue)
@@ -40,6 +40,17 @@ extension DetailReminderViewModel {
 		case (3, 0):
 			cell = DetailReminderToggleCell(
 			title: "Flag", image: .flag, color: .systemOrange)
+
+		case (4, 0):
+			cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
+			cell.textLabel?.text = "Priority"
+			cell.detailTextLabel?.text = "None"
+			cell.accessoryType = .disclosureIndicator
+		case (4, 1):
+			cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
+			cell.textLabel?.text = "List"
+			cell.detailTextLabel?.text = "학교"
+			cell.accessoryType = .disclosureIndicator
 
 		default:
 			cell = UITableViewCell()
