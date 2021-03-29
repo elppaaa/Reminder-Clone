@@ -31,7 +31,7 @@ class HomeListTableView: UITableView {
     }
 		dataSource = bindDataSource
     delegate = self
-		register(HomeListTableCell.self, forCellReuseIdentifier: HomeListTableCell.describe)
+		register(HomeListTableCell.self, forCellReuseIdentifier: HomeListTableCell.identifier)
 		configLayout()
 		reloadData()
 	}
@@ -40,7 +40,7 @@ class HomeListTableView: UITableView {
     self.init(frame: .zero)
 		dataSource = bindDataSource
     delegate = self
-		register(HomeListTableCell.self, forCellReuseIdentifier: HomeListTableCell.describe)
+		register(HomeListTableCell.self, forCellReuseIdentifier: HomeListTableCell.identifier)
     configLayout()
 	}
   
@@ -109,7 +109,7 @@ extension HomeListTableDataSource: UITableViewDataSource {
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeListTableCell.describe, for: indexPath)
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeListTableCell.identifier, for: indexPath)
 			as? HomeListTableCell else {
 			fatalError("ERROR WHEN CREATE CELL")
 		}
@@ -129,7 +129,7 @@ class HomeListTableCell: UITableViewCell, HomeListCellViewType {
 	}
 
 	override init(style: CellStyle, reuseIdentifier _: String? = nil) {
-		super.init(style: style, reuseIdentifier: Self.describe)
+		super.init(style: style, reuseIdentifier: Self.identifier)
 		configLayout()
 	}
 

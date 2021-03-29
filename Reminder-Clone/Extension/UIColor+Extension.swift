@@ -16,9 +16,3 @@ public extension UIColor {
     self.init(r: (hex & 0xff0000) >> 16, g: (hex & 0xff00) >> 8, b: (hex & 0xff), a: 1)
   }
 }
-
-extension NSObject {
-	static var describe: String {
-    String(describing: self)
-  }
-}

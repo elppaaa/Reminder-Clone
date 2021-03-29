@@ -53,7 +53,7 @@ class ReminderTableViewCell: UITableViewCell {
   }()
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: Self.describe)
+    super.init(style: style, reuseIdentifier: Self.identifier)
     configLayout()
     imageView?.isUserInteractionEnabled = true
     imageView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(toggleIsDone)))

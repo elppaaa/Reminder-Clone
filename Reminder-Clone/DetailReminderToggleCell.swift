@@ -8,7 +8,7 @@ class DetailReminderToggleCell: DetailReminderViewCellBase {
   let toggle = UISwitch()
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: Self.describe)
+    super.init(style: style, reuseIdentifier: Self.identifier)
     commonInit()
   }
   
@@ -21,7 +21,7 @@ class DetailReminderToggleCell: DetailReminderViewCellBase {
     image: UIImage,
     color: UIColor
   ) {
-    self.init(style: .default, reuseIdentifier: Self.describe)
+    self.init(style: .default, reuseIdentifier: Self.identifier)
     textLabel?.text = title
     imageView?.image = image
     imageView?.backgroundColor = color

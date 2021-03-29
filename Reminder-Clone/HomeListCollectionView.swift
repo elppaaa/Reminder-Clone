@@ -31,7 +31,7 @@ class HomeListCollectionView: UICollectionView {
   
   fileprivate func configLayout() {
     backgroundColor = .clear
-    register(HomeListCollectionViewCell.self, forCellWithReuseIdentifier: HomeListCollectionViewCell.describe)
+    register(HomeListCollectionViewCell.self, forCellWithReuseIdentifier: HomeListCollectionViewCell.identifier)
     scrollIndicatorInsets = .zero
     layoutMargins = .zero
     isScrollEnabled = false

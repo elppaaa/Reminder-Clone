@@ -24,9 +24,9 @@ class DetailReminderTableView: UITableView {
       super.init(frame: frame, style: .grouped)
     }
     
-    register(DetailReminderInputCell.self, forCellReuseIdentifier: DetailReminderInputCell.describe)
-    register(DetailReminderDateCell.self, forCellReuseIdentifier: DetailReminderDateCell.describe)
-    register(DetailReminderToggleCell.self, forCellReuseIdentifier: DetailReminderToggleCell.describe)
+    register(DetailReminderInputCell.self, forCellReuseIdentifier: DetailReminderInputCell.identifier)
+    register(DetailReminderDateCell.self, forCellReuseIdentifier: DetailReminderDateCell.identifier)
+    register(DetailReminderToggleCell.self, forCellReuseIdentifier: DetailReminderToggleCell.identifier)
     
     dataSource = viewModel
     delegate = viewModel

@@ -24,13 +24,13 @@ class DetailReminderDateCell: DetailReminderViewCellBase {
   }
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: Self.describe)
+    super.init(style: style, reuseIdentifier: Self.identifier)
     commonInit()
   }
   
   init(isTimePicker: Bool = false) {
     datePicker.datePickerMode = isTimePicker ? .time : .date
-    super.init(style: .default, reuseIdentifier: Self.describe)
+    super.init(style: .default, reuseIdentifier: Self.identifier)
     commonInit()
   }
 

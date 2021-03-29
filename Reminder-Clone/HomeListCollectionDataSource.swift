@@ -39,7 +39,7 @@ extension HomeListCollectionDataSource: UICollectionViewDataSource {
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		if let customCell = collectionView.dequeueReusableCell (
-			withReuseIdentifier: HomeListCollectionViewCell.describe, for: indexPath) as? HomeListCollectionViewCell {
+			withReuseIdentifier: HomeListCollectionViewCell.identifier, for: indexPath) as? HomeListCollectionViewCell {
 			let cell = customCell
 			let _data = data[indexPath.row]
 			customCell.configCell(with: _data)

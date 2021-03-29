@@ -38,7 +38,7 @@ extension RemindersTableViewModel: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: ReminderTableViewCell.describe, for: indexPath) as? ReminderTableViewCell else {
+            withIdentifier: ReminderTableViewCell.identifier, for: indexPath) as? ReminderTableViewCell else {
       fatalError("Cell Not Founded")
     }
     let data = tasks[indexPath.row]

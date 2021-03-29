@@ -16,7 +16,7 @@ class RemindersTableViewController: UITableViewController {
 
   override func loadView() {
     super.loadView()
-    tableView.register(ReminderTableViewCell.self, forCellReuseIdentifier: ReminderTableViewCell.describe)
+    tableView.register(ReminderTableViewCell.self, forCellReuseIdentifier: ReminderTableViewCell.identifier)
     customDataSource.primaryColor = pagePrimaryColor
     tableView.dataSource = customDataSource
     tableView.delegate = customDataSource

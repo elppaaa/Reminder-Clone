@@ -24,7 +24,7 @@ class DetailReminderInputCell: DetailReminderViewCellBase {
   }
   
   init(placeHolder: String) {
-    super.init(style: .default, reuseIdentifier: Self.describe)
+    super.init(style: .default, reuseIdentifier: Self.identifier)
     textViewPlaceholder = placeHolder
     textView.delegate = self
     commonInit()

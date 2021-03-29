@@ -20,8 +20,8 @@ class ReminderDetailTableView: UITableView {
     } else {
       super.init(frame: frame, style: style)
     }
-    register(InputTextField.self, forCellReuseIdentifier: InputTextField.describe)
-    register(SelectTypeCell.self, forCellReuseIdentifier: SelectTypeCell.describe)
+    register(InputTextField.self, forCellReuseIdentifier: InputTextField.identifier)
+    register(SelectTypeCell.self, forCellReuseIdentifier: SelectTypeCell.identifier)
     translatesAutoresizingMaskIntoConstraints = false
     dataSource = bindDataSource
     delegate = bindDataSource
@@ -101,13 +101,13 @@ extension ReminderDetailTableViewDataSource: UITableViewDataSource {
     let data = cellDictionary[indexPath.section][indexPath.row]
     
     if data.icon == nil {
-      if let cell = tableView.dequeueReusableCell(withIdentifier: InputTextField.describe, for: indexPath)
+      if let cell = tableView.dequeueReusableCell(withIdentifier: InputTextField.identifier, for: indexPath)
       as? InputTextField {
         cell.config(placeholder: data.title)
         return cell
       }
     } else {
-      if let cell = tableView.dequeueReusableCell(withIdentifier: SelectTypeCell.describe, for: indexPath)
+      if let cell = tableView.dequeueReusableCell(withIdentifier: SelectTypeCell.identifier, for: indexPath)
           as? SelectTypeCell {
         cell.config(data: data)
         return cell
@@ -147,7 +147,7 @@ class ReminderDetailTableViewCell: UITableViewCell {
   }
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: Self.describe)
+    super.init(style: style, reuseIdentifier: Self.identifier)
   }
 }
 
@@ -161,7 +161,7 @@ class SelectTypeCell: UITableViewCell {
 //  }()
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: .subtitle, reuseIdentifier: Self.describe)
+    super.init(style: .subtitle, reuseIdentifier: Self.identifier)
     configLayout()
     selectionStyle = .none
   }
@@ -195,7 +195,7 @@ class InputTextField: UITableViewCell {
   var minHeight: CGFloat?
   fileprivate typealias DataType = ReminderDetailTableViewDataSource.DataType
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: Self.describe)
+    super.init(style: style, reuseIdentifier: Self.identifier)
     textView.isScrollEnabled = false
     textView.delegate = self
     configLayout()
