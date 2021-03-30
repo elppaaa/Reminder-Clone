@@ -19,12 +19,14 @@ class DetailReminderToggleCell: DetailReminderViewCellBase {
   convenience init(
     title: String,
     image: UIImage,
-    color: UIColor
+    color: UIColor,
+    type: DetailReminderTaskKey
   ) {
     self.init(style: .default, reuseIdentifier: Self.identifier)
     textLabel?.text = title
     imageView?.image = image
     imageView?.backgroundColor = color
+    dataType = type
   }
   
   func commonInit() {

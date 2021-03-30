@@ -10,29 +10,49 @@ import UIKit
 
 class DetailReminderViewModel: NSObject {
   var _tableView: UITableView?
-  
+//  var cells: [[UITableViewCell?]]
+	var cellViews: [[(isUsed: Bool, isVisible: Bool)]] = [
+    [(true, true), (true, true), (true, true)],
+    [(true, true), (true, true), (true, true), (true, true)],
+		[(true, true)],
+    [(true, true)],
+  ]
+  var cells: [[UITableViewCell]] = [
+    // 0
+    [
+      DetailReminderInputCell(placeHolder: "Title", type: .title),
+      DetailReminderInputCell(placeHolder: "Notes", type: .notes),
+      DetailReminderInputCell(placeHolder: "URL", type: .URL)
+    ],
+    // 1
+    [
+      DetailReminderToggleCell(
+        title: "Date", image: .calendar, color: .systemRed, type: .date),
+      DetailReminderDateCell(isTimePicker: false, type: .date),
+      DetailReminderToggleCell(
+        title: "Time", image: .clock, color: .systemBlue, type: .time),
+      DetailReminderDateCell(isTimePicker: true, type: .time)
+    ],
+    // 2
+    [
+      DetailReminderToggleCell(
+        title: "Location", image: .location, color: .systemBlue, type: .location)
+    ],
+    [
+      DetailReminderToggleCell(
+        title: "Flag", image: .flag, color: .systemOrange, type: .flag)
+    ]
+  ]
+
 }
 
 extension DetailReminderViewModel: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
-    5
+    cellViews.count
   }
-  
+
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    switch section {
-    case 0:
-      return 3
-    case 1:
-      return 4
-    case 2:
-      return 1
-    case 3:
-      return 1
-    case 4:
-      return 2
-    default:
-      return 1
-    }
+    cellViews[section].filter { $0.isVisible }.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

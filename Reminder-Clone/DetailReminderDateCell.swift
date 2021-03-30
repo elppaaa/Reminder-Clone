@@ -28,14 +28,16 @@ class DetailReminderDateCell: DetailReminderViewCellBase {
     commonInit()
   }
   
-  init(isTimePicker: Bool = false) {
+  init(isTimePicker: Bool = false, type: DetailReminderTaskKey) {
     datePicker.datePickerMode = isTimePicker ? .time : .date
     super.init(style: .default, reuseIdentifier: Self.identifier)
+    dataType = type
     commonInit()
   }
 
   func commonInit() {
     contentView.addSubview(datePicker)
+    dataType = .date
 
     NSLayoutConstraint.activate([
       datePicker.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
