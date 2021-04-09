@@ -23,7 +23,7 @@ class DetailReminderInputCell: DetailReminderViewCellBase {
     fatalError("Do not use this initializer")
   }
   
-  init(placeHolder: String, type: DetailReminderTaskKey) {
+  init(placeHolder: String, type: TaskAttributesKey) {
     super.init(style: .default, reuseIdentifier: Self.identifier)
     textViewPlaceholder = placeHolder
     textView.delegate = self

@@ -6,7 +6,7 @@ import UIKit
 
 class DetailReminderViewCellBase: UITableViewCell {
 	var delegate: DetailReminderTableViewDelegate?
-	var dataType: DetailReminderTaskKey?
+	var dataType: TaskAttributesKey?
 }
 
 extension DetailReminderViewModel {

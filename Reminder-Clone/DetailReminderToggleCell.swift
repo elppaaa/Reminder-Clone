@@ -20,7 +20,7 @@ class DetailReminderToggleCell: DetailReminderViewCellBase {
     title: String,
     image: UIImage,
     color: UIColor,
-    type: DetailReminderTaskKey
+    type: TaskAttributesKey
   ) {
     self.init(style: .default, reuseIdentifier: Self.identifier)
     textLabel?.text = title

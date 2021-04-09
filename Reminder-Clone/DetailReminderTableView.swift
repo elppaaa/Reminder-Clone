@@ -7,12 +7,6 @@
 
 import UIKit
 
-enum DetailReminderTaskKey {
-  case title, notes, URL, date, time, location,
-       flag, priority, list, subtasks, image
-  
-}
-
 class DetailReminderTableView: UITableView {
   /*
    ViewModel 에 data 를 fetch 하여
@@ -23,7 +17,7 @@ class DetailReminderTableView: UITableView {
    CoreData 처리는 따로 클래스를 생성. ViewModel 에서는 필요한 데이터를 가져오는 명령 / 및 결과만 가져오기.
     
    */
-  let data: [DetailReminderTaskKey: Any] = [:]
+  let data: [TaskAttributesKey: Any] = [:]
   var viewModel = DetailReminderViewModel()
   
   override init(frame: CGRect, style: UITableView.Style) {

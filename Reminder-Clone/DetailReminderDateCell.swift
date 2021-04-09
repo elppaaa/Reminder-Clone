@@ -28,7 +28,7 @@ class DetailReminderDateCell: DetailReminderViewCellBase {
     commonInit()
   }
   
-  init(isTimePicker: Bool = false, type: DetailReminderTaskKey) {
+  init(isTimePicker: Bool = false, type: TaskAttributesKey) {
     datePicker.datePickerMode = isTimePicker ? .time : .date
     super.init(style: .default, reuseIdentifier: Self.identifier)
     dataType = type
