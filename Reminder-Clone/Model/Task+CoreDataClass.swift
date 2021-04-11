@@ -36,7 +36,7 @@ public class Task: NSManagedObject {
 		dict[.flag] = flag
 		dict[.image] = location
 		dict[.parent] = parent
-		dict[.subtasks] = children
+		dict[.subtasks] = subtasks
 		return dict
 	}
 }

@@ -12,7 +12,7 @@
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="flag" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="Decimal" defaultValueString="0.0"/>
-        <attribute name="image" optional="YES" attributeType="Binary"/>
+        <attribute name="image" optional="YES" attributeType="Transformable" valueTransformerName="" customClassName="UIKit.[UIImage]"/>
         <attribute name="link" optional="YES" attributeType="String"/>
         <attribute name="location" optional="YES" attributeType="Binary"/>
         <attribute name="notes" optional="YES" attributeType="String"/>
@@ -20,11 +20,11 @@
         <attribute name="time" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" attributeType="String" defaultValueString="New Reminder"/>
         <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Cateogry" inverseName="tasks" inverseEntity="Cateogry"/>
-        <relationship name="children" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="parent" inverseEntity="Task"/>
-        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="children" inverseEntity="Task"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="subtasks" inverseEntity="Task"/>
+        <relationship name="subtasks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Task" inverseName="parent" inverseEntity="Task"/>
     </entity>
     <elements>
         <element name="Cateogry" positionX="-185.343505859375" positionY="50.37564086914062" width="128" height="119"/>
-        <element name="Task" positionX="-591.7194213867188" positionY="-85.63653564453125" width="134.3165283203125" height="14"/>
+        <element name="Task" positionX="-591.7194213867188" positionY="-85.63653564453125" width="134.3165283203125" height="224"/>
     </elements>
 </model>
