@@ -3,7 +3,6 @@
     <entity name="Cateogry" representedClassName="Cateogry" syncable="YES" codeGenerationType="category">
         <attribute name="color" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="icon" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="id" attributeType="Decimal"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="order" attributeType="Decimal"/>
         <relationship name="tasks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Task" inverseName="category" inverseEntity="Task"/>
@@ -11,7 +10,6 @@
     <entity name="Task" representedClassName="Task" syncable="YES" codeGenerationType="category">
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="flag" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="id" attributeType="Decimal" defaultValueString="0.0"/>
         <attribute name="image" optional="YES" attributeType="Transformable" valueTransformerName="" customClassName="UIKit.[UIImage]"/>
         <attribute name="link" optional="YES" attributeType="String"/>
         <attribute name="location" optional="YES" attributeType="Binary"/>
@@ -24,7 +22,7 @@
         <relationship name="subtasks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Task" inverseName="parent" inverseEntity="Task"/>
     </entity>
     <elements>
-        <element name="Cateogry" positionX="-185.343505859375" positionY="50.37564086914062" width="128" height="119"/>
-        <element name="Task" positionX="-591.7194213867188" positionY="-85.63653564453125" width="134.3165283203125" height="224"/>
+        <element name="Cateogry" positionX="-185.343505859375" positionY="50.37564086914062" width="128" height="104"/>
+        <element name="Task" positionX="-198.5636596679688" positionY="-36.75836181640625" width="257.7182006835938" height="209"/>
     </elements>
 </model>

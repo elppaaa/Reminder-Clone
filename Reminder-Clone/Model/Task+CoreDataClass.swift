@@ -10,17 +10,18 @@ import UIKit
 import CoreData
 
 enum TaskAttributesKey: String {
-	case title = "title"
-	case notes = "notes"
+	case title
+	case notes
 	case URL = "link"
-	case date = "date"
-	case time = "time"
-	case location = "location"
-	case flag = "flag"
-	case priority = "priority"
-	case image = "image"
-	case subtasks = "children"
-	case parent = "list"
+	case date
+	case time
+	case location
+	case flag
+	case priority
+	case image
+	case subtasks
+	case parent
+  case category
 }
 
 @objc(Task)
@@ -34,9 +35,10 @@ public class Task: NSManagedObject {
 		dict[.time] = time
 		dict[.location] = location
 		dict[.flag] = flag
-		dict[.image] = location
+		dict[.image] = image
 		dict[.parent] = parent
-		dict[.subtasks] = subtasks
+    dict[.category] = category
+    dict[.subtasks] = subtasks
 		return dict
 	}
 }
