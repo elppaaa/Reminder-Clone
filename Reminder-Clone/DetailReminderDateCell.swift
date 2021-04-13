@@ -18,7 +18,7 @@ class DetailReminderDateCell: DetailReminderViewCellBase {
     p.sizeToFit()
     return p
   }()
-  
+
   required init?(coder: NSCoder) {
     fatalError("Do not use this init")
   }
@@ -48,6 +48,13 @@ class DetailReminderDateCell: DetailReminderViewCellBase {
       datePicker.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
     ])
 
+    datePicker.addTarget(self, action: #selector(setDate), for: .valueChanged)
+  }
+
+	@objc func setDate() {
+    if let type = dataType {
+      delegate?.setValue(key: type, value: datePicker.date)
+    }
   }
   
 }

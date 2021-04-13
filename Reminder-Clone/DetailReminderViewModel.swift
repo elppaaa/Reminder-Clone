@@ -4,12 +4,15 @@
 
 import UIKit
 
-@objc protocol DetailReminderTableViewDelegate {
+protocol DetailReminderTableViewDelegate {
   var tableView: UITableView? { get }
+  func setValue<T>(key: TaskAttributesKey, value: T);
 }
 
 class DetailReminderViewModel: NSObject {
   var _tableView: UITableView?
+  var dict = [TaskAttributesKey: Any]()
+	
 //  var cells: [[UITableViewCell?]]
 	var cellViews: [[(isUsed: Bool, isVisible: Bool)]] = [
     [(true, true), (true, true), (true, true)],
@@ -64,5 +67,9 @@ extension DetailReminderViewModel: UITableViewDataSource {
 extension DetailReminderViewModel: UITableViewDelegate { }
 
 extension DetailReminderViewModel: DetailReminderTableViewDelegate {
+  func setValue<T>(key: TaskAttributesKey, value: T) {
+    dict[key] = value
+  }
+
   var tableView: UITableView? { _tableView }
 }
