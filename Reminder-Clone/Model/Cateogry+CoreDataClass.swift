@@ -1,5 +1,5 @@
 //
-//  Cateogry+CoreDataClass.swift
+//  Category+CoreDataClass.swift
 //  Reminder-Clone
 //
 //  Created by JK on 2021/01/03.
@@ -18,7 +18,7 @@ enum CategoryKey: String {
 }
 
 @objc(Cateogry)
-public class Cateogry: NSManagedObject {
+public class Category: NSManagedObject {
   var dictionary: [CategoryKey: Any] {
     var dict = [CategoryKey: Any]()
     dict[.name] = name

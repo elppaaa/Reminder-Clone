@@ -23,7 +23,7 @@ class ReminderDetailViewController: UIViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     defaultNavigationConfig()
-    self.navigationController?.isToolbarHidden = true
+    navigationController?.isToolbarHidden = true
   }
 
 	fileprivate func configLayout() {

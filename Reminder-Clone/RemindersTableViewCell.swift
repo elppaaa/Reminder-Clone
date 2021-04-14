@@ -37,10 +37,10 @@ class ReminderTableViewCell: UITableViewCell {
   }
 
   let title: UITextField = {
-    let textfield = UITextField()
-    textfield.translatesAutoresizingMaskIntoConstraints = false
-    textfield.isUserInteractionEnabled = true
-    return textfield
+    let textField = UITextField()
+    textField.translatesAutoresizingMaskIntoConstraints = false
+    textField.isUserInteractionEnabled = true
+    return textField
   }()
   
   let mainStack: UIStackView = {

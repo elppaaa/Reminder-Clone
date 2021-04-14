@@ -9,5 +9,5 @@ import Foundation
 
 enum CategoryColor {
   case red, orange, yellow, green, lightblue, blue
-  case indigo, pink, purple, Brwon, gray, rose
+  case indigo, pink, purple, Brown, gray, rose
 }
