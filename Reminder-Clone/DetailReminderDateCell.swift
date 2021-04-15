@@ -37,7 +37,6 @@ class DetailReminderDateCell: DetailReminderViewCellBase {
 
   func commonInit() {
     contentView.addSubview(datePicker)
-    dataType = .date
 
     NSLayoutConstraint.activate([
       datePicker.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),

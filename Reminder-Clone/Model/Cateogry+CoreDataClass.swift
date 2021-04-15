@@ -17,7 +17,7 @@ enum CategoryKey: String {
   case tasks
 }
 
-@objc(Cateogry)
+@objc(Category)
 public class Category: NSManagedObject {
   var dictionary: [CategoryKey: Any] {
     var dict = [CategoryKey: Any]()

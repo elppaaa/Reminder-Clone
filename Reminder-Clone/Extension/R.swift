@@ -4,8 +4,8 @@
 
 import UIKit
 // swiftlint:disable type_name force_unwrapping
-struct R {
-	struct Color {
+enum R {
+	enum Color {
 		static let systemBackground = UIColor(named: "systemBackground")!
 		static let applicationBackground = UIColor(named: "applicationBackground")!
 		static let systemGray6 = UIColor(named: "systemGray6")!

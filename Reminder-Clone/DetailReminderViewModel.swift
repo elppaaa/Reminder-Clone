@@ -12,14 +12,7 @@ protocol DetailReminderTableViewDelegate {
 class DetailReminderViewModel: NSObject {
   var _tableView: UITableView?
   var dict = [TaskAttributesKey: Any]()
-	
-//  var cells: [[UITableViewCell?]]
-	var cellViews: [[(isUsed: Bool, isVisible: Bool)]] = [
-    [(true, true), (true, true), (true, true)],
-    [(true, true), (true, true), (true, true), (true, true)],
-		[(true, true)],
-    [(true, true)],
-  ]
+
   var cells: [[UITableViewCell]] = [
     // 0
     [
@@ -51,11 +44,11 @@ class DetailReminderViewModel: NSObject {
 
 extension DetailReminderViewModel: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
-    cellViews.count
+    cells.count
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    cellViews[section].filter { $0.isVisible }.count
+    cells[section].count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
