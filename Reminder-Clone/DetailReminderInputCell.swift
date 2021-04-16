@@ -16,6 +16,7 @@ class DetailReminderInputCell: DetailReminderViewCellBase {
 		t.translatesAutoresizingMaskIntoConstraints = false
 		t.font = .preferredFont(forTextStyle: .body)
 		t.contentInset.left = 8.0
+		t.sizeToFit()
 		return t
 	}()
 
@@ -32,24 +33,27 @@ class DetailReminderInputCell: DetailReminderViewCellBase {
 	}
 
 	func commonInit() {
-		textView.isScrollEnabled = true
-		contentView.addSubview(textView)
-		cellHeightAnchor = textView.heightAnchor.constraint(equalToConstant: 38)
+		cellHeightAnchor = textView.heightAnchor.constraint(equalToConstant: 0)
+		cellHeightAnchor?.priority = .fittingSizeLevel
 		cellHeightAnchor?.isActive = true
-
-		NSLayoutConstraint.activate([
-			textView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
-			textView.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor),
-			textView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor),
-			textView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor),
-		])
-
-		textViewDidChange(textView)
 		textView.text = textViewPlaceholder
 		textView.textColor = .lightGray
-		textView.resignFirstResponder()
+		textView.isScrollEnabled = true
+		textViewDidChange(textView)
+		contentView.addSubview(textView)
+
+		NSLayoutConstraint.activate([
+			textView.topAnchor.constraint(equalTo: contentView.topAnchor),
+			textView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+			textView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+			textView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+		])
 	}
 
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		contentView.updateConstraintsIfNeeded()
+	}
 }
 
 extension DetailReminderInputCell: UITextViewDelegate {
@@ -60,7 +64,7 @@ extension DetailReminderInputCell: UITextViewDelegate {
 		cellHeightAnchor?.constant = estimatedSize.height
 		delegate?.tableView?.beginUpdates()
 		delegate?.tableView?.endUpdates()
-		UIView.setAnimationsEnabled(false)
+		UIView.setAnimationsEnabled(true)
 	}
 
 	func textViewDidBeginEditing(_ textView: UITextView) {
@@ -71,15 +75,15 @@ extension DetailReminderInputCell: UITextViewDelegate {
 	}
 
 	func textViewDidEndEditing(_ textView: UITextView) {
-		guard let type = dataType else { return }
+		guard let valueType = dataType else { return }
 
 		if textView.text.isEmpty {
 			textView.text = textViewPlaceholder
 			textView.textColor = UIColor.lightGray
-			delegate?.setValue(key: type, value: "")
+			delegate?.setValue(key: valueType, value: "")
 		} else {
 			if let text = textView.text {
-				delegate?.setValue(key: type, value: text)
+				delegate?.setValue(key: valueType, value: text)
 			}
 		}
 	}
