@@ -41,15 +41,16 @@ class DetailReminderInputCell: DetailReminderViewCellBase {
 		textView.isScrollEnabled = true
 		textViewDidChange(textView)
 		contentView.addSubview(textView)
-
-		let maxHeight = textView.heightAnchor.constraint(lessThanOrEqualToConstant: textView.font!.lineHeight * 4)
+    
+    guard let fontHeight = textView.font?.lineHeight else { return }
+		let maxHeight = textView.heightAnchor.constraint(lessThanOrEqualToConstant: fontHeight)
 		maxHeight.priority = .defaultHigh
 
 		NSLayoutConstraint.activate([
-			textView.topAnchor.constraint(equalTo: contentView.topAnchor),
-			textView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-			textView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-			textView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+			textView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
+			textView.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor),
+			textView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor),
+			textView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor),
 			maxHeight
 		])
 	}
