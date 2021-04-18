@@ -19,19 +19,22 @@ class ViewController: UIViewController {
 //  fileprivate var contentViewHeight: NSLayoutConstraint?
   
   fileprivate let scrollView: UIScrollView = {
-    let scrollView = UIScrollView(frame: .zero)
+    let scrollView = UIScrollView(frame: .infinite)
     scrollView.translatesAutoresizingMaskIntoConstraints = false
     scrollView.showsHorizontalScrollIndicator = false
     scrollView.showsVerticalScrollIndicator = false
     scrollView.isScrollEnabled = true
     scrollView.alwaysBounceVertical = true
+    scrollView.alwaysBounceHorizontal = false
 //    scrollView.isPagingEnabled = true
+    scrollView.bounces = true
     return scrollView
   }()
   
   fileprivate let contentView: UIView = {
     let v = UIView()
     v.translatesAutoresizingMaskIntoConstraints = false
+    v.clipsToBounds = true
     return v
   }()
   
@@ -50,10 +53,6 @@ class ViewController: UIViewController {
     super.viewDidLoad()
   }
 
-//  override func viewDidLayoutSubviews() {
-//    scrollView.contentSize = contentView.frame.size
-//  }
-
   func searchBarSetting() {
     navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: nil)
     
@@ -64,76 +63,66 @@ class ViewController: UIViewController {
   
   // MARK: - config Layout
   func configLayout() {
-    // TODO: 스크롤 뷰 내 스크롤 안되는 현상 수정
-    
     view.addSubview(scrollView)
-    
-    NSLayoutConstraint.activate([
-      scrollView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
-      scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-      scrollView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-      scrollView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
-    ])
-    
     scrollView.addSubview(contentView)
-    
-    NSLayoutConstraint.activate([
-      contentView.topAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.topAnchor),
-      contentView.leadingAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.leadingAnchor),
-      contentView.trailingAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.trailingAnchor),
-      contentView.bottomAnchor.constraint(greaterThanOrEqualTo: scrollView.safeAreaLayoutGuide.bottomAnchor, constant: 0)
-    ])
-
     contentView.addSubview(collection)
     contentView.addSubview(table)
     
-    NSLayoutConstraint.activate([
-      collection.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-      collection.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+    scrollView.contentOffset = .init(x: 0, y: -20)
+    
+		NSLayoutConstraint.activate([
+      // View - ScrollView
+      scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+      scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+      scrollView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+      scrollView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor),
+      
+      scrollView.frameLayoutGuide.topAnchor.constraint(equalTo: scrollView.topAnchor),
+      scrollView.frameLayoutGuide.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+      scrollView.frameLayoutGuide.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+      scrollView.frameLayoutGuide.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+      
+      scrollView.contentLayoutGuide.topAnchor.constraint(equalTo: scrollView.topAnchor),
+      scrollView.contentLayoutGuide.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+      scrollView.contentLayoutGuide.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
+      scrollView.contentLayoutGuide.bottomAnchor.constraint(greaterThanOrEqualTo: scrollView.bottomAnchor),
+
+      // scrollView - contentView
+      contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+      contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+      contentView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+      contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+
+      // content - collection
+      collection.topAnchor.constraint(equalTo: contentView.topAnchor),
+      collection.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: table.adjustedContentInset.left),
       collection.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+
+      table.topAnchor.constraint(equalTo: collection.bottomAnchor, constant: 10),
+      table.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+      table.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
     ])
     
-    table.topAnchor.constraint(equalTo: collection.bottomAnchor, constant: 10).isActive = true
-    if #available(iOS 13, *) {
-      NSLayoutConstraint.activate([
-        table.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: -20),
-        table.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 20),
-      ])
-    } else {
-      NSLayoutConstraint.activate([
-        table.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-        table.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-      ])
-    }
+		tableViewHeight = table.heightAnchor.constraint(equalToConstant: 0)
+    collectionViewHeight = collection.heightAnchor.constraint(equalToConstant: 0)
 
-    tableViewHeight = table.heightAnchor.constraint(equalToConstant: table.contentSize.height)
-    collectionViewHeight = collection.heightAnchor.constraint(equalToConstant: collection.contentSize.height)
-//    contentViewHeight = contentView.heightAnchor.constraint(
-//      equalToConstant: table.contentSize.height + collection.contentSize.height)
-    
-    tableViewHeight?.isActive = true
     collectionViewHeight?.isActive = true
-//    contentViewHeight?.isActive = true
-    
-    observeBag.append(
-      table.observe(\.contentSize, options: [.new, .prior]) { (_, change) in
-        if let height = change.newValue?.height, height != 0 {
-          self.tableViewHeight?.constant = height
-//          self.contentViewHeight?.constant = height + self.collection.contentSize.height
-          self.updateViewConstraints()
-        }
+    tableViewHeight?.isActive = true
+
+    observeBag.append(table.observe(\.contentSize, options: [.new, .prior]) { [weak self] _, newVal in
+      if let height = newVal.newValue?.height, height != 0 {
+        self?.tableViewHeight?.constant = height
+        self?.updateViewConstraints()
       }
-    )
-    
-    observeBag.append(
-      collection.observe(\.contentSize, options: [.new, .prior], changeHandler: { (_, change) in
-        if let height = change.newValue?.height, height != 0 {
-          self.collectionViewHeight?.constant = height
-//          self.contentViewHeight?.constant = height + self.table.contentSize.height
-          self.updateViewConstraints()
-        }
-      })
-    )
+    })
+
+    observeBag.append(collection.observe(\.contentSize, options: [.new, .prior]) { [weak self] _, newVal in
+      if let height = newVal.newValue?.height, height != 0 {
+        self?.collectionViewHeight?.constant = height
+        self?.updateViewConstraints()
+      }
+    })
+
   }
   
   #if DEBUG
