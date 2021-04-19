@@ -42,6 +42,7 @@
 		941A49F50059D4CEE097451C /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9413783664F9F35FF2833BF5 /* UIImage+Extension.swift */; };
 		941A8DF41E8B3986A1EAC14A /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94160244B3810FF76B356496 /* UIViewController+Extension.swift */; };
 		941E01552C5A5A73597AB3B5 /* NSObject+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941575C7AF55DC203C2CA93E /* NSObject+Extension.swift */; };
+		941FB328A4047F6B7B4DEA49 /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94197574B2C85FD54D5D2A9D /* UILabel+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -79,6 +80,7 @@
 		9415E7001A48C856F9A95406 /* HomeListCollectionDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeListCollectionDataSource.swift; sourceTree = "<group>"; };
 		94160244B3810FF76B356496 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		941651E3F02819C0CBFBDD94 /* MutableCollection+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MutableCollection+Extension.swift"; sourceTree = "<group>"; };
+		94197574B2C85FD54D5D2A9D /* UILabel+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		941A4E0ED4931CB19BB5ED24 /* DetailReminderViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailReminderViewModel.swift; sourceTree = "<group>"; };
 		941BD7EE10804072AFC6EF00 /* DetailReminderToggleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailReminderToggleCell.swift; sourceTree = "<group>"; };
 		941C127D23ABF367A1893227 /* R.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				94160244B3810FF76B356496 /* UIViewController+Extension.swift */,
 				941651E3F02819C0CBFBDD94 /* MutableCollection+Extension.swift */,
 				9414553E59AD60392C380FFE /* IndexPath+Extension.swift */,
+				94197574B2C85FD54D5D2A9D /* UILabel+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";

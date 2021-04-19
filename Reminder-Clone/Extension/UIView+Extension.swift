@@ -4,26 +4,15 @@
 
 import UIKit
 
-extension UILabel {
-  static func makeView(_ title: String,
-                       color: UIColor = R.Color.label,
-                       font: UIFont = UIFont.systemFont(ofSize: 13, weight: .regular)
-  ) -> UILabel {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.textColor = color
-    label.font = font
-    label.text = title
-    return label
-  }
-  
-  static func makeView(
-    color: UIColor = R.Color.label, font: UIFont = UIFont.systemFont(ofSize: 13, weight: .regular)
-  ) -> UILabel {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.textColor = color
-    label.font = font
-    return label
-  }
+extension UIView {
+	func pin(parent: UIView) {
+		parent.addSubview(self)
+		NSLayoutConstraint.activate([
+			topAnchor.constraint(equalTo: parent.topAnchor),
+			bottomAnchor.constraint(equalTo: parent.bottomAnchor),
+			leadingAnchor.constraint(equalTo: parent.leadingAnchor),
+			trailingAnchor.constraint(equalTo: parent.trailingAnchor),
+		])
+	}
 }
+
