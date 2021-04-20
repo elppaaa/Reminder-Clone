@@ -5,12 +5,10 @@
 import UIKit
 
 class HomeListCollectionView: UICollectionView {
-	let bindDataSource = HomeListCollectionDataSource()
-  @objc dynamic var height: CGFloat {
-    frame.height
-  }
+  let bindDataSource = HomeListCollectionDataSource()
+
   // TODO: will delete
-	required init?(coder: NSCoder) {
+  required init?(coder: NSCoder) {
     fatalError("Do not use this initializer")
 //    let layout = FlowLayout()
 //		super.init(frame: .zero, collectionViewLayout: layout)
@@ -18,17 +16,17 @@ class HomeListCollectionView: UICollectionView {
 //    delegate = layout
 //		translatesAutoresizingMaskIntoConstraints = false
 //		configLayout()
-	}
-  
-	init() {
+  }
+
+  init() {
     let layout = FlowLayout()
-		super.init(frame: .zero, collectionViewLayout: layout)
-		dataSource = bindDataSource
+    super.init(frame: .zero, collectionViewLayout: layout)
+    dataSource = bindDataSource
     delegate = layout
     configLayout()
-		translatesAutoresizingMaskIntoConstraints = false
-	}
-  
+    translatesAutoresizingMaskIntoConstraints = false
+  }
+
   fileprivate func configLayout() {
     backgroundColor = .clear
     register(HomeListCollectionViewCell.self, forCellWithReuseIdentifier: HomeListCollectionViewCell.identifier)
@@ -37,19 +35,19 @@ class HomeListCollectionView: UICollectionView {
     isScrollEnabled = false
     clipsToBounds = true
   }
-  
-	#if DEBUG
-	@objc func injected() {
+
+  #if DEBUG
+  @objc func injected() {
     homeInject()
-	}
-	#endif
+  }
+  #endif
 }
 
 fileprivate class FlowLayout: UICollectionViewFlowLayout, UICollectionViewDelegateFlowLayout {
   required init?(coder: NSCoder) {
     fatalError("NOT USED")
   }
-  
+
   override init() {
     super.init()
     estimatedItemSize = .zero
@@ -58,14 +56,14 @@ fileprivate class FlowLayout: UICollectionViewFlowLayout, UICollectionViewDelega
     sectionInset = .zero
   }
 
-func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-   let size = collectionView.layoutMarginsGuide.layoutFrame.size
-        if let dataSource = collectionView.dataSource as? HomeListCollectionDataSource {
-          if dataSource.data.count - 1 == indexPath.row,
-             dataSource.data.count % 2 == 1 {
-            return .init(width: size.width , height: 85)
-          }
-        }
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    let size = collectionView.layoutMarginsGuide.layoutFrame.size
+    if let dataSource = collectionView.dataSource as? HomeListCollectionDataSource {
+      if dataSource.data.count - 1 == indexPath.row,
+         dataSource.data.count % 2 == 1 {
+        return .init(width: size.width, height: 85)
+      }
+    }
     return .init(width: (size.width - 8) / 2, height: 85)
   }
 }

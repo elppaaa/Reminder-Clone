@@ -20,14 +20,14 @@ class DetailReminderDateCell: DetailReminderViewCellBase {
   }()
 
   required init?(coder: NSCoder) {
-    fatalError("Do not use this init")
+    fatalError("Do not use this initializer")
   }
-  
+
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: Self.identifier)
     commonInit()
   }
-  
+
   init(isTimePicker: Bool = false, type: TaskAttributesKey) {
     datePicker.datePickerMode = isTimePicker ? .time : .date
     super.init(style: .default, reuseIdentifier: Self.identifier)
@@ -50,10 +50,10 @@ class DetailReminderDateCell: DetailReminderViewCellBase {
     datePicker.addTarget(self, action: #selector(setDate), for: .valueChanged)
   }
 
-	@objc func setDate() {
+  @objc func setDate() {
     if let type = dataType {
       delegate?.setValue(key: type, value: datePicker.date)
     }
   }
-  
+
 }
