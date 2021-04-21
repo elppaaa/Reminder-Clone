@@ -9,12 +9,14 @@ import UIKit
 
 class ViewController: UITableViewController {
   fileprivate let controller = UISearchController(searchResultsController: nil)
-  fileprivate let collection = HomeListCollectionView()
+//  fileprivate let collection = HomeListCollectionView()
   fileprivate let viewModel = HomeListTableViewModel()
   fileprivate var observeBag = [NSKeyValueObservation]()
+  fileprivate let collection = HomeListCollectionWrappedCell()
 
   override init(style: UITableView.Style) {
     super.init(style: style)
+    tableView.delegate = viewModel
     viewModel.delegate = self
   }
 
@@ -32,7 +34,7 @@ class ViewController: UITableViewController {
     super.viewDidAppear(animated)
     navigationItem.hidesSearchBarWhenScrolling = true
   }
-
+  
   override func viewDidLoad() {
     view.backgroundColor = R.Color.applicationBackground
     tableView.dataSource = viewModel
@@ -53,14 +55,12 @@ class ViewController: UITableViewController {
   // MARK: - config Layout
   fileprivate func configLayout() {
     tableView.register(HomeListTableCell.self, forCellReuseIdentifier: HomeListTableCell.identifier)
-    tableView.register(HomeListCollectionWrappedCell.self, forCellReuseIdentifier: HomeListCollectionWrappedCell.identifier)
-
     tableView.estimatedRowHeight = CGFloat(50)
     tableView.rowHeight = UITableView.automaticDimension
 
     tableView.showsVerticalScrollIndicator = false
     tableView.showsHorizontalScrollIndicator = false
-    tableView.tableHeaderView = UIView()
+    tableView.tableHeaderView = collection
   }
 
   #if DEBUG
