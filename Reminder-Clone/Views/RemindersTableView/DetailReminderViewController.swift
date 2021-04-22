@@ -9,11 +9,11 @@ import UIKit
 
 // TODO: Get from core data
 
-class RemindersTableViewController: UITableViewController {
+class DetailReminderViewController: UITableViewController {
   // TODO: Get from core data
   var pagePrimaryColor: UIColor = .clear
   let customDataSource = RemindersTableViewModel()
-
+  
   override func loadView() {
     super.loadView()
     tableView.register(ReminderTableViewCell.self, forCellReuseIdentifier: ReminderTableViewCell.identifier)
@@ -24,11 +24,11 @@ class RemindersTableViewController: UITableViewController {
     tableView.allowsMultipleSelectionDuringEditing = true
     tableView.keyboardDismissMode = .interactive
   }
-
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = R.Color.defaultBackground
-
+    
     configLayout()
     configClosure()
   }
@@ -36,29 +36,30 @@ class RemindersTableViewController: UITableViewController {
   override func viewWillAppear(_ animated: Bool) {
     navigationController?.navigationBar.prefersLargeTitles = true
     defaultNavigationConfig()
-    let attribute = [NSAttributedString.Key.foregroundColor:pagePrimaryColor]
+    let attribute = [NSAttributedString.Key.foregroundColor: pagePrimaryColor]
     navigationController?.navigationBar.largeTitleTextAttributes = attribute
     tableView.reloadData()
     super.viewWillAppear(true)
   }
   
   func configClosure() {
-    customDataSource.present = { (vc) in
+    customDataSource.present = {
+      (vc) in
       self.navigationController?.present(vc, animated: true)
     }
   }
-
+  
   #if DEBUG
-  @objc func injected() {
-    let vc = RemindersTableViewController()
-    vc.pagePrimaryColor = .blue
-    homeInject(vc)
-  }
+    @objc func injected() {
+      let vc = DetailReminderViewController()
+      vc.pagePrimaryColor = .blue
+      homeInject(vc)
+    }
   #endif
 }
 
 // MARK: - Layout, Gesture setting
-extension RemindersTableViewController {
+extension DetailReminderViewController {
   fileprivate func configLayout() {
     tableView.tableFooterView = UIView()
     tableView.tableHeaderView = UIView()

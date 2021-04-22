@@ -8,15 +8,14 @@
 import UIKit
 
 protocol HomeListCellViewType {
-	var titleLabel: UILabel { get set }
+  var titleLabel: UILabel { get set }
   var countLabel: UILabel { get set }
   var iconView: UIImageView { get set }
-
+  
   func configCell(with data: HomeRadiusList)
-//  func configLayout()
 }
 
-extension HomeListCellViewType  {
+extension HomeListCellViewType {
   func configCell(with data: HomeRadiusList) {
     titleLabel.text = data.title
     countLabel.text = "\(data.count)"
@@ -34,18 +33,3 @@ struct HomeRadiusList {
   let color: UIColor
   let count: Int
 }
-
-//class HomeListCategoryCell: UITableViewCell, HomeListCellViewType {
-//  var titleLabel: UILabel
-//  var countLabel: UILabel
-//  var iconView: UIImageView
-//
-//  required init?(coder: NSCoder) {
-//    super.init(coder: coder)
-//  }
-//
-//  func configLayout() {
-//
-//  }
-//}
-//

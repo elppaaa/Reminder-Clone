@@ -6,7 +6,7 @@ import UIKit
 
 class DetailReminderToggleCell: DetailReminderViewCellBase {
   let toggle = UISwitch()
-
+  
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: Self.identifier)
     commonInit()

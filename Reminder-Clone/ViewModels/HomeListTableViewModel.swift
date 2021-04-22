@@ -14,7 +14,7 @@ class HomeListTableViewModel: NSObject, HomeListDataSource {
     _data
   }
   var delegate: HomeListTableViewModelDelegate?
-
+  
   private var _data: [HomeRadiusList] = [
     HomeRadiusList(title: "Today", icon: .folderCircle, color: .systemBlue, count: 5),
     HomeRadiusList(title: "Scheduled", icon: .calenderCircle, color: .red, count: 9),
@@ -37,9 +37,9 @@ extension HomeListTableViewModel: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     data.count
   }
-
+  
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//    section 0
+    //    section 0
     //    if indexPath.section == 0 {
     //      let cell = HomeListCollectionWrappedCell(style: .default, reuseIdentifier: nil)
     //      cell.indexPath = indexPath
@@ -49,7 +49,7 @@ extension HomeListTableViewModel: UITableViewDataSource {
     
     // section 1
     guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeListTableCell.identifier, for: indexPath)
-            as? HomeListTableCell else {
+      as? HomeListTableCell else {
       fatalError("ERROR WHEN CREATE CELL")
     }
     let data = _data[indexPath.row]
@@ -63,7 +63,7 @@ extension HomeListTableViewModel: UITableViewDataSource {
 extension HomeListTableViewModel: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let data = _data[indexPath.row]
-    let reminderVC = RemindersTableViewController()
+    let reminderVC = DetailReminderViewController()
     reminderVC.pagePrimaryColor = data.color
     reminderVC.title = data.title
     delegate?.pushVC(reminderVC, animated: true)

@@ -11,33 +11,33 @@ class ReminderDetailViewController: UIViewController {
   let tableView = DetailReminderTableView()
   var tableViewHeight: NSLayoutConstraint?
   var data: MyTask?
-
-	override func viewDidLoad() {
-		super.viewDidLoad()
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
     title = "Detail"
     view.backgroundColor = R.Color.applicationBackground
     configLayout()
     configNavigationBar()
     tableView.keyboardDismissMode = .interactive
-	}
+  }
   
   override func viewWillAppear(_ animated: Bool) {
     defaultNavigationConfig()
     navigationController?.isToolbarHidden = true
   }
-
-	fileprivate func configLayout() {
+  
+  fileprivate func configLayout() {
     view.addSubview(tableView)
     tableView.layer.masksToBounds = true
-
-		NSLayoutConstraint.activate([
+    
+    NSLayoutConstraint.activate([
       tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-			tableView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
+      tableView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
       tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-		])
-	}
-
+    ])
+  }
+  
 }
 
 // MARK: - Navigation Setting
@@ -63,7 +63,7 @@ extension ReminderDetailViewController {
     // TODO: save to core data
     dismiss(animated: true)
   }
-
+  
   @objc func injected() {
     let vc = ReminderDetailViewController()
     homeInject(vc)

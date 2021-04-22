@@ -10,7 +10,7 @@ class HomeListCollectionWrappedCell: UIView {
   fileprivate var contentHeight: NSLayoutConstraint?
   fileprivate var observeBag = [NSKeyValueObservation]()
   var indexPath: IndexPath?
-
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
     commonInit()
@@ -34,8 +34,9 @@ class HomeListCollectionWrappedCell: UIView {
       collection.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
     ])
     backgroundColor = R.Color.systemGray6
-
-    observeBag.append(collection.observe(\.contentSize, options: [.new, .prior]) { [weak self] _, val in
+    
+    observeBag.append(collection.observe(\.contentSize, options: [.new, .prior]) {
+      [weak self] _, val in
       if let value = val.newValue?.height, value != 0 {
         self?.frame.size.height = value
       }

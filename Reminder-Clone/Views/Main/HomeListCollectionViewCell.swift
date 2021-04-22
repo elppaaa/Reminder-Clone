@@ -6,17 +6,17 @@ import UIKit
 
 class HomeListCollectionViewCell: UICollectionViewCell, HomeListCellViewType {
   static let size: CGFloat = 35.0
-
+  
   override init(frame: CGRect = .zero) {
     super.init(frame: frame)
     configLayout()
   }
-
+  
   required init?(coder: NSCoder) {
     super.init(coder: coder)
     configLayout()
   }
-
+  
   private let mainStack: UIStackView = {
     let stack = UIStackView()
     stack.translatesAutoresizingMaskIntoConstraints = false
@@ -27,7 +27,7 @@ class HomeListCollectionViewCell: UICollectionViewCell, HomeListCellViewType {
     stack.layoutMargins = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     return stack
   }()
-
+  
   private let stack: UIStackView = {
     let stack = UIStackView()
     stack.translatesAutoresizingMaskIntoConstraints = false
@@ -36,7 +36,7 @@ class HomeListCollectionViewCell: UICollectionViewCell, HomeListCellViewType {
     stack.distribution = .equalCentering
     return stack
   }()
-
+  
   var iconView: UIImageView = {
     let imageView = UIImageView()
     imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -47,11 +47,11 @@ class HomeListCollectionViewCell: UICollectionViewCell, HomeListCellViewType {
     imageView.contentMode = .scaleToFill
     return imageView
   }()
-
+  
   var countLabel: UILabel = UILabel.makeView(font: .systemFont(ofSize: (size * 0.8), weight: .bold))
-
+  
   var titleLabel: UILabel = UILabel.makeView(color: .gray, font: .systemFont(ofSize: (size * 0.5), weight: .semibold))
-
+  
   // MARK: - configureLayout
   func configLayout() {
     backgroundColor = R.Color.systemBackground
@@ -59,23 +59,23 @@ class HomeListCollectionViewCell: UICollectionViewCell, HomeListCellViewType {
     clipsToBounds = false
     layer.cornerRadius = 10
     layoutMargins = .zero
-
+    
     stack.addArrangedSubview(iconView)
     stack.addArrangedSubview(countLabel)
-
+    
     mainStack.addArrangedSubview(stack)
     mainStack.addArrangedSubview(titleLabel)
     addSubview(mainStack)
-
+    
     NSLayoutConstraint.activate([
       mainStack.topAnchor.constraint(equalTo: topAnchor),
       mainStack.bottomAnchor.constraint(equalTo: bottomAnchor),
       mainStack.leadingAnchor.constraint(equalTo: leadingAnchor),
       mainStack.trailingAnchor.constraint(equalTo: trailingAnchor),
     ])
-
+    
   }
-
+  
   @objc func injected() {
     homeInject()
   }

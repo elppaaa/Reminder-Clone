@@ -14,12 +14,12 @@ struct MyTask {
 
 class RemindersTableViewModel: NSObject {
   var primaryColor: UIColor?
-  var present: ( (_ vc: UINavigationController) -> Void )?
-
+  var present: ((_ vc: UINavigationController) -> Void)?
+  
   override init() {
     super.init()
   }
-
+  
   var tasks: [MyTask] = [
     MyTask(id: 0, title: "title"),
     MyTask(id: 1, title: "one"),
@@ -38,7 +38,7 @@ extension RemindersTableViewModel: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: ReminderTableViewCell.identifier, for: indexPath) as? ReminderTableViewCell else {
+      withIdentifier: ReminderTableViewCell.identifier, for: indexPath) as? ReminderTableViewCell else {
       fatalError("Cell Not Founded")
     }
     let data = tasks[indexPath.row]
@@ -53,7 +53,7 @@ extension RemindersTableViewModel: UITableViewDataSource {
 
 extension RemindersTableViewModel: UITableViewDelegate {
   public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-		let vc = ReminderDetailViewController()
+    let vc = ReminderDetailViewController()
     vc.data = tasks[indexPath.row]
     present?(UINavigationController(rootViewController: vc))
   }
@@ -65,7 +65,7 @@ extension RemindersTableViewModel: RemindersTableViewModelDelegate {
       tasks[index] = data
     }
   }
-
+  
 }
 
 protocol RemindersTableViewModelDelegate {

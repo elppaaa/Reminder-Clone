@@ -20,7 +20,9 @@ class ReminderTableViewCell: UITableViewCell {
       }
     }
     set {
-      guard let data = newValue else { return }
+      guard let data = newValue else {
+        return
+      }
       title.text = data.title
       if data.isDone {
         title.textColor = .gray
@@ -35,7 +37,7 @@ class ReminderTableViewCell: UITableViewCell {
       _data = newValue
     }
   }
-
+  
   let title: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
@@ -51,7 +53,7 @@ class ReminderTableViewCell: UITableViewCell {
     stack.alignment = .fill
     return stack
   }()
-
+  
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: Self.identifier)
     configLayout()
@@ -59,15 +61,15 @@ class ReminderTableViewCell: UITableViewCell {
     imageView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(toggleIsDone)))
     title.addTarget(self, action: #selector(didEditingStatusChanged), for: .editingChanged)
     title.addTarget(self, action: #selector(changeAccessoryType), for: .allEditingEvents)
-
+    
   }
-
+  
   func configLayout() {
     imageView?.translatesAutoresizingMaskIntoConstraints = true
     imageView?.layoutMargins = .zero
     imageView?.contentMode = .scaleToFill
     contentView.addSubview(title)
-
+    
     NSLayoutConstraint.activate([
       title.leadingAnchor.constraint(
         equalTo: imageView?.trailingAnchor ?? contentView.leadingAnchor, constant: 10),
@@ -109,7 +111,7 @@ class ReminderTableViewCell: UITableViewCell {
       }
     }
   }
-
+  
   @objc func changeAccessoryType() {
     accessoryType = title.isEditing ? .detailButton : .none
   }

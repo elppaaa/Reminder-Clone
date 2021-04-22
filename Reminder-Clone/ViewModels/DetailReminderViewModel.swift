@@ -12,7 +12,7 @@ protocol DetailReminderTableViewDelegate {
 class DetailReminderViewModel: NSObject {
   var _tableView: UITableView?
   var dict = [TaskAttributesKey: Any]()
-
+  
   var cells: [[UITableViewCell]] = [
     // 0
     [
@@ -39,14 +39,14 @@ class DetailReminderViewModel: NSObject {
         title: "Flag", image: .flag, color: .systemOrange, type: .flag)
     ]
   ]
-
+  
 }
 
 extension DetailReminderViewModel: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
     cells.count
   }
-
+  
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     cells[section].count
   }
@@ -54,15 +54,18 @@ extension DetailReminderViewModel: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     tableViewCellSelector(indexPath: indexPath)
   }
-
+  
 }
 
-extension DetailReminderViewModel: UITableViewDelegate { }
+extension DetailReminderViewModel: UITableViewDelegate {
+}
 
 extension DetailReminderViewModel: DetailReminderTableViewDelegate {
   func setValue<T>(key: TaskAttributesKey, value: T) {
     dict[key] = value
   }
-
-  var tableView: UITableView? { _tableView }
+  
+  var tableView: UITableView? {
+    _tableView
+  }
 }
