@@ -38,6 +38,9 @@ class DetailReminderViewModel: NSObject {
     [
       DetailReminderToggleCell(
         title: "Flag", image: .flag, color: .systemOrange, type: .flag)
+    ],
+    [
+      UITableViewCell(style: .value1, reuseIdentifier: nil)
     ]
   ]
   
@@ -59,6 +62,17 @@ extension DetailReminderViewModel: UITableViewDataSource {
 }
 
 extension DetailReminderViewModel: UITableViewDelegate {
+  public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    if (indexPath.section, indexPath.row) == (4, 0) {
+      if #available(iOS 13, *) {
+        let vc = DetailReminderPriorityViewController(style: .insetGrouped)
+        delegateVC?.pushVC(vc, animated: true)
+      } else {
+        let vc = DetailReminderPriorityViewController(style: .grouped)
+        delegateVC?.pushVC(vc, animated: true)
+      }
+    }
+  }
 }
 
 extension DetailReminderViewModel: DetailReminderTableViewDelegate {

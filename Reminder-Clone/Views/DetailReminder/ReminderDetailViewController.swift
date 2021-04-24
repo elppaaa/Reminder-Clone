@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ReminderDetailViewController: UIViewController {
+class ReminderDetailViewController: UIViewController, ViewControllerDelegate {
   let tableView = DetailReminderTableView()
   var viewModel = DetailReminderViewModel()
   var tableViewHeight: NSLayoutConstraint?
