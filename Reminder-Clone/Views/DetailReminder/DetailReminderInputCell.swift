@@ -42,8 +42,8 @@ class DetailReminderInputCell: DetailReminderViewCellBase {
     textViewDidChange(textView)
     contentView.addSubview(textView)
     
-    guard let fontHeight = textView.font?.lineHeight else { return }
-    let maxHeight = textView.heightAnchor.constraint(lessThanOrEqualToConstant: fontHeight)
+    let maxHeight = textView.heightAnchor.constraint(
+      greaterThanOrEqualToConstant: UIFont.preferredFont(forTextStyle: .body).lineHeight)
     maxHeight.priority = .defaultHigh
     
     NSLayoutConstraint.activate([
