@@ -18,7 +18,6 @@ class DetailReminderTableView: UITableView {
     
    */
   let data: [TaskAttributesKey: Any] = [:]
-  var viewModel = DetailReminderViewModel()
   
   override init(frame: CGRect, style: UITableView.Style) {
     if #available(iOS 13, *) {
@@ -30,10 +29,6 @@ class DetailReminderTableView: UITableView {
     register(DetailReminderInputCell.self, forCellReuseIdentifier: DetailReminderInputCell.identifier)
     register(DetailReminderDateCell.self, forCellReuseIdentifier: DetailReminderDateCell.identifier)
     register(DetailReminderToggleCell.self, forCellReuseIdentifier: DetailReminderToggleCell.identifier)
-    
-    dataSource = viewModel
-    delegate = viewModel
-    viewModel._tableView = self
     
     allowsMultipleSelectionDuringEditing = true
     
@@ -48,6 +43,7 @@ class DetailReminderTableView: UITableView {
     translatesAutoresizingMaskIntoConstraints = false
     rowHeight = Self.automaticDimension
     estimatedRowHeight = 50
+    keyboardDismissMode = .interactive
   }
   
   class DetailReminderDateView: UIView {

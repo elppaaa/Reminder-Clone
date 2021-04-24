@@ -9,6 +9,7 @@ import UIKit
 
 class ReminderDetailViewController: UIViewController {
   let tableView = DetailReminderTableView()
+  var viewModel = DetailReminderViewModel()
   var tableViewHeight: NSLayoutConstraint?
   var data: MyTask?
   
@@ -16,14 +17,22 @@ class ReminderDetailViewController: UIViewController {
     super.viewDidLoad()
     title = "Detail"
     view.backgroundColor = R.Color.applicationBackground
-    configLayout()
-    configNavigationBar()
-    tableView.keyboardDismissMode = .interactive
+    commonInit()
   }
   
   override func viewWillAppear(_ animated: Bool) {
     defaultNavigationConfig()
     navigationController?.isToolbarHidden = true
+  }
+  
+  func commonInit() {
+    tableView.dataSource = viewModel
+    tableView.delegate = viewModel
+    viewModel._tableView = tableView
+    viewModel.delegateVC = self
+    
+    configLayout()
+    configNavigationBar()
   }
   
   fileprivate func configLayout() {

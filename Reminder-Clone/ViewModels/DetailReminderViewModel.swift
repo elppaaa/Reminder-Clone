@@ -11,6 +11,7 @@ protocol DetailReminderTableViewDelegate {
 
 class DetailReminderViewModel: NSObject {
   var _tableView: UITableView?
+  var delegateVC: ViewControllerDelegate?
   var dict = [TaskAttributesKey: Any]()
   
   var cells: [[UITableViewCell]] = [
