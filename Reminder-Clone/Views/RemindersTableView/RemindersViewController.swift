@@ -9,7 +9,7 @@ import UIKit
 
 // TODO: Get from core data
 
-class DetailReminderViewController: UITableViewController {
+class RemindersViewController: UITableViewController {
   // TODO: Get from core data
   var pagePrimaryColor: UIColor = .clear
   let customDataSource = RemindersTableViewModel()
@@ -51,7 +51,7 @@ class DetailReminderViewController: UITableViewController {
   
   #if DEBUG
     @objc func injected() {
-      let vc = DetailReminderViewController()
+      let vc = RemindersViewController()
       vc.pagePrimaryColor = .blue
       homeInject(vc)
     }
@@ -59,7 +59,7 @@ class DetailReminderViewController: UITableViewController {
 }
 
 // MARK: - Layout, Gesture setting
-extension DetailReminderViewController {
+extension RemindersViewController {
   fileprivate func configLayout() {
     tableView.tableFooterView = UIView()
     tableView.tableHeaderView = UIView()

@@ -39,19 +39,8 @@ extension HomeListTableViewModel: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    //    section 0
-    //    if indexPath.section == 0 {
-    //      let cell = HomeListCollectionWrappedCell(style: .default, reuseIdentifier: nil)
-    //      cell.indexPath = indexPath
-    //      cell.parent = tableView
-    //      return cell
-    //    }
-    
-    // section 1
     guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeListTableCell.identifier, for: indexPath)
-      as? HomeListTableCell else {
-      fatalError("ERROR WHEN CREATE CELL")
-    }
+      as? HomeListTableCell else { fatalError("ERROR WHEN CREATE CELL") }
     let data = _data[indexPath.row]
     tableView.beginUpdates()
     cell.configCell(with: data)
@@ -63,7 +52,7 @@ extension HomeListTableViewModel: UITableViewDataSource {
 extension HomeListTableViewModel: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let data = _data[indexPath.row]
-    let reminderVC = DetailReminderViewController()
+    let reminderVC = RemindersViewController()
     reminderVC.pagePrimaryColor = data.color
     reminderVC.title = data.title
     delegate?.pushVC(reminderVC, animated: true)

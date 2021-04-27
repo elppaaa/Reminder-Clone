@@ -53,7 +53,7 @@ extension RemindersTableViewModel: UITableViewDataSource {
 
 extension RemindersTableViewModel: UITableViewDelegate {
   public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-    let vc = ReminderDetailViewController()
+    let vc = DetailReminderViewController()
     vc.data = tasks[indexPath.row]
     present?(UINavigationController(rootViewController: vc))
   }

@@ -1,5 +1,5 @@
 //
-//  ReminderDetailViewController.swift
+//  DetailReminderViewController.swift
 //  Reminder-Clone
 //
 //  Created by JK on 2021/01/23.
@@ -7,13 +7,13 @@
 
 import UIKit
 
-class ReminderDetailViewController: UIViewController, ViewControllerDelegate {
+class DetailReminderViewController: UIViewController, ViewControllerDelegate {
   let tableView = DetailReminderTableView()
   var viewModel = DetailReminderViewModel()
   var tableViewHeight: NSLayoutConstraint?
   var data: MyTask?
   
-  override func viewDidLoad() {
+  override func viewDidLoad( ) {
     super.viewDidLoad()
     title = "Detail"
     view.backgroundColor = R.Color.applicationBackground
@@ -25,7 +25,7 @@ class ReminderDetailViewController: UIViewController, ViewControllerDelegate {
     navigationController?.isToolbarHidden = true
   }
   
-  func commonInit() {
+  func commonInit( ) {
     tableView.dataSource = viewModel
     tableView.delegate = viewModel
     viewModel._tableView = tableView
@@ -35,7 +35,7 @@ class ReminderDetailViewController: UIViewController, ViewControllerDelegate {
     configNavigationBar()
   }
   
-  fileprivate func configLayout() {
+  fileprivate func configLayout( ) {
     view.addSubview(tableView)
     tableView.layer.masksToBounds = true
     
@@ -50,8 +50,8 @@ class ReminderDetailViewController: UIViewController, ViewControllerDelegate {
 }
 
 // MARK: - Navigation Setting
-extension ReminderDetailViewController {
-  fileprivate func configNavigationBar() {
+extension DetailReminderViewController {
+  fileprivate func configNavigationBar( ) {
     title = "Detail"
     let cancelNavigationItem = UIBarButtonItem(
       title: "Cancel", style: .plain, target: self, action: #selector(didLeftNavigationBarButtonClicked))
@@ -62,19 +62,19 @@ extension ReminderDetailViewController {
     navigationItem.rightBarButtonItem = doneNavigationItem
   }
   
-  @objc func didLeftNavigationBarButtonClicked() {
+  @objc func didLeftNavigationBarButtonClicked( ) {
     if !isEditing {
       dismiss(animated: true)
     }
   }
   
-  @objc func didRightNavigationBarButtonClicked() {
+  @objc func didRightNavigationBarButtonClicked( ) {
     // TODO: save to core data
     dismiss(animated: true)
   }
   
-  @objc func injected() {
-    let vc = ReminderDetailViewController()
+  @objc func injected( ) {
+    let vc = DetailReminderViewController()
     homeInject(vc)
   }
 }
