@@ -11,13 +11,20 @@ extension DetailReminderViewModel {
   
   func tableViewCellSelector(indexPath: IndexPath) -> UITableViewCell {
     var cell: UITableViewCell
-    
+  
     cell = cells[indexPath]
-    
-    if indexPath.section == 4 {
+  
+    switch (indexPath.section, indexPath.row) {
+    case (4, 0):
       cell.textLabel?.text = "Priority"
       cell.detailTextLabel?.text = "None"
       cell.accessoryType = .disclosureIndicator
+    case (4, 1):
+      cell.textLabel?.text = "List"
+      cell.detailTextLabel?.text = "미리 알림"
+      cell.accessoryType = .disclosureIndicator
+    default:
+      break
     }
   
     if let _cell = cell as? DetailReminderViewCellBase {
