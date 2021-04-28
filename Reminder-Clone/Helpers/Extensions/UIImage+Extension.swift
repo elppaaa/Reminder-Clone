@@ -30,16 +30,14 @@ extension UIImage {
     return image
   }
   
-  func with(insets: UIEdgeInsets) -> UIImage? {
-    let cgSize = CGSize(width: self.size.width + insets.left * self.scale + insets.right * self.scale,
-      height: self.size.height + insets.top * self.scale + insets.bottom * self.scale)
+  func wrapBox(size box: CGFloat) -> UIImage? {
+    let cgSize = CGSize(width: box, height: box)
     
-    UIGraphicsBeginImageContextWithOptions(cgSize, false, self.scale)
+    UIGraphicsBeginImageContextWithOptions(cgSize, false, scale)
     defer { UIGraphicsEndImageContext() }
-    let origin = CGPoint(x: insets.left * self.scale, y: insets.top * self.scale)
-    self.draw(at: origin)
     
+    let origin = CGPoint(x: (box - size.width) / 2.0 , y: (box - size.height) / 2.0 )
+    draw(at: origin)
     return UIGraphicsGetImageFromCurrentImageContext()?.withRenderingMode(self.renderingMode)
   }
-  
 }

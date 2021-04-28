@@ -22,23 +22,21 @@ class DetailReminderToggleCell: DetailReminderViewCellBase {
     color: UIColor,
     type: TaskAttributesKey
   ) {
-    self.init(style: .default, reuseIdentifier: Self.identifier)
+    self.init(style: .subtitle, reuseIdentifier: Self.identifier)
     textLabel?.text = title
-    imageView?.image = image
     imageView?.backgroundColor = color
+    imageView?.image = image.with(color: .white).wrapBox(size: 27.5)
+    imageView?.contentMode = .scaleAspectFit
     dataType = type
   }
   
   func commonInit() {
     accessoryView = toggle
-    imageView?.contentMode = .center
-    imageView?.layer.cornerRadius = 5
-    imageView?.tintColor = .white
+    imageView?.layer.cornerRadius = 7
+    
+    let contentViewHeight = contentView.heightAnchor.constraint(equalToConstant: 55)
+    contentViewHeight.priority = .defaultHigh
+    contentViewHeight.isActive = true
   }
   
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    let size = contentView.frame.height * 0.5
-    imageView?.frame.size = .init(width: size, height: size)
-  }
 }
