@@ -12,6 +12,8 @@ class DetailReminderListViewController: UITableViewController {
     .init(title: "Test", icon: .calendar, color: .systemYellow, count: 4),
   ]
   
+  var selectedIndex = 0
+  
   override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     50
   }
@@ -24,7 +26,17 @@ class DetailReminderListViewController: UITableViewController {
     let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
     let data = list[indexPath.row]
     cell.textLabel?.text = data.title
-    cell.detailTextLabel?.text = String(data.count)
+    cell.accessoryType = indexPath.row == selectedIndex ? .checkmark : .none
     return cell
   }
+  
+  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    tableView.beginUpdates()
+    tableView.cellForRow(at: IndexPath(row: selectedIndex, section: 0))?.accessoryType = .none
+    tableView.cellForRow(at: IndexPath(row: indexPath.row, section: 0))?.accessoryType = .checkmark
+    tableView.endUpdates()
+    selectedIndex = indexPath.row
+    navigationController?.popViewController(animated: true)
+  }
+  
 }
