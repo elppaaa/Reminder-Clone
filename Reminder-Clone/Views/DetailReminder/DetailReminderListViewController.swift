@@ -6,16 +6,25 @@ import UIKit
 
 class DetailReminderListViewController: UITableViewController {
   var list: [HomeRadiusList] = [
-    .init(title: "School", icon: .calendar, color: .systemBlue, count: 4),
-    .init(title: "List", icon: .calendar, color: .systemOrange, count: 4),
-    .init(title: "Home", icon: .calendar, color: .systemPink, count: 4),
-    .init(title: "Test", icon: .calendar, color: .systemYellow, count: 4),
+    .init(title: "School", icon: .calenderCircle, color: .systemBlue, count: 4),
+    .init(title: "Home", icon: .folderCircle, color: .systemPink, count: 4),
+    .init(title: "Test", icon: .flagCircle, color: .systemYellow, count: 4),
+    .init(title: "List", icon: .calenderCircle, color: .systemOrange, count: 4),
   ]
+  
+  required init?(coder: NSCoder) { fatalError("Do not use this initializer") }
+  
+  override init(style: UITableView.Style) {
+    super.init(style: style)
+    tableView.rowHeight = 55
+    tableView.register(DetailReminderListViewCell.self, forCellReuseIdentifier: DetailReminderListViewCell.identifier)
+    tableView.tableFooterView = UIView()
+  }
   
   var selectedIndex = 0
   
   override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    50
+    55
   }
   
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -23,9 +32,12 @@ class DetailReminderListViewController: UITableViewController {
   }
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
+    guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailReminderListViewCell.identifier)
+      as? DetailReminderListViewCell else { return UITableViewCell() }
     let data = list[indexPath.row]
-    cell.textLabel?.text = data.title
+//    tableView.beginUpdates()
+    cell.config(data: data)
+//    tableView.endUpdates()
     cell.accessoryType = indexPath.row == selectedIndex ? .checkmark : .none
     return cell
   }
@@ -40,3 +52,4 @@ class DetailReminderListViewController: UITableViewController {
   }
   
 }
+
