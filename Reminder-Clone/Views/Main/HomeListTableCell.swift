@@ -8,14 +8,14 @@
 import UIKit
 
 class HomeListTableCell: UITableViewCell, HomeListCellViewType {
-  fileprivate static let size: CGFloat = 40
+  fileprivate static let size: CGFloat = 35
   
   required init?(coder: NSCoder) {
     fatalError("ERROR")
   }
   
   override init(style: CellStyle, reuseIdentifier _: String? = nil) {
-    super.init(style: style, reuseIdentifier: Self.identifier)
+    super.init(style: .value1, reuseIdentifier: Self.identifier)
     configLayout()
   }
   
