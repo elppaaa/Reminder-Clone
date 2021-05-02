@@ -42,7 +42,13 @@ class DetailReminderViewModel: NSObject {
     [
       UITableViewCell(style: .value1, reuseIdentifier: nil),
       UITableViewCell(style: .value1, reuseIdentifier: nil),
-    ]
+    ],
+    [
+      UITableViewCell(style: .value1, reuseIdentifier: nil)
+    ],
+    [
+      UITableViewCell(style: .value1, reuseIdentifier: nil)
+    ],
   ]
   
 }

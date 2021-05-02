@@ -17,12 +17,19 @@ extension DetailReminderViewModel {
     switch (indexPath.section, indexPath.row) {
     case (4, 0):
       cell.textLabel?.text = "Priority"
-      cell.detailTextLabel?.text = "None"
+      cell.detailTextLabel?.text = "None" // entity.priority
       cell.accessoryType = .disclosureIndicator
     case (4, 1):
       cell.textLabel?.text = "List"
-      cell.detailTextLabel?.text = "미리 알림"
+      cell.detailTextLabel?.text = "미리 알림" // entity
       cell.accessoryType = .disclosureIndicator
+    case (5, 0):
+      cell.textLabel?.text = "Subtasks"
+      cell.detailTextLabel?.text = "0" // entity.child.count
+      cell.accessoryType = .disclosureIndicator
+    case (6, 0):
+      cell.textLabel?.text = "Add Image"
+      cell.textLabel?.textColor = .systemBlue
     default:
       break
     }
