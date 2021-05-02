@@ -25,7 +25,7 @@ class DetailReminderToggleCell: DetailReminderViewCellBase {
     self.init(style: .subtitle, reuseIdentifier: Self.identifier)
     textLabel?.text = title
     imageView?.backgroundColor = color
-    imageView?.image = image.with(color: .white).wrapBox(size: 27.5)
+    imageView?.image = image.with(color: .white).wrapBox(size: 28.5)
     imageView?.contentMode = .scaleAspectFit
     dataType = type
   }
@@ -33,10 +33,6 @@ class DetailReminderToggleCell: DetailReminderViewCellBase {
   func commonInit() {
     accessoryView = toggle
     imageView?.layer.cornerRadius = 7
-    
-    let contentViewHeight = contentView.heightAnchor.constraint(equalToConstant: 55)
-    contentViewHeight.priority = .defaultHigh
-    contentViewHeight.isActive = true
   }
   
 }
