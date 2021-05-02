@@ -83,6 +83,10 @@ extension DetailReminderViewModel: UITableViewDelegate {
     case (4, 1):
       let vc = DetailReminderListViewController(style: .plain)
       delegateVC?.pushVC(vc, animated: true)
+    case (5, 0):
+      let vc = DetailReminderSubtasksViewController(style: .grouped)
+      delegateVC?.pushVC(vc, animated: true)
+      
     default:
       break
     }
