@@ -4,7 +4,7 @@
 
 import UIKit
 
-protocol DetailReminderSubtaskCellDelegate: UITableViewController  {
+protocol DetailReminderSubtaskCellDelegate: UITableViewController {
   func updateCell()
 }
 
@@ -16,7 +16,6 @@ class DetailReminderSubtaskCell: UITableViewCell {
     let t = UITextView()
     t.translatesAutoresizingMaskIntoConstraints = false
     t.font = .preferredFont(forTextStyle: .body)
-    t.contentInset.left = 8.0
     t.isScrollEnabled = false
     return t
   }()
@@ -34,25 +33,41 @@ class DetailReminderSubtaskCell: UITableViewCell {
     textViewDidChange(textView)
     
     selectionStyle = .none
+    
     imageView?.isUserInteractionEnabled = true
     imageView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(isDoneToggle)))
+    if #available(iOS 13, *) {
+      let imageConfig = UIImage.SymbolConfiguration(pointSize: frame.height * 0.5, weight: .light, scale: .medium)
+      imageView?.image = R.Image.emptyCircle.image.withConfiguration(imageConfig)
+    } else {
+      imageView?.image = R.Image.emptyCircle.image
+    }
+    
+    let imageViewTop = imageView?.topAnchor.constraint(equalTo: contentView.topAnchor)
+    imageViewTop?.priority = .defaultHigh
     
     contentView.addSubview(textView)
     NSLayoutConstraint.activate([
-      textView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 8),
-      textView.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: -8),
-      textView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -8),
+      textView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 5),
+      textView.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: -5),
+      textView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -5),
     ])
     if let imageView = imageView {
-      textView.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 8).isActive = true
+      textView.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 5).isActive = true
     }
-    
   }
   
   @objc
   func isDoneToggle() {
     isDone.toggle()
-    imageView?.image = isDone ? R.Image.largeCircle.image : R.Image.emptyCircle.image
+    if #available(iOS 13, *) {
+      let imageConfig = UIImage.SymbolConfiguration(pointSize: 21, weight: .light, scale: .medium)
+      imageView?.image = isDone ?
+        R.Image.largeCircle.image.withConfiguration(imageConfig) :
+        R.Image.emptyCircle.image.withConfiguration(imageConfig)
+    } else {
+      imageView?.image = isDone ? R.Image.largeCircle.image : R.Image.emptyCircle.image
+    }
     layoutIfNeeded()
   }
 }

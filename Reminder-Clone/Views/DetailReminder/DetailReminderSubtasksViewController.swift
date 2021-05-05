@@ -29,7 +29,12 @@ class DetailReminderSubtasksViewController: UITableViewController {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailReminderSubtaskCell.identifier)
       as? DetailReminderSubtaskCell else { return UITableViewCell() }
     cell.delegate = self
-    cell.imageView?.image = R.Image.emptyCircle.image
+    if #available(iOS 13, *) {
+      let config = UIImage.SymbolConfiguration(pointSize: 21, weight: .light, scale: .medium)
+      cell.imageView?.image = R.Image.emptyCircle.image.withConfiguration(config)
+     } else {
+      cell.imageView?.image = R.Image.emptyCircle.image
+    }
     cell.textView.text = data[indexPath.row]
     return cell
   }
