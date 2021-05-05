@@ -20,7 +20,9 @@ class DetailReminderSubtasksViewController: UITableViewController {
     if indexPath.row == data.count {
       let cell = UITableViewCell()
       cell.imageView?.image = UIImage()
-      cell.textLabel?.text = "     Add Reminder"
+      cell.indentationLevel = 4
+      cell.textLabel?.text = "Add Reminder"
+      cell.textLabel?.textColor = .systemBlue
       return cell
     }
     
@@ -28,7 +30,7 @@ class DetailReminderSubtasksViewController: UITableViewController {
       as? DetailReminderSubtaskCell else { return UITableViewCell() }
     cell.delegate = self
     cell.imageView?.image = .emptyCircle
-    cell.textView.text = "HI"
+    cell.textView.text = data[indexPath.row]
     return cell
   }
 }
