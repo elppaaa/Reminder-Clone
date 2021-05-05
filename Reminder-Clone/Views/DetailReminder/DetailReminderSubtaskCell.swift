@@ -52,7 +52,7 @@ class DetailReminderSubtaskCell: UITableViewCell {
   @objc
   func isDoneToggle() {
     isDone.toggle()
-    imageView?.image = isDone ? UIImage.largeCircle : UIImage.emptyCircle
+    imageView?.image = isDone ? R.Image.largeCircle.image : R.Image.emptyCircle.image
     layoutIfNeeded()
   }
 }

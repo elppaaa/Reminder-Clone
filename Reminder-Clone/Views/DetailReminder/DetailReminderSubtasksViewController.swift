@@ -29,7 +29,7 @@ class DetailReminderSubtasksViewController: UITableViewController {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailReminderSubtaskCell.identifier)
       as? DetailReminderSubtaskCell else { return UITableViewCell() }
     cell.delegate = self
-    cell.imageView?.image = .emptyCircle
+    cell.imageView?.image = R.Image.emptyCircle.image
     cell.textView.text = data[indexPath.row]
     return cell
   }

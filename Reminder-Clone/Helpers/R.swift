@@ -13,4 +13,26 @@ enum R {
     static let defaultBackground = UIColor(named: "defaultBackground")!
     static let label = UIColor(named: "label")!
   }
+
+// swiftlint:disable type_name force_unwrapping
+  enum Image: String {
+    case largeCircle = "largecircle.fill.circle"
+    case emptyCircle = "circle"
+    case calendar = "calendar"
+    case clock = "clock.fill"
+    case location = "location.fill"
+    case folderCircle = "folder.circle.fill"
+    case calenderCircle = "calendar.circle.fill"
+    case trayCircle = "tray.circle.fill"
+    case flagCircle = "flag.circle.fill"
+    case flag = "flag.fill"
+    
+    var image: UIImage {
+      if #available(iOS 13, *) {
+        return UIImage(systemName: self.rawValue)!
+      } else {
+        return UIImage(named: self.rawValue)!
+      }
+    }
+  }
 }

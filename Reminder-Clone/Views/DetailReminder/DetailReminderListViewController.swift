@@ -6,10 +6,10 @@ import UIKit
 
 class DetailReminderListViewController: UITableViewController {
   var list: [HomeRadiusList] = [
-    .init(title: "School", icon: .calenderCircle, color: .systemBlue, count: 4),
-    .init(title: "Home", icon: .folderCircle, color: .systemPink, count: 4),
-    .init(title: "Test", icon: .flagCircle, color: .systemYellow, count: 4),
-    .init(title: "List", icon: .calenderCircle, color: .systemOrange, count: 4),
+    .init(title: "School", icon: R.Image.calenderCircle.image, color: .systemBlue, count: 4),
+    .init(title: "Home", icon: R.Image.folderCircle.image, color: .systemPink, count: 4),
+    .init(title: "Test", icon: R.Image.flagCircle.image, color: .systemYellow, count: 4),
+    .init(title: "List", icon: R.Image.calenderCircle.image, color: .systemOrange, count: 4),
   ]
   
   required init?(coder: NSCoder) { fatalError("Do not use this initializer") }

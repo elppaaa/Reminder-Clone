@@ -27,11 +27,11 @@ class ReminderTableViewCell: UITableViewCell {
       if data.isDone {
         title.textColor = .gray
         imageView?.tintColor = color
-        imageView?.image = .largeCircle
+        imageView?.image = R.Image.largeCircle.image
       } else {
         title.textColor = R.Color.label
         imageView?.tintColor = .gray
-        imageView?.image = .emptyCircle
+        imageView?.image = R.Image.emptyCircle.image
       }
       title.text = newValue?.title
       _data = newValue

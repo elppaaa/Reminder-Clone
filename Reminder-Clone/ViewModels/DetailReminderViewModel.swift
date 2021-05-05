@@ -24,20 +24,20 @@ class DetailReminderViewModel: NSObject {
     // 1
     [
       DetailReminderToggleCell(
-        title: "Date", image: .calendar, color: .systemRed, type: .date),
+        title: "Date", image: R.Image.calendar.image, color: .systemRed, type: .date),
       DetailReminderDateCell(isTimePicker: false, type: .date),
       DetailReminderToggleCell(
-        title: "Time", image: .clock, color: .systemBlue, type: .time),
+        title: "Time", image: R.Image.clock.image, color: .systemBlue, type: .time),
       DetailReminderDateCell(isTimePicker: true, type: .time)
     ],
     // 2
     [
       DetailReminderToggleCell(
-        title: "Location", image: .location, color: .systemBlue, type: .location)
+        title: "Location", image: R.Image.location.image, color: .systemBlue, type: .location)
     ],
     [
       DetailReminderToggleCell(
-        title: "Flag", image: .flag, color: .systemOrange, type: .flag)
+        title: "Flag", image: R.Image.flag.image, color: .systemOrange, type: .flag)
     ],
     [
       UITableViewCell(style: .value1, reuseIdentifier: nil),
