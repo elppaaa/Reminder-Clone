@@ -43,7 +43,7 @@ extension HomeListTableViewModel: UITableViewDataSource {
       as? HomeListTableCell else { fatalError("ERROR WHEN CREATE CELL") }
     let data = _data[indexPath.row]
     tableView.beginUpdates()
-    cell.configCell(with: data)
+    cell.config(with: data)
     tableView.endUpdates()
     return cell
   }
