@@ -72,14 +72,9 @@ extension DetailReminderViewModel: UITableViewDelegate {
   public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     switch (indexPath.section, indexPath.row) {
     case (4, 0):
-      if #available(iOS 13, *) {
-        let vc = DetailReminderPriorityViewController(style: .insetGrouped)
-        delegateVC?.pushVC(vc, animated: true)
-      } else {
-        let vc = DetailReminderPriorityViewController(style: .grouped)
-        delegateVC?.pushVC(vc, animated: true)
-      }
-  
+      let vc = DetailReminderPriorityViewController(style: .insetGrouped)
+      delegateVC?.pushVC(vc, animated: true)
+      
     case (4, 1):
       let vc = DetailReminderListViewController(style: .plain)
       delegateVC?.pushVC(vc, animated: true)

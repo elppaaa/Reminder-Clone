@@ -15,16 +15,12 @@ class DetailReminderTableView: UITableView {
    Entity 에서 가져온 값을 이용해 Dictionary 로 parse 작업 수행
    그런데, 이게 Data 에 있어야 하나? View Model 이 이니고? tableView 는 tableView 에.
    CoreData 처리는 따로 클래스를 생성. ViewModel 에서는 필요한 데이터를 가져오는 명령 / 및 결과만 가져오기.
-    
+   
    */
   let data: [TaskAttributesKey: Any] = [:]
   
   override init(frame: CGRect, style: UITableView.Style) {
-    if #available(iOS 13, *) {
-      super.init(frame: frame, style: .insetGrouped)
-    } else {
-      super.init(frame: frame, style: .grouped)
-    }
+    super.init(frame: frame, style: .insetGrouped)
     
     register(DetailReminderInputCell.self, forCellReuseIdentifier: DetailReminderInputCell.identifier)
     register(DetailReminderDateCell.self, forCellReuseIdentifier: DetailReminderDateCell.identifier)

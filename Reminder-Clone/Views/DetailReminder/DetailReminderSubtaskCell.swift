@@ -36,12 +36,8 @@ class DetailReminderSubtaskCell: UITableViewCell {
     
     imageView?.isUserInteractionEnabled = true
     imageView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(isDoneToggle)))
-    if #available(iOS 13, *) {
-      let imageConfig = UIImage.SymbolConfiguration(pointSize: frame.height * 0.5, weight: .light, scale: .medium)
-      imageView?.image = R.Image.emptyCircle.image.withConfiguration(imageConfig)
-    } else {
-      imageView?.image = R.Image.emptyCircle.image
-    }
+    let imageConfig = UIImage.SymbolConfiguration(pointSize: frame.height * 0.5, weight: .light, scale: .medium)
+    imageView?.image = R.Image.emptyCircle.image.withConfiguration(imageConfig)
     
     let imageViewTop = imageView?.topAnchor.constraint(equalTo: contentView.topAnchor)
     imageViewTop?.priority = .defaultHigh
@@ -60,14 +56,10 @@ class DetailReminderSubtaskCell: UITableViewCell {
   @objc
   func isDoneToggle() {
     isDone.toggle()
-    if #available(iOS 13, *) {
-      let imageConfig = UIImage.SymbolConfiguration(pointSize: 21, weight: .light, scale: .medium)
-      imageView?.image = isDone ?
-        R.Image.largeCircle.image.withConfiguration(imageConfig) :
-        R.Image.emptyCircle.image.withConfiguration(imageConfig)
-    } else {
-      imageView?.image = isDone ? R.Image.largeCircle.image : R.Image.emptyCircle.image
-    }
+    let imageConfig = UIImage.SymbolConfiguration(pointSize: 21, weight: .light, scale: .medium)
+    imageView?.image = isDone ?
+      R.Image.largeCircle.image.withConfiguration(imageConfig) :
+      R.Image.emptyCircle.image.withConfiguration(imageConfig)
     layoutIfNeeded()
   }
 }

@@ -21,10 +21,7 @@ class HomeListCollectionWrappedCell: UIView {
   }
   
   fileprivate func commonInit() {
-    if #available(iOS 13, *) {
-      // same width with UITableView .insetgrouped style
-      layoutMargins = .init(top: 0, left: 20, bottom: 0, right: 20)
-    }
+    layoutMargins = .init(top: 0, left: 20, bottom: 0, right: 20)
     
     addSubview(collection)
     NSLayoutConstraint.activate([

@@ -22,12 +22,8 @@ class HomeListTableCell: UITableViewCell {
   }
   
   func config(with data: HomeRadiusList) {
-    if #available(iOS 13, *) {
-      let config = UIImage.SymbolConfiguration(pointSize: 25, weight: .regular, scale: .large)
-      imageView?.image = data.icon.withConfiguration(config)
-    } else {
-      imageView?.image = data.icon
-    }
+    let config = UIImage.SymbolConfiguration(pointSize: 25, weight: .regular, scale: .large)
+    imageView?.image = data.icon.withConfiguration(config)
     imageView?.tintColor = data.color
     
     textLabel?.text = data.title

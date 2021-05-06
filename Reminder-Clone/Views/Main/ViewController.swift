@@ -93,10 +93,7 @@ extension ViewController {
 
       let imageAttach: NSTextAttachment = {
         let attach = NSTextAttachment()
-
-        guard let image = UIImage(named: "plus.circle.fill")?.with(color: .systemBlue) else {
-          return NSTextAttachment()
-        }
+        let image = R.Image.plusCircle.image.with(color: .systemBlue)
 
         attach.image = image
         attach.bounds = CGRect(x: 0, y: (font.capHeight - 25).rounded() / 2,

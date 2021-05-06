@@ -10,10 +10,10 @@
 		4808D8642632A52500DD8D27 /* HomeListTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4808D8632632A52500DD8D27 /* HomeListTableViewModel.swift */; };
 		483E581325B6D3DF004DF782 /* RemindersTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483E581225B6D3DF004DF782 /* RemindersTableViewModel.swift */; };
 		4879905A2628343100C6F416 /* Task+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487990582628343100C6F416 /* Task+CoreDataClass.swift */; };
+		48AF6E4826441DA900DD4B77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48F16E6B25A1B9820036D9A3 /* Assets.xcassets */; };
 		48F16E6025A1B9800036D9A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F16E5F25A1B9800036D9A3 /* AppDelegate.swift */; };
 		48F16E6725A1B9800036D9A3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48F16E6525A1B9800036D9A3 /* Main.storyboard */; };
 		48F16E6A25A1B9800036D9A3 /* Reminder_Clone.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 48F16E6825A1B9800036D9A3 /* Reminder_Clone.xcdatamodeld */; };
-		48F16E6C25A1B9820036D9A3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48F16E6B25A1B9820036D9A3 /* Assets.xcassets */; };
 		48F16E6F25A1B9820036D9A3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48F16E6D25A1B9820036D9A3 /* LaunchScreen.storyboard */; };
 		48F16E7925A1BA700036D9A3 /* CateogoryIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F16E7825A1BA700036D9A3 /* CateogoryIcon.swift */; };
 		48F16E7E25A1BB080036D9A3 /* CategoryColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F16E7D25A1BB080036D9A3 /* CategoryColor.swift */; };
@@ -166,6 +166,7 @@
 				48F16E6B25A1B9820036D9A3 /* Assets.xcassets */,
 				48F16E6D25A1B9820036D9A3 /* LaunchScreen.storyboard */,
 				48F16E7025A1B9820036D9A3 /* Info.plist */,
+				49A1E5FD4F73902C6018D486 /* HappyCodingSupport */,
 			);
 			path = "Reminder-Clone";
 			sourceTree = "<group>";
@@ -181,6 +182,13 @@
 				9413793C8C4BBAA8CE4CF5DA /* PersistentManager.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		49A1E5FD4F73902C6018D486 /* HappyCodingSupport */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = HappyCodingSupport;
 			sourceTree = "<group>";
 		};
 		94112D567C1C0ADD47B4AAD8 /* DetailReminder */ = {
@@ -306,9 +314,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48AF6E4826441DA900DD4B77 /* Assets.xcassets in Resources */,
 				48F16E9025A1C17D0036D9A3 /* .swiftlint.yml in Resources */,
 				48F16E6F25A1B9820036D9A3 /* LaunchScreen.storyboard in Resources */,
-				48F16E6C25A1B9820036D9A3 /* Assets.xcassets in Resources */,
 				48F16E6725A1B9800036D9A3 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -531,7 +539,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 78X32W2D44;
 				INFOPLIST_FILE = "Reminder-Clone/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -555,7 +563,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 78X32W2D44;
 				INFOPLIST_FILE = "Reminder-Clone/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

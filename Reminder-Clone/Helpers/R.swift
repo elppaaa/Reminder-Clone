@@ -26,13 +26,10 @@ enum R {
     case trayCircle = "tray.circle.fill"
     case flagCircle = "flag.circle.fill"
     case flag = "flag.fill"
+    case plusCircle = "plus.circle.fill"
     
     var image: UIImage {
-      if #available(iOS 13, *) {
-        return UIImage(systemName: self.rawValue)!
-      } else {
-        return UIImage(named: self.rawValue)!
-      }
+      UIImage(systemName: self.rawValue)!
     }
   }
 }
