@@ -31,6 +31,8 @@ class DetailReminderInputCell: DetailReminderViewCellBase {
   }
   
   func commonInit() {
+    selectionStyle = .none
+    
     cellHeightAnchor = textView.heightAnchor.constraint(
       equalToConstant: UIFont.preferredFont(forTextStyle: .body).lineHeight)
     cellHeightAnchor?.priority = .defaultLow

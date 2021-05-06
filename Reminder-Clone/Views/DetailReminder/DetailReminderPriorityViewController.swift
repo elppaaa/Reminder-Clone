@@ -15,9 +15,7 @@ class DetailReminderPriorityViewController: UITableViewController {
   let options: [TaskPriority] = [.none, .low, .medium, .high]
   var selectionIndex = IndexPath(row: 0, section: 0)
   
-  required init?(coder: NSCoder) {
-    fatalError()
-  }
+  required init?(coder: NSCoder) { fatalError("Do not use this initailizer") }
   
   override init(style: UITableView.Style) {
     super.init(style: style)

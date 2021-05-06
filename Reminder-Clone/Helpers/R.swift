@@ -27,6 +27,7 @@ enum R {
     case flagCircle = "flag.circle.fill"
     case flag = "flag.fill"
     case plusCircle = "plus.circle.fill"
+    case circleFill = "circle.fill"
     
     var image: UIImage {
       UIImage(systemName: self.rawValue)!

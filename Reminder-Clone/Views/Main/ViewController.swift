@@ -106,6 +106,7 @@ extension ViewController {
 
       return attributedString
     }()
+    label.isUserInteractionEnabled = true
     label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(newReminderButtondidTapped)))
 
     arr.append(UIBarButtonItem(customView: label))
@@ -118,7 +119,7 @@ extension ViewController {
 
   @objc
   func newReminderButtondidTapped() {
-
+    navigationController?.present(NewReminderViewController(), animated: true, completion: nil)
   }
 
   @objc
