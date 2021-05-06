@@ -119,7 +119,8 @@ extension ViewController {
 
   @objc
   func newReminderButtondidTapped() {
-    navigationController?.present(NewReminderViewController(), animated: true, completion: nil)
+    let vc = UINavigationController(rootViewController: NewReminderViewController())
+    navigationController?.present(vc, animated: true, completion: nil)
   }
 
   @objc

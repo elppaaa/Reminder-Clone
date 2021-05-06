@@ -59,7 +59,7 @@
 		4808D8632632A52500DD8D27 /* HomeListTableViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeListTableViewModel.swift; sourceTree = "<group>"; };
 		483E581225B6D3DF004DF782 /* RemindersTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersTableViewModel.swift; sourceTree = "<group>"; };
 		487990582628343100C6F416 /* Task+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+CoreDataClass.swift"; sourceTree = "<group>"; };
-		48AF6E492644219C00DD4B77 /* NewReminderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NewReminderViewController.swift; path = DetailReminder/NewReminderViewController.swift; sourceTree = "<group>"; };
+		48AF6E492644219C00DD4B77 /* NewReminderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewReminderViewController.swift; sourceTree = "<group>"; };
 		48F16E5C25A1B9800036D9A3 /* Reminder-Clone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Reminder-Clone.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		48F16E5F25A1B9800036D9A3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		48F16E6625A1B9800036D9A3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -127,6 +127,14 @@
 				9418BFA2B30003096FB95BDC /* DetailReminderViewModel+CellSelector.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		48AF6E4B2644363E00DD4B77 /* NewReminder */ = {
+			isa = PBXGroup;
+			children = (
+				48AF6E492644219C00DD4B77 /* NewReminderViewController.swift */,
+			);
+			path = NewReminder;
 			sourceTree = "<group>";
 		};
 		48D90A4C25AFA798008D0006 /* Helpers */ = {
@@ -214,7 +222,7 @@
 		94127520BF110D244CE8E382 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				48AF6E492644219C00DD4B77 /* NewReminderViewController.swift */,
+				48AF6E4B2644363E00DD4B77 /* NewReminder */,
 				94112D567C1C0ADD47B4AAD8 /* DetailReminder */,
 				941B2B102C064198FB86F4B3 /* Main */,
 				9414232E69F9F60F53C06601 /* RemindersTableView */,

@@ -17,6 +17,8 @@ class NewReminderViewController: UITableViewController {
   }
 
   func commonInit() {
+    configNavigation()
+
     tableView.rowHeight = UITableView.automaticDimension
     tableView.estimatedRowHeight = CGFloat(50)
 
@@ -88,6 +90,16 @@ extension NewReminderViewController {
     default:
       return UITableViewCell()
     }
+
+  }
+}
+
+extension NewReminderViewController {
+  func configNavigation() {
+    title = "New Reminder"
+
+    navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: nil)
+    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: nil)
 
   }
 }
