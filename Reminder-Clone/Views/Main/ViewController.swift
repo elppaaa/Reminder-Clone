@@ -111,7 +111,7 @@ extension ViewController {
 
     arr.append(UIBarButtonItem(customView: label))
     arr.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
-    arr.append(UIBarButtonItem(title: "Add List", style: .plain, target: nil, action: #selector(addListButtondidTapped)))
+    arr.append(UIBarButtonItem(title: "Add List", style: .plain, target: self, action: #selector(addListButtondidTapped)))
 
     toolbarItems = arr
 
@@ -125,7 +125,8 @@ extension ViewController {
 
   @objc
   func addListButtondidTapped() {
-
+    let vc = UINavigationController(rootViewController: NewListViewController())
+    navigationController?.present(vc, animated: true)
   }
 
 }
