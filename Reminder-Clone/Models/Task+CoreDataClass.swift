@@ -41,4 +41,15 @@ public class Task: NSManagedObject {
     dict[.subtasks] = subtasks
     return dict
   }
+
+  func set<T>(key: TaskAttributesKey, value: T) {
+    self.setValue(value, forKey: key.rawValue)
+  }
+
+  func set(dict: [TaskAttributesKey: Any]) {
+    for (k, v) in dict {
+      setValue(v, forKey: k.rawValue)
+    }
+  }
+  
 }
