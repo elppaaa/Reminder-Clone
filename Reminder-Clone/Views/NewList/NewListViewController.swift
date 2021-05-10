@@ -65,7 +65,12 @@ extension NewListViewController {
       return UICollectionViewCell()
     }
     cell.colorButton.backgroundColor = viewModel.colors[indexPath.row]
-    
+    cell.colorButton
+      .publisher(for: .touchUpInside)
+      .compactMap { $0.backgroundColor }
+      .assign(to: \.headerColor, on: viewModel)
+      .store(in: &cancelBag)
+
     return cell
   }
 
