@@ -12,6 +12,8 @@
 		4879905A2628343100C6F416 /* Task+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487990582628343100C6F416 /* Task+CoreDataClass.swift */; };
 		48AF6E4826441DA900DD4B77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48F16E6B25A1B9820036D9A3 /* Assets.xcassets */; };
 		48AF6E4A2644219C00DD4B77 /* NewReminderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AF6E492644219C00DD4B77 /* NewReminderViewController.swift */; };
+		48BD3F1626494997008D4420 /* UITextField+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BD3F1526494997008D4420 /* UITextField+Publisher.swift */; };
+		48BD3F1826495690008D4420 /* NewListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BD3F1726495690008D4420 /* NewListViewModel.swift */; };
 		48BFE0572646905000C963B7 /* NewListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BFE0562646905000C963B7 /* NewListViewController.swift */; };
 		48BFE05C264822BB00C963B7 /* NewListViewControllerHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BFE05B264822BB00C963B7 /* NewListViewControllerHeader.swift */; };
 		48F16E6025A1B9800036D9A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F16E5F25A1B9800036D9A3 /* AppDelegate.swift */; };
@@ -62,6 +64,8 @@
 		483E581225B6D3DF004DF782 /* RemindersTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersTableViewModel.swift; sourceTree = "<group>"; };
 		487990582628343100C6F416 /* Task+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+CoreDataClass.swift"; sourceTree = "<group>"; };
 		48AF6E492644219C00DD4B77 /* NewReminderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewReminderViewController.swift; sourceTree = "<group>"; };
+		48BD3F1526494997008D4420 /* UITextField+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Publisher.swift"; sourceTree = "<group>"; };
+		48BD3F1726495690008D4420 /* NewListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewListViewModel.swift; sourceTree = "<group>"; };
 		48BFE0562646905000C963B7 /* NewListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewListViewController.swift; sourceTree = "<group>"; };
 		48BFE05B264822BB00C963B7 /* NewListViewControllerHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewListViewControllerHeader.swift; sourceTree = "<group>"; };
 		48F16E5C25A1B9800036D9A3 /* Reminder-Clone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Reminder-Clone.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -124,6 +128,7 @@
 		4808D86526333EF900DD8D27 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				48BD3F1726495690008D4420 /* NewListViewModel.swift */,
 				4808D8632632A52500DD8D27 /* HomeListTableViewModel.swift */,
 				483E581225B6D3DF004DF782 /* RemindersTableViewModel.swift */,
 				9415E7001A48C856F9A95406 /* HomeListCollectionDataSource.swift */,
@@ -156,6 +161,7 @@
 				941C127D23ABF367A1893227 /* R.swift */,
 				941C476A953CD6D2B6E34574 /* Extensions */,
 				94153D577D3B76086A02B46E /* ViewControllerDelegate.swift */,
+				48BD3F1526494997008D4420 /* UITextField+Publisher.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -377,6 +383,7 @@
 				48F16E6A25A1B9800036D9A3 /* Reminder_Clone.xcdatamodeld in Sources */,
 				48F16E8625A1C0F60036D9A3 /* Cateogry+CoreDataClass.swift in Sources */,
 				48F16E6025A1B9800036D9A3 /* AppDelegate.swift in Sources */,
+				48BD3F1626494997008D4420 /* UITextField+Publisher.swift in Sources */,
 				483E581325B6D3DF004DF782 /* RemindersTableViewModel.swift in Sources */,
 				48F16E7E25A1BB080036D9A3 /* CategoryColor.swift in Sources */,
 				48F16E7925A1BA700036D9A3 /* CateogoryIcon.swift in Sources */,
@@ -408,6 +415,7 @@
 				941878EDFCC1F569F8F626FD /* DetailReminderToggleCell.swift in Sources */,
 				941D31A36A341A1ACE46008A /* DetailReminderViewCellBase.swift in Sources */,
 				9416B56D8E816C593EEE722D /* DetailReminderDateCell.swift in Sources */,
+				48BD3F1826495690008D4420 /* NewListViewModel.swift in Sources */,
 				941AE8FDA257305A7FC10E97 /* DetailReminderInputCell.swift in Sources */,
 				941A253E96D67C2A0F234861 /* DetailReminderTableView.swift in Sources */,
 				94159279264BD78ED8DD60BE /* ViewControllerDelegate.swift in Sources */,

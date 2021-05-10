@@ -11,7 +11,7 @@ extension UIImage {
     UIGraphicsBeginImageContextWithOptions(size, false, scale)
     color.set()
     image.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
-    image = UIGraphicsGetImageFromCurrentImageContext()!
+    image = UIGraphicsGetImageFromCurrentImageContext() ?? UIImage()
     UIGraphicsEndImageContext()
     return image
   }

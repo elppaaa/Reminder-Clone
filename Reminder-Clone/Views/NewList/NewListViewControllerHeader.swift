@@ -9,6 +9,11 @@ import UIKit
 
 class NewListViewControllerHeader: UICollectionReusableView {
   override var reuseIdentifier: String? { Self.identifier }
+  var text: String {
+    get { textField.text ?? "" }
+    set { textField.text = newValue }
+  }
+  
   required init?(coder: NSCoder) { fatalError("Do not use this initializer") }
   override init(frame: CGRect) {
     super.init(frame: frame)
