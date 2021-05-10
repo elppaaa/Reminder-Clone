@@ -9,9 +9,17 @@ import UIKit
 
 class NewListViewControllerHeader: UICollectionReusableView {
   override var reuseIdentifier: String? { Self.identifier }
-  var text: String {
-    get { textField.text ?? "" }
+  var text: String? {
+    get { textField.text }
     set { textField.text = newValue }
+  }
+
+  var color: UIColor? {
+    get { icon.backgroundColor }
+    set {
+      icon.backgroundColor = newValue
+      textField.textColor = newValue
+    }
   }
 
   var iconImage: UIImage? {
@@ -59,6 +67,7 @@ class NewListViewControllerHeader: UICollectionReusableView {
     text.translatesAutoresizingMaskIntoConstraints = false
     text.backgroundColor = .systemGray5
     text.font = .preferredFont(forTextStyle: .title1)
+    text.textAlignment = .center
     text.layer.cornerRadius = 10
     text.inputView?.layoutMargins = UIEdgeInsets(top: 8, left: 5, bottom: 8, right: 5)
     return text

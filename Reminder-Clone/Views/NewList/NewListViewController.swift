@@ -83,7 +83,7 @@ extension NewListViewController {
 
       viewModel.$headerColor
         .map { $0 }
-        .assign(to: \.backgroundColor, on: header.icon)
+        .assign(to: \.color, on: header)
         .store(in: &cancelBag)
 
       viewModel.$headerImage
