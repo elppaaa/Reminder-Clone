@@ -13,7 +13,18 @@ class NewListViewControllerHeader: UICollectionReusableView {
     get { textField.text ?? "" }
     set { textField.text = newValue }
   }
-  
+
+  var iconImage: UIImage? {
+    get { icon.image }
+    set {
+      let config = UIImage.SymbolConfiguration(pointSize: 80, weight: .bold, scale: .default)
+      icon.image = newValue?
+        .withConfiguration(config)
+        .with(color: .white)
+        .wrapBox(size: 150)
+    }
+  }
+
   required init?(coder: NSCoder) { fatalError("Do not use this initializer") }
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -36,6 +47,9 @@ class NewListViewControllerHeader: UICollectionReusableView {
     let v = CircleImageView()
     v.sizeToFit()
     v.translatesAutoresizingMaskIntoConstraints = false
+    v.tintColor = .white
+    v.contentMode = .scaleAspectFit
+    v.clipsToBounds = true
     return v
   }()
 
@@ -63,8 +77,6 @@ class NewListViewControllerHeader: UICollectionReusableView {
 
     mainStack.addArrangedSubview(icon)
     mainStack.addArrangedSubview(textField)
-
-    icon.backgroundColor = .systemPink
 
     let fontHeight = UIFont.preferredFont(forTextStyle: .title1).lineHeight
 

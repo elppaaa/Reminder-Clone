@@ -72,11 +72,23 @@ extension NewListViewController {
               as? NewListViewControllerHeader else { return UICollectionReusableView() }
 
       header.textField.textPublisher
+        .compactMap { $0 }
         .assign(to: \.headerText, on: viewModel)
         .store(in: &cancelBag)
 
       viewModel.$headerText
-        .assign(to: \.text, on: header)
+        .map { $0 }
+        .assign(to: \.text, on: header.textField)
+        .store(in: &cancelBag)
+
+      viewModel.$headerColor
+        .map { $0 }
+        .assign(to: \.backgroundColor, on: header.icon)
+        .store(in: &cancelBag)
+
+      viewModel.$headerImage
+        .map { $0 }
+        .assign(to: \.iconImage, on: header)
         .store(in: &cancelBag)
 
       return header
