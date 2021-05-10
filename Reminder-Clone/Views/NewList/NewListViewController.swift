@@ -17,11 +17,11 @@ class NewListViewController: UICollectionViewController {
   override func loadView() {
     super.loadView()
 
-    collectionView.register(TMPCell.self, forCellWithReuseIdentifier: TMPCell.identifier)
     collectionView.register(
       NewListViewControllerHeader.self,
       forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
       withReuseIdentifier: NewListViewControllerHeader.identifier)
+    collectionView.register(NewListColorCell.self, forCellWithReuseIdentifier: NewListColorCell.identifier)
   }
 
   override func viewDidLoad() {
@@ -39,12 +39,12 @@ class NewListViewController: UICollectionViewController {
 extension NewListViewController {
   class func createLayout() -> UICollectionViewLayout {
     let layout = UICollectionViewFlowLayout()
-    layout.itemSize = .init(width: 30, height: 30)
-    let width = UIScreen.main.bounds.width
-    layout.headerReferenceSize = .init(width: width, height: 250.0)
-    layout.minimumLineSpacing = 10
-    layout.minimumInteritemSpacing = 10
-    layout.sectionInset = .zero
+    layout.headerReferenceSize = .init(width: layout.collectionViewContentSize.width, height: 250.0)
+
+    layout.itemSize = .init(width: 40, height: 40)
+    layout.minimumLineSpacing = 20
+    layout.minimumInteritemSpacing = 20
+    layout.sectionInset = .init(top: 30, left: 30, bottom: 30, right: 30)
     return layout
   }
 }
@@ -56,11 +56,17 @@ extension NewListViewController {
   }
 
   override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    1
+    viewModel.colors.count
   }
 
   override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    return collectionView.dequeueReusableCell(withReuseIdentifier: TMPCell.identifier, for: indexPath)
+    guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: NewListColorCell.identifier, for: indexPath) as? NewListColorCell else {
+      return UICollectionViewCell()
+    }
+    cell.colorButton.backgroundColor = viewModel.colors[indexPath.row]
+    
+    return cell
   }
 
   override func collectionView(_ collectionView: UICollectionView,
@@ -96,9 +102,4 @@ extension NewListViewController {
 
     return UICollectionReusableView()
   }
-}
-
-// MARK: - cell, will remove
-class TMPCell: UICollectionViewCell {
-  override var reuseIdentifier: String? { Self.identifier }
 }

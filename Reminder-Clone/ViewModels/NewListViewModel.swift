@@ -12,4 +12,6 @@ class NewListViewModel: NSObject {
   @Published var headerText: String = "" 
   @Published var headerColor: UIColor = UIColor.systemBlue
   @Published var headerImage: UIImage = R.Image.listBullet.image
+
+  let colors: [UIColor] = [ .systemRed, .systemOrange, .systemYellow, .systemGreen, .systemBlue, .systemPurple, .brown]
 }
