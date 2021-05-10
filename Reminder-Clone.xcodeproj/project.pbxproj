@@ -15,6 +15,7 @@
 		48BD3F1626494997008D4420 /* UITextField+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BD3F1526494997008D4420 /* UITextField+Publisher.swift */; };
 		48BD3F1826495690008D4420 /* NewListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BD3F1726495690008D4420 /* NewListViewModel.swift */; };
 		48BD3F1A26499560008D4420 /* NewListColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BD3F1926499560008D4420 /* NewListColorCell.swift */; };
+		48BD3F2126499F78008D4420 /* UIControl+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BD3F2026499F77008D4420 /* UIControl+Publisher.swift */; };
 		48BFE0572646905000C963B7 /* NewListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BFE0562646905000C963B7 /* NewListViewController.swift */; };
 		48BFE05C264822BB00C963B7 /* NewListViewControllerHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BFE05B264822BB00C963B7 /* NewListViewControllerHeader.swift */; };
 		48F16E6025A1B9800036D9A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F16E5F25A1B9800036D9A3 /* AppDelegate.swift */; };
@@ -68,6 +69,7 @@
 		48BD3F1526494997008D4420 /* UITextField+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Publisher.swift"; sourceTree = "<group>"; };
 		48BD3F1726495690008D4420 /* NewListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewListViewModel.swift; sourceTree = "<group>"; };
 		48BD3F1926499560008D4420 /* NewListColorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewListColorCell.swift; sourceTree = "<group>"; };
+		48BD3F2026499F77008D4420 /* UIControl+Publisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIControl+Publisher.swift"; sourceTree = "<group>"; };
 		48BFE0562646905000C963B7 /* NewListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewListViewController.swift; sourceTree = "<group>"; };
 		48BFE05B264822BB00C963B7 /* NewListViewControllerHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewListViewControllerHeader.swift; sourceTree = "<group>"; };
 		48F16E5C25A1B9800036D9A3 /* Reminder-Clone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Reminder-Clone.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -148,6 +150,15 @@
 			path = NewReminder;
 			sourceTree = "<group>";
 		};
+		48BD3F1F26499F4D008D4420 /* Publisher */ = {
+			isa = PBXGroup;
+			children = (
+				48BD3F2026499F77008D4420 /* UIControl+Publisher.swift */,
+				48BD3F1526494997008D4420 /* UITextField+Publisher.swift */,
+			);
+			path = Publisher;
+			sourceTree = "<group>";
+		};
 		48BFE0582646905A00C963B7 /* NewList */ = {
 			isa = PBXGroup;
 			children = (
@@ -164,7 +175,7 @@
 				941C127D23ABF367A1893227 /* R.swift */,
 				941C476A953CD6D2B6E34574 /* Extensions */,
 				94153D577D3B76086A02B46E /* ViewControllerDelegate.swift */,
-				48BD3F1526494997008D4420 /* UITextField+Publisher.swift */,
+				48BD3F1F26499F4D008D4420 /* Publisher */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -395,6 +406,7 @@
 				94193E174454CE6F5B10AB07 /* R.swift in Sources */,
 				9418D4260F254B9DC4BCB690 /* DetailReminderViewModel.swift in Sources */,
 				4808D8642632A52500DD8D27 /* HomeListTableViewModel.swift in Sources */,
+				48BD3F2126499F78008D4420 /* UIControl+Publisher.swift in Sources */,
 				941A24EAC4D03053636A56C5 /* PersistentManager.swift in Sources */,
 				941E890968907B23FB486D38 /* DetailReminderViewController.swift in Sources */,
 				48AF6E4A2644219C00DD4B77 /* NewReminderViewController.swift in Sources */,
