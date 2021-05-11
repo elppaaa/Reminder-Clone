@@ -14,4 +14,14 @@ extension UIView {
       trailingAnchor.constraint(equalTo: parent.trailingAnchor),
     ])
   }
+
+  func pin(safe parent: UIView) {
+    parent.addSubview(self)
+    NSLayoutConstraint.activate([
+      topAnchor.constraint(equalTo: parent.safeAreaLayoutGuide.topAnchor),
+      bottomAnchor.constraint(equalTo: parent.safeAreaLayoutGuide.bottomAnchor),
+      leadingAnchor.constraint(equalTo: parent.safeAreaLayoutGuide.leadingAnchor),
+      trailingAnchor.constraint(equalTo: parent.safeAreaLayoutGuide.trailingAnchor),
+    ])
+  }
 }

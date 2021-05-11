@@ -38,18 +38,11 @@ extension NewListView {
     header.translatesAutoresizingMaskIntoConstraints = false
     collectionView.translatesAutoresizingMaskIntoConstraints = false
 
-    addSubview(stack)
+    stack.pin(safe: self)
     stack.addArrangedSubview(header)
     stack.addArrangedSubview(collectionView)
 
-    NSLayoutConstraint.activate([
-      stack.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-      stack.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
-      stack.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-      stack.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-
-      header.heightAnchor.constraint(equalToConstant: 300),
-    ])
+    header.heightAnchor.constraint(equalToConstant: 300).isActive = true
   }
   
   func registerCells() {
