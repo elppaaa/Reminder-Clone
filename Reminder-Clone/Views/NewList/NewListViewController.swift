@@ -15,6 +15,9 @@ class NewListViewController: UIViewController {
   private var cancelBag = Set<AnyCancellable>()
   private var selectedColorCell = IndexPath(item: 0, section: 0)
 
+  let cancel = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: nil)
+  let done = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: nil)
+
   override func loadView() {
     super.loadView()
     view = contentView
@@ -25,13 +28,16 @@ class NewListViewController: UIViewController {
     contentView.collectionView.dataSource = self
     contentView.collectionView.delegate = self
 
-    view.backgroundColor = .white
-
     defaultNavigationConfig()
     navigationController?.navigationBar.shadowImage = UIImage()
+    navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+
     title = "New List"
 
     binding()
+    
+    navigationItem.leftBarButtonItem = cancel
+    navigationItem.rightBarButtonItem = done
   }
 }
 
