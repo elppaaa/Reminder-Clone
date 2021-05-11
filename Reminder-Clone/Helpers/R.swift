@@ -12,6 +12,8 @@ enum R {
     static let systemGray6 = UIColor(named: "systemGray6")!
     static let defaultBackground = UIColor(named: "defaultBackground")!
     static let label = UIColor(named: "label")!
+    static let lightBlue = UIColor(hex: 0x6AA7F0)
+    static let rose = UIColor(hex: 0xD5A9A4)
   }
 
 // swiftlint:disable type_name force_unwrapping
