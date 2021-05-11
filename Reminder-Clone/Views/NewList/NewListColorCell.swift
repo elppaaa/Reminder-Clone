@@ -16,15 +16,17 @@ class NewListColorCell: UICollectionViewCell {
     configLayout()
   }
 
-  let button: UIView = {
+  lazy var button: UIView = {
+    let size = bounds.width
     $0.translatesAutoresizingMaskIntoConstraints = false
-    $0.bounds.size = CGSize(width: 40, height: 40)
+    $0.bounds.size = CGSize(width: size, height: size)
     $0.layer.cornerRadius = $0.frame.height / 2.0
     return $0
   }(UIView())
 
-  let strokeLayer: CALayer = {
-    let path = UIBezierPath(ovalIn: CGRect(origin: CGPoint(x: -5, y: -5), size: CGSize(width: 50, height: 50)))
+  lazy var strokeLayer: CALayer = {
+    let size = bounds.width
+    let path = UIBezierPath(ovalIn: CGRect(origin: CGPoint(x: -5, y: -5), size: CGSize(width: size + 10, height: size + 10)))
     $0.path = path.cgPath
     $0.strokeColor = UIColor.systemGray2.cgColor
     $0.lineWidth = 3

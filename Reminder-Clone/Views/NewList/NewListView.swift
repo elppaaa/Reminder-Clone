@@ -51,10 +51,17 @@ extension NewListView {
 
   func createLayout() -> UICollectionViewLayout {
     let layout = UICollectionViewFlowLayout()
-    layout.itemSize = .init(width: 40, height: 40)
-    layout.minimumLineSpacing = 20
-    layout.minimumInteritemSpacing = 20
-    layout.sectionInset = .init(top: 30, left: 30, bottom: 30, right: 30)
+    let screenWidth = UIScreen.main.bounds.width
+    let space: CGFloat = 14
+    let inset: CGFloat = 20
+
+    let collectionWidth = screenWidth - inset * 2
+    let cellWidth: CGFloat = (collectionWidth - space * 5) / 6
+    layout.itemSize = .init(width: cellWidth, height: cellWidth)
+
+    layout.minimumLineSpacing = space
+    layout.minimumInteritemSpacing = space
+    layout.sectionInset = .init(top: inset, left: inset, bottom: inset, right: inset)
     return layout
   }
 }
