@@ -13,6 +13,7 @@ class NewListViewController: UIViewController {
   private lazy var contentView = NewListView()
   private let viewModel = NewListViewModel()
   private var cancelBag = Set<AnyCancellable>()
+  private var selectedColorCell = IndexPath(item: 0, section: 0)
 
   override func loadView() {
     super.loadView()
@@ -22,6 +23,8 @@ class NewListViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     contentView.collectionView.dataSource = self
+    contentView.collectionView.delegate = self
+
     view.backgroundColor = .white
 
     defaultNavigationConfig()
@@ -48,16 +51,25 @@ extension NewListViewController: UICollectionViewDataSource {
       return UICollectionViewCell()
     }
 
-    cell.colorButton.backgroundColor = viewModel.colors[indexPath.row]
-    cell.colorButton
-      .publisher(for: .touchUpInside)
-      .compactMap { $0.backgroundColor }
-      .assign(to: \.headerColor, on: viewModel)
-      .store(in: &cancelBag)
-
+    cell.button.backgroundColor = viewModel.colors[indexPath.row]
     return cell
   }
 
+}
+
+extension NewListViewController: UICollectionViewDelegate {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    guard let cell = collectionView.cellForItem(at: indexPath) as? NewListColorCell,
+          let prevCell = collectionView.cellForItem(at: selectedColorCell) as? NewListColorCell else { return }
+
+    collectionView.performBatchUpdates {
+      cell.strokeLayer.isHidden = false
+      prevCell.strokeLayer.isHidden = true
+    }
+
+    selectedColorCell = indexPath
+    viewModel.headerColor = viewModel.colors[indexPath.item]
+  }
 }
 
 extension NewListViewController {

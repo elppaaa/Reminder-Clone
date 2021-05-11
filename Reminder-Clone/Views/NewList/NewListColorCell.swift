@@ -16,14 +16,26 @@ class NewListColorCell: UICollectionViewCell {
     configLayout()
   }
 
-  let colorButton: UIButton = {
+  let button: UIView = {
     $0.translatesAutoresizingMaskIntoConstraints = false
     $0.bounds.size = CGSize(width: 40, height: 40)
     $0.layer.cornerRadius = $0.frame.height / 2.0
     return $0
-  }(UIButton())
+  }(UIView())
+
+  let strokeLayer: CALayer = {
+    let path = UIBezierPath(ovalIn: CGRect(origin: CGPoint(x: -5, y: -5), size: CGSize(width: 50, height: 50)))
+    $0.path = path.cgPath
+    $0.strokeColor = UIColor.systemGray2.cgColor
+    $0.lineWidth = 3
+    $0.fillColor = .none
+    return $0
+  }(CAShapeLayer())
 
   func configLayout() {
-    colorButton.pin(parent: contentView)
+    button.pin(safe: contentView)
+
+    button.layer.addSublayer(strokeLayer)
+    strokeLayer.isHidden = true
   }
 }
