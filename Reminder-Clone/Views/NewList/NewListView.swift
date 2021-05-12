@@ -46,7 +46,7 @@ extension NewListView {
   }
   
   func registerCells() {
-    collectionView.register(NewListColorCell.self, forCellWithReuseIdentifier: NewListColorCell.identifier)
+    collectionView.register(NewListCell.self, forCellWithReuseIdentifier: NewListCell.identifier)
   }
 
   func createLayout() -> UICollectionViewLayout {

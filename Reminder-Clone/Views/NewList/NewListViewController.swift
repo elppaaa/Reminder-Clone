@@ -13,7 +13,8 @@ class NewListViewController: UIViewController {
   private lazy var contentView = NewListView()
   private let viewModel = NewListViewModel()
   private var cancelBag = Set<AnyCancellable>()
-  private var selectedColorCell = IndexPath(item: 0, section: 0)
+  private var selectedColorCell: IndexPath?
+  private var selectedIconCell: IndexPath?
 
   let cancel = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: nil)
   let done = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: nil)
@@ -44,37 +45,67 @@ class NewListViewController: UIViewController {
 // MARK: - dataSource
 extension NewListViewController: UICollectionViewDataSource {
   func numberOfSections(in collectionView: UICollectionView) -> Int {
-    1
+    2
   }
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    viewModel.colors.count
+    switch section {
+    case 0:
+     return viewModel.colors.count
+    case 1:
+      return viewModel.images.count
+    default:
+      return 0
+    }
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: NewListColorCell.identifier, for: indexPath) as? NewListColorCell else {
+            withReuseIdentifier: NewListCell.identifier, for: indexPath) as? NewListCell else {
       return UICollectionViewCell()
     }
 
-    cell.button.backgroundColor = viewModel.colors[indexPath.row]
+    switch indexPath.section {
+    case 0:
+      cell.backgroundCircle.fillColor = viewModel.colors[indexPath.item].cgColor
+    case 1:
+      cell.backgroundCircle.fillColor = UIColor.systemGray5.cgColor
+      cell.icon.image = viewModel.images[indexPath.item]
+    default:
+      assert(false, "section 2 not used")
+    }
     return cell
   }
-
 }
 
 extension NewListViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    guard let cell = collectionView.cellForItem(at: indexPath) as? NewListColorCell,
-          let prevCell = collectionView.cellForItem(at: selectedColorCell) as? NewListColorCell else { return }
+    let prevIndexPath: IndexPath?
 
-    collectionView.performBatchUpdates {
-      cell.strokeLayer.isHidden = false
-      prevCell.strokeLayer.isHidden = true
+    switch indexPath.section {
+    case 0:
+      prevIndexPath = selectedColorCell
+      selectedColorCell = indexPath
+      viewModel.headerColor = viewModel.colors[indexPath.item]
+    case 1:
+      prevIndexPath = selectedIconCell
+      selectedIconCell = indexPath
+      viewModel.headerImage = viewModel.images[indexPath.item]
+    default:
+      return
     }
 
-    selectedColorCell = indexPath
-    viewModel.headerColor = viewModel.colors[indexPath.item]
+    guard let cell = collectionView.cellForItem(at: indexPath) as? NewListCell else { return }
+
+    if let prev = prevIndexPath,
+       let prevCell = collectionView.cellForItem(at: prev) as? NewListCell {
+      collectionView.performBatchUpdates {
+        cell.strokeLayer.isHidden = false
+        prevCell.strokeLayer.isHidden = true
+      }
+    } else {
+      collectionView.performBatchUpdates { cell.strokeLayer.isHidden = false }
+    }
   }
 }
 

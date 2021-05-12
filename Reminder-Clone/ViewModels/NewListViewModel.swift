@@ -15,4 +15,6 @@ class NewListViewModel: NSObject {
 
   let colors: [UIColor] = [ .systemRed, .systemOrange, .systemYellow, .systemGreen, R.Color.lightBlue,
                             .systemBlue, .systemIndigo, .systemPink, .systemPurple, .brown, .darkGray, R.Color.rose]
+
+  let images: [UIImage] = [ R.Image.calendar.image, R.Image.clock.image, R.Image.location.image ]
 }

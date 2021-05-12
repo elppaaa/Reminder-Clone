@@ -52,7 +52,7 @@ class NewListViewControllerHeader: UICollectionReusableView {
   }()
 
   let icon: UIImageView = {
-    let v = CircleImageView()
+    let v = CircleImageViewTMP()
     v.sizeToFit()
     v.translatesAutoresizingMaskIntoConstraints = false
     v.tintColor = .white
@@ -104,7 +104,7 @@ class NewListViewControllerHeader: UICollectionReusableView {
   }
 }
 
-class CircleImageView: UIImageView {
+class CircleImageViewTMP: UIImageView {
   override func layoutSubviews() {
     super.layoutSubviews()
     clipsToBounds = true
