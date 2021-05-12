@@ -67,10 +67,10 @@ extension NewListViewController: UICollectionViewDataSource {
 
     switch indexPath.section {
     case 0:
-      cell.backgroundCircle.fillColor = viewModel.colors[indexPath.item].cgColor
+      cell.circleImageView.setBackground(viewModel.colors[indexPath.item])
     case 1:
-      cell.backgroundCircle.fillColor = UIColor.systemGray5.cgColor
-      cell.icon.image = viewModel.images[indexPath.item]
+      cell.circleImageView.setImage(viewModel.images[indexPath.item], tint: .darkGray)
+      cell.circleImageView.setBackground(.systemGray5)
     default:
       assert(false, "section 2 not used")
     }

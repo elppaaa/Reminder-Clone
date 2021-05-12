@@ -15,26 +15,6 @@ class NewListCell: UICollectionViewCell {
     configLayout()
   }
 
-  lazy var icon: UIImageView = {
-    let size = bounds.width
-    $0.translatesAutoresizingMaskIntoConstraints = false
-    $0.contentMode = .center
-    $0.preferredSymbolConfiguration = .init(pointSize: size * 0.5)
-    $0.tintColor = .darkGray
-    $0.backgroundColor = .none
-    $0.sizeToFit()
-    $0.pin(parent: contentView)
-    return $0
-  }(UIImageView())
-
-  lazy var backgroundCircle: CAShapeLayer = {
-    let size = bounds.width
-    let path = UIBezierPath(ovalIn: CGRect(origin: .zero, size: CGSize(width: size, height: size)))
-    $0.path = path.cgPath
-    $0.filters = .none
-    return $0
-  }(CAShapeLayer())
-
   lazy var strokeLayer: CALayer = {
     let size = bounds.width
     let path = UIBezierPath(
@@ -46,9 +26,11 @@ class NewListCell: UICollectionViewCell {
     return $0
   }(CAShapeLayer())
 
+  lazy var circleImageView = CircleView(frame: bounds)
+
   func configLayout() {
+    circleImageView.pin(parent: contentView)
     layer.addSublayer(strokeLayer)
-    layer.addSublayer(backgroundCircle)
     strokeLayer.isHidden = true
   }
 }
