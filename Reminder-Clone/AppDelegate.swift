@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     #endif
     
     window = UIWindow(frame: UIScreen.main.bounds)
-    window?.rootViewController = UINavigationController(rootViewController: ViewController(style: .insetGrouped))
+    window?.rootViewController = UINavigationController(rootViewController: MainViewController(style: .insetGrouped))
     window?.makeKeyAndVisible()
     
     return true
@@ -30,10 +30,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
 }
 
-func homeInject(_ vc: UIViewController = ViewController(style: .grouped)) {
+func homeInject(_ vc: UIViewController = MainViewController()) {
   //change vc
   //swiftlint:disable force_unwrapping
   UIApplication.shared.windows.first!.rootViewController = nil
-  let vc = UINavigationController(rootViewController: ViewController(style: .insetGrouped))
+  let vc = UINavigationController(rootViewController: MainViewController())
   UIApplication.shared.windows.first!.rootViewController = UINavigationController(rootViewController: vc)
 }

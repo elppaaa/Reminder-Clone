@@ -8,7 +8,7 @@ protocol HomeListDataSource: NSObject {
   var data: [HomeRadiusList] { get }
 }
 
-class HomeListCollectionDataSource: NSObject, HomeListDataSource {
+class HomeListCollectionDataSource: NSObject {
   var data: [HomeRadiusList] {
     _data
   }
@@ -39,7 +39,7 @@ extension HomeListCollectionDataSource: UICollectionViewDataSource {
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     if let customCell = collectionView.dequeueReusableCell(
-      withReuseIdentifier: HomeListCollectionViewCell.identifier, for: indexPath) as? HomeListCollectionViewCell {
+      withReuseIdentifier: MainListCollectionViewCell.identifier, for: indexPath) as? MainListCollectionViewCell {
       let cell = customCell
       let _data = data[indexPath.row]
       customCell.configCell(with: _data)

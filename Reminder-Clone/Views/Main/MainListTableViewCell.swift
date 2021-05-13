@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HomeListTableCell: UITableViewCell {
+class MainListTableViewCell: UITableViewCell {
   required init?(coder: NSCoder) { fatalError("Do not use this initializer") }
   override init(style: UITableViewCell.CellStyle, reuseIdentifier _: String? = nil) {
     super.init(style: style, reuseIdentifier: Self.identifier)

@@ -4,18 +4,14 @@
 
 import UIKit
 
-class HomeListCollectionViewCell: UICollectionViewCell {
-  fileprivate let size: CGFloat = 35.0
-  
+class MainListCollectionViewCell: UICollectionViewCell {
+  required init?(coder: NSCoder) { fatalError("Do not use this initializer") }
   override init(frame: CGRect = .zero) {
     super.init(frame: frame)
     configLayout()
   }
   
-  required init?(coder: NSCoder) {
-    super.init(coder: coder)
-    configLayout()
-  }
+  fileprivate let size: CGFloat = 35.0
   
   fileprivate let mainStack: UIStackView = {
     let stack = UIStackView()
@@ -73,10 +69,4 @@ class HomeListCollectionViewCell: UICollectionViewCell {
     icon.setImage(data.icon)
     icon.setBackground(data.color)
   }
-
-  #if DEBUG
-  @objc func injected() {
-    homeInject()
-  }
-  #endif
 }
