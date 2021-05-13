@@ -6,20 +6,20 @@
 //
 
 import UIKit
+import Combine
 
 // TODO: Get from core data
 
 class RemindersViewController: UITableViewController {
   // TODO: Get from core data
   var pagePrimaryColor: UIColor = .clear
-  let customDataSource = RemindersTableViewModel()
-  
+  fileprivate let viewModel = RemindersTableViewModel()
+  fileprivate var cacnelBag = Set<AnyCancellable>()
+
   override func loadView() {
     super.loadView()
     tableView.register(ReminderTableViewCell.self, forCellReuseIdentifier: ReminderTableViewCell.identifier)
-    customDataSource.primaryColor = pagePrimaryColor
-    tableView.dataSource = customDataSource
-    tableView.delegate = customDataSource
+    viewModel.primaryColor = pagePrimaryColor
     tableView.estimatedRowHeight = 40
     tableView.allowsMultipleSelectionDuringEditing = true
     tableView.keyboardDismissMode = .interactive
@@ -30,7 +30,6 @@ class RemindersViewController: UITableViewController {
     view.backgroundColor = R.Color.defaultBackground
     
     configLayout()
-    configClosure()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -41,14 +40,7 @@ class RemindersViewController: UITableViewController {
     tableView.reloadData()
     super.viewWillAppear(true)
   }
-  
-  func configClosure() {
-    customDataSource.present = {
-      (vc) in
-      self.navigationController?.present(vc, animated: true)
-    }
-  }
-  
+
   #if DEBUG
     @objc func injected() {
       let vc = RemindersViewController()
@@ -63,5 +55,48 @@ extension RemindersViewController {
   fileprivate func configLayout() {
     tableView.tableFooterView = UIView()
     tableView.tableHeaderView = UIView()
+  }
+}
+
+// MARK: - DataSource
+extension RemindersViewController {
+  override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    true
+  }
+
+  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    viewModel.tasks.count
+  }
+
+  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: ReminderTableViewCell.identifier, for: indexPath) as? ReminderTableViewCell else {
+      fatalError("Cell Not Founded")
+    }
+    let data = viewModel.tasks[indexPath.row]
+
+    if let color = viewModel.primaryColor {
+      cell.config(color: color)
+    }
+    cell.config(data: data)
+
+    // cell to viewModel
+    cell.$data
+      .compactMap { return $0 }
+      .assign(to: \.tasks[indexPath.row], on: viewModel)
+      .store(in: &cacnelBag)
+
+    return cell
+  }
+}
+
+// MARK: - Delegate
+extension RemindersViewController {
+  override public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+    let vc = DetailReminderViewController()
+    vc.data = viewModel.tasks[indexPath.row]
+
+    navigationController?.present(
+      UINavigationController(rootViewController: vc), animated: true, completion: nil)
   }
 }

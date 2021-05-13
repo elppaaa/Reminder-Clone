@@ -6,25 +6,14 @@
 //
 
 import UIKit
+import Combine
 
 class ReminderTableViewCell: UITableViewCell {
-  var delegate: RemindersTableViewModelDelegate?
   var color: UIColor = .clear
-  var _data: MyTask? = nil
-  var data: MyTask? {
-    get {
-      if let data = _data {
-        return data
-      } else {
-        fatalError("ERROR")
-      }
-    }
-    set {
-      guard let data = newValue else {
-        return
-      }
-      title.text = data.title
-      if data.isDone {
+  @Published var data: MyTask? = nil {
+    didSet {
+      title.text = data?.title
+      if data?.isDone ?? true {
         title.textColor = .gray
         imageView?.tintColor = color
         imageView?.image = R.Image.largeCircle.image
@@ -33,19 +22,17 @@ class ReminderTableViewCell: UITableViewCell {
         imageView?.tintColor = .gray
         imageView?.image = R.Image.emptyCircle.image
       }
-      title.text = newValue?.title
-      _data = newValue
     }
   }
   
-  let title: UITextField = {
+  fileprivate let title: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
     textField.isUserInteractionEnabled = true
     return textField
   }()
   
-  let mainStack: UIStackView = {
+  fileprivate let mainStack: UIStackView = {
     let stack = UIStackView()
     stack.translatesAutoresizingMaskIntoConstraints = false
     stack.axis = .horizontal
@@ -64,7 +51,7 @@ class ReminderTableViewCell: UITableViewCell {
     
   }
   
-  func configLayout() {
+  fileprivate func configLayout() {
     imageView?.translatesAutoresizingMaskIntoConstraints = true
     imageView?.layoutMargins = .zero
     imageView?.contentMode = .scaleToFill
@@ -94,24 +81,14 @@ class ReminderTableViewCell: UITableViewCell {
   
   @objc func toggleIsDone() {
     data?.isDone.toggle()
-    if let data = data {
-      delegate?.changeData(with: data)
-    }
   }
   
   @objc func didEditingStatusChanged() {
-    updateTitle()
-  }
-  
-  func updateTitle() {
     if let text = title.text {
       data?.title = text
-      if let data = data {
-        delegate?.changeData(with: data)
-      }
     }
   }
-  
+
   @objc func changeAccessoryType() {
     accessoryType = title.isEditing ? .detailButton : .none
   }
