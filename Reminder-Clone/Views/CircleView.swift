@@ -21,10 +21,10 @@ class CircleView: UIView {
   }(UIImageView())
 
   lazy var circleLayer: CAShapeLayer = {
-    let path = UIBezierPath(
-      ovalIn: CGRect(origin: .zero, size: CGSize(width: bounds.width, height: bounds.height)))
+    let path = UIBezierPath(ovalIn: bounds).cgPath
+    $0.fillColor = .none
+    $0.path = path
 
-    $0.path = path.cgPath
     $0.fillColor = .none
     $0.zPosition = -10
 

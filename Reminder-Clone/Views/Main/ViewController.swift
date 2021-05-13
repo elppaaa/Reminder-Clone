@@ -55,8 +55,7 @@ class ViewController: UITableViewController {
   // MARK: - config Layout
   fileprivate func configLayout() {
     tableView.register(HomeListTableCell.self, forCellReuseIdentifier: HomeListTableCell.identifier)
-    tableView.estimatedRowHeight = CGFloat(50)
-    tableView.rowHeight = UITableView.automaticDimension
+    tableView.rowHeight = CGFloat(50)
     
     tableView.showsVerticalScrollIndicator = false
     tableView.showsHorizontalScrollIndicator = false

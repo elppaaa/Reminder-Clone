@@ -16,8 +16,8 @@ class NewListViewController: UIViewController {
   private var selectedColorCell: IndexPath?
   private var selectedIconCell: IndexPath?
 
-  let cancel = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: nil)
-  let done = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: nil)
+  fileprivate let cancel = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: nil)
+  fileprivate let done = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: nil)
 
   override func loadView() {
     super.loadView()
@@ -110,7 +110,7 @@ extension NewListViewController: UICollectionViewDelegate {
 }
 
 extension NewListViewController {
-  func binding() {
+  fileprivate func binding() {
     contentView.header.textField.textPublisher
       .compactMap { $0 }
       .assign(to: \.headerText, on: viewModel)

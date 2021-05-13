@@ -36,6 +36,8 @@ class HomeListCollectionViewCell: UICollectionViewCell, HomeListCellViewType {
     stack.distribution = .equalCentering
     return stack
   }()
+
+  lazy var icon = CircleView(frame: CGRect(origin: .zero, size: CGSize(width: Self.size, height: Self.size)))
   
   var iconView: UIImageView = {
     let imageView = UIImageView()

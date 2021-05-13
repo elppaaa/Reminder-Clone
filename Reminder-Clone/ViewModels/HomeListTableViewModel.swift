@@ -42,9 +42,11 @@ extension HomeListTableViewModel: UITableViewDataSource {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeListTableCell.identifier, for: indexPath)
       as? HomeListTableCell else { fatalError("ERROR WHEN CREATE CELL") }
     let data = _data[indexPath.row]
-    tableView.beginUpdates()
-    cell.config(with: data)
-    tableView.endUpdates()
+
+    tableView.performBatchUpdates {
+      cell.config(with: data)
+    }
+
     return cell
   }
 }

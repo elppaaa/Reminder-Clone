@@ -9,28 +9,27 @@ import UIKit
 
 class NewListViewControllerHeader: UICollectionReusableView {
   override var reuseIdentifier: String? { Self.identifier }
+  fileprivate let iconSize: CGFloat = 150
+  
   var text: String? {
     get { textField.text }
     set { textField.text = newValue }
   }
 
   var color: UIColor? {
-    get { icon.backgroundColor }
+    get {
+      guard let color = icon.circleLayer.fillColor else { return .white }
+      return UIColor(cgColor: color)
+    }
     set {
-      icon.backgroundColor = newValue
+      icon.circleLayer.fillColor = newValue?.cgColor
       textField.textColor = newValue
     }
   }
 
   var iconImage: UIImage? {
-    get { icon.image }
-    set {
-      let config = UIImage.SymbolConfiguration(pointSize: 80, weight: .bold, scale: .default)
-      icon.image = newValue?
-        .withConfiguration(config)
-        .with(color: .white)
-        .wrapBox(size: 150)
-    }
+    get { icon.imageView.image }
+    set { icon.setImage(newValue ?? UIImage()) }
   }
 
   required init?(coder: NSCoder) { fatalError("Do not use this initializer") }
@@ -38,9 +37,8 @@ class NewListViewControllerHeader: UICollectionReusableView {
     super.init(frame: frame)
     configLayout()
   }
-  private let iconSize: CGFloat = 150
 
-  let mainStack: UIStackView = {
+  fileprivate let mainStack: UIStackView = {
     let stack = UIStackView()
     stack.axis = .vertical
     stack.distribution = .equalCentering
@@ -51,15 +49,7 @@ class NewListViewControllerHeader: UICollectionReusableView {
     return stack
   }()
 
-  let icon: UIImageView = {
-    let v = CircleImageViewTMP()
-    v.sizeToFit()
-    v.translatesAutoresizingMaskIntoConstraints = false
-    v.tintColor = .white
-    v.contentMode = .scaleAspectFit
-    v.clipsToBounds = true
-    return v
-  }()
+  lazy var icon = CircleView(frame: CGRect(origin: .zero, size: CGSize(width: iconSize, height: iconSize)))
 
   let textField: UITextField = {
     let text = UITextField()
@@ -94,6 +84,8 @@ class NewListViewControllerHeader: UICollectionReusableView {
     let iconWidth = icon.widthAnchor.constraint(equalTo: icon.heightAnchor)
     iconHeight.priority = .defaultHigh
 
+    icon.sizeToFit()
+
     NSLayoutConstraint.activate([
       iconHeight,
       iconWidth,
@@ -101,13 +93,5 @@ class NewListViewControllerHeader: UICollectionReusableView {
       textField.widthAnchor.constraint(equalTo: mainStack.widthAnchor)
     ])
 
-  }
-}
-
-class CircleImageViewTMP: UIImageView {
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    clipsToBounds = true
-    layer.cornerRadius = min(bounds.width, bounds.height) / 2.0
   }
 }

@@ -28,7 +28,7 @@ class NewListCell: UICollectionViewCell {
 
   lazy var circleImageView = CircleView(frame: bounds)
 
-  func configLayout() {
+  fileprivate func configLayout() {
     circleImageView.pin(parent: contentView)
     layer.addSublayer(strokeLayer)
     strokeLayer.isHidden = true

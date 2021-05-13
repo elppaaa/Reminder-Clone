@@ -5,17 +5,12 @@
 import UIKit
 
 class DetailReminderToggleCell: DetailReminderViewCellBase {
-  let toggle = UISwitch()
-  
+  required init?(coder: NSCoder) { fatalError("Do not use this initializer") }
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: Self.identifier)
     commonInit()
   }
-  
-  required init?(coder: NSCoder) {
-    fatalError("Do not use this initializer")
-  }
-  
+
   convenience init(
     title: String,
     image: UIImage,
@@ -29,8 +24,10 @@ class DetailReminderToggleCell: DetailReminderViewCellBase {
     imageView?.contentMode = .scaleAspectFit
     dataType = type
   }
-  
-  func commonInit() {
+
+  let toggle = UISwitch()
+
+  fileprivate func commonInit() {
     accessoryView = toggle
     imageView?.layer.cornerRadius = 7
   }
