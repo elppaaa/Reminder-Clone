@@ -37,9 +37,6 @@ class HomeListTableCell: UITableViewCell {
       detailText.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
 
       icon.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: insetWidth),
-      icon.widthAnchor.constraint(equalToConstant: contentView.frame.height * iconRate),
-      icon.heightAnchor.constraint(equalToConstant: contentView.frame.height * iconRate),
-
       text.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: insetWidth),
 
       detailText.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: insetWidth * -1)

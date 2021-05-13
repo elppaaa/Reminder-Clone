@@ -4,8 +4,8 @@
 
 import UIKit
 
-class HomeListCollectionViewCell: UICollectionViewCell, HomeListCellViewType {
-  static let size: CGFloat = 35.0
+class HomeListCollectionViewCell: UICollectionViewCell {
+  fileprivate let size: CGFloat = 35.0
   
   override init(frame: CGRect = .zero) {
     super.init(frame: frame)
@@ -17,7 +17,7 @@ class HomeListCollectionViewCell: UICollectionViewCell, HomeListCellViewType {
     configLayout()
   }
   
-  private let mainStack: UIStackView = {
+  fileprivate let mainStack: UIStackView = {
     let stack = UIStackView()
     stack.translatesAutoresizingMaskIntoConstraints = false
     stack.axis = .vertical
@@ -28,7 +28,7 @@ class HomeListCollectionViewCell: UICollectionViewCell, HomeListCellViewType {
     return stack
   }()
   
-  private let stack: UIStackView = {
+  fileprivate let stack: UIStackView = {
     let stack = UIStackView()
     stack.translatesAutoresizingMaskIntoConstraints = false
     stack.axis = .horizontal
@@ -37,38 +37,27 @@ class HomeListCollectionViewCell: UICollectionViewCell, HomeListCellViewType {
     return stack
   }()
 
-  lazy var icon = CircleView(frame: CGRect(origin: .zero, size: CGSize(width: Self.size, height: Self.size)))
+  lazy var icon = CircleView(frame: CGRect(origin: stack.frame.origin, size: CGSize(width: size, height: size)))
+
+  lazy var countLabel: UILabel = UILabel.makeView(font: .systemFont(ofSize: (size * 0.8), weight: .bold))
   
-  var iconView: UIImageView = {
-    let imageView = UIImageView()
-    imageView.translatesAutoresizingMaskIntoConstraints = false
-    imageView.backgroundColor = .white
-    imageView.layer.cornerRadius = size / 2
-    imageView.heightAnchor.constraint(equalToConstant: size).isActive = true
-    imageView.widthAnchor.constraint(equalToConstant: size).isActive = true
-    imageView.contentMode = .scaleToFill
-    return imageView
-  }()
-  
-  var countLabel: UILabel = UILabel.makeView(font: .systemFont(ofSize: (size * 0.8), weight: .bold))
-  
-  var titleLabel: UILabel = UILabel.makeView(color: .gray, font: .systemFont(ofSize: (size * 0.5), weight: .semibold))
+  lazy var titleLabel: UILabel = UILabel.makeView(color: .gray, font: .systemFont(ofSize: (size * 0.5), weight: .semibold))
   
   // MARK: - configureLayout
-  func configLayout() {
+  fileprivate func configLayout() {
     backgroundColor = R.Color.systemBackground
     translatesAutoresizingMaskIntoConstraints = false
     clipsToBounds = false
     layer.cornerRadius = 10
     layoutMargins = .zero
     
-    stack.addArrangedSubview(iconView)
+    stack.addArrangedSubview(icon)
     stack.addArrangedSubview(countLabel)
-    
+
     mainStack.addArrangedSubview(stack)
     mainStack.addArrangedSubview(titleLabel)
     addSubview(mainStack)
-    
+
     NSLayoutConstraint.activate([
       mainStack.topAnchor.constraint(equalTo: topAnchor),
       mainStack.bottomAnchor.constraint(equalTo: bottomAnchor),
@@ -77,8 +66,17 @@ class HomeListCollectionViewCell: UICollectionViewCell, HomeListCellViewType {
     ])
     
   }
-  
+
+  func configCell(with data: HomeRadiusList) {
+    titleLabel.text = data.title
+    countLabel.text = "\(data.count)"
+    icon.setImage(data.icon)
+    icon.setBackground(data.color)
+  }
+
+  #if DEBUG
   @objc func injected() {
     homeInject()
   }
+  #endif
 }

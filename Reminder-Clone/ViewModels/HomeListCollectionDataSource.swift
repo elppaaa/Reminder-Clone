@@ -14,11 +14,11 @@ class HomeListCollectionDataSource: NSObject, HomeListDataSource {
   }
   
   private var _data: [HomeRadiusList] = [
-    HomeRadiusList(title: "Today", icon: R.Image.folderCircle.image , color: .systemBlue, count: 5),
-    HomeRadiusList(title: "Scheduled", icon: R.Image.calenderCircle.image, color: .red, count: 9),
-    HomeRadiusList(title: "All", icon: R.Image.trayCircle.image, color: .gray, count: 8),
-    HomeRadiusList(title: "Flagged", icon: R.Image.flagCircle.image, color: .systemOrange, count: 7),
-    HomeRadiusList(title: "Flagged", icon: R.Image.flagCircle.image, color: .systemOrange, count: 7),
+    HomeRadiusList(title: "Today", icon: R.Image.folder.image , color: .systemBlue, count: 5),
+    HomeRadiusList(title: "Scheduled", icon: R.Image.calendar.image, color: .red, count: 9),
+    HomeRadiusList(title: "All", icon: R.Image.tray.image, color: .gray, count: 8),
+    HomeRadiusList(title: "Flagged", icon: R.Image.flag.image, color: .systemOrange, count: 7),
+    HomeRadiusList(title: "Flagged", icon: R.Image.flag.image, color: .systemOrange, count: 7),
   ]
   
   required override init() {

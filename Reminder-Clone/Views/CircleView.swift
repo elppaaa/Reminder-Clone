@@ -8,15 +8,24 @@
 import UIKit
 
 class CircleView: UIView {
+  override var translatesAutoresizingMaskIntoConstraints: Bool {
+    didSet {
+      if !translatesAutoresizingMaskIntoConstraints {
+        widthAnchor.constraint(equalToConstant: frame.width).isActive = true
+        heightAnchor.constraint(equalToConstant: frame.height).isActive = true
+      }
+    }
+  }
+
   lazy var imageView: UIImageView = {
     $0.translatesAutoresizingMaskIntoConstraints = false
+    $0.pin(safe: self)
     $0.contentMode = .center
     $0.preferredSymbolConfiguration = .init(pointSize: bounds.height * 0.5)
     $0.backgroundColor = .none
     $0.tintColor = .white
     $0.sizeToFit()
 
-    $0.pin(parent: self)
     return $0
   }(UIImageView())
 
