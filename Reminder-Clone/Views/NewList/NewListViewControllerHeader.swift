@@ -16,6 +16,12 @@ class NewListViewControllerHeader: UICollectionReusableView {
     set { textField.text = newValue }
   }
 
+  var imageText: String = "" {
+    didSet {
+      icon.setImage(UIImage(systemName: imageText))
+    }
+  }
+
   var color: UIColor? {
     get {
       guard let color = icon.circleLayer.fillColor else { return .white }

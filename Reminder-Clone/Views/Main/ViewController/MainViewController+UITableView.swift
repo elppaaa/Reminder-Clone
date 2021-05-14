@@ -36,8 +36,8 @@ extension MainViewController {
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let data = viewModel.data[indexPath.row]
     let reminderVC = RemindersViewController()
-    reminderVC.pagePrimaryColor = data.color
-    reminderVC.title = data.title
+    reminderVC.pagePrimaryColor = UIColor(hex: Int(data.color))
+    reminderVC.title = data.name ?? ""
     navigationController?.pushViewController(reminderVC, animated: true)
     tableView.deselectRow(at: indexPath, animated: true)
   }

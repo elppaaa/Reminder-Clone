@@ -69,4 +69,11 @@ class MainListCollectionViewCell: UICollectionViewCell {
     icon.setImage(data.icon)
     icon.setBackground(data.color)
   }
+
+  func config(data: Category) {
+    titleLabel.text = data.name
+    countLabel.text = String(data.tasks?.count ?? 0)
+    icon.setImage(UIImage(systemName: data.icon ?? R.Image.listBullet.rawValue) ?? UIImage())
+    icon.setBackground(UIColor(hex: Int(data.color)))
+  }
 }

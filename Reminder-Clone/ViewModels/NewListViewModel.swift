@@ -5,16 +5,19 @@
 //  Created by JK on 2021/05/10.
 //
 
+import Foundation
 import UIKit.UIColor
 import Combine
 
 class NewListViewModel: NSObject {
   @Published var headerText: String = "" 
   @Published var headerColor: UIColor = UIColor.systemBlue
-  @Published var headerImage: UIImage = R.Image.listBullet.image
+  @Published var imageText: String = R.Image.listBullet.rawValue
 
   let colors: [UIColor] = [ .systemRed, .systemOrange, .systemYellow, .systemGreen, R.Color.lightBlue,
                             .systemBlue, .systemIndigo, .systemPink, .systemPurple, .brown, .darkGray, R.Color.rose]
 
-  let images: [UIImage] = [ R.Image.calendar.image, R.Image.clock.image, R.Image.location.image ]
+  let images: [String] = [ R.Image.calendar.rawValue, R.Image.clock.rawValue, R.Image.location.rawValue ]
+
+
 }

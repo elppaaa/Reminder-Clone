@@ -45,8 +45,13 @@ class CircleView: UIView {
     circleLayer.fillColor = color.cgColor
   }
 
-  func setImage(_ image: UIImage, tint: UIColor = .white) {
+  func setImage(_ image: UIImage?, tint: UIColor = .white) {
     imageView.image = image
+    imageView.tintColor = tint
+  }
+
+  func setImage(string: String, tint: UIColor = .white) {
+    imageView.image = UIImage(systemName: string)
     imageView.tintColor = tint
   }
 

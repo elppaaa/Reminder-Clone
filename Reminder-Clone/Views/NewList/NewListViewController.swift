@@ -69,7 +69,7 @@ extension NewListViewController: UICollectionViewDataSource {
     case 0:
       cell.circleImageView.setBackground(viewModel.colors[indexPath.item])
     case 1:
-      cell.circleImageView.setImage(viewModel.images[indexPath.item], tint: .darkGray)
+      cell.circleImageView.setImage(string: viewModel.images[indexPath.item], tint: .darkGray)
       cell.circleImageView.setBackground(.systemGray5)
     default:
       assert(false, "section 2 not used")
@@ -90,7 +90,7 @@ extension NewListViewController: UICollectionViewDelegate {
     case 1:
       prevIndexPath = selectedIconCell
       selectedIconCell = indexPath
-      viewModel.headerImage = viewModel.images[indexPath.item]
+      viewModel.imageText = viewModel.images[indexPath.item]
     default:
       return
     }
@@ -126,9 +126,16 @@ extension NewListViewController {
       .assign(to: \.color, on: contentView.header)
       .store(in: &cancelBag)
 
-    viewModel.$headerImage
+    viewModel.$imageText
       .map { $0 }
-      .assign(to: \.iconImage, on: contentView.header)
+      .assign(to: \.imageText, on: contentView.header)
+      .store(in: &cancelBag)
+
+    // Done Button enable
+    viewModel.$headerText
+      .sink { [weak self] in
+        self?.done.isEnabled = $0.count > 0
+      }
       .store(in: &cancelBag)
   }
 }

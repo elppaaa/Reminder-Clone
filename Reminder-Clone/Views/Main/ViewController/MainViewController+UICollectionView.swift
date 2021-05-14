@@ -15,7 +15,7 @@ extension MainViewController: UICollectionViewDataSource {
       withReuseIdentifier: MainListCollectionViewCell.identifier, for: indexPath) as? MainListCollectionViewCell {
       let cell = customCell
       let _data = viewModel.data[indexPath.row]
-      customCell.configCell(with: _data)
+      customCell.config(data: _data)
       return cell
     } else {
       fatalError("ERROR")
