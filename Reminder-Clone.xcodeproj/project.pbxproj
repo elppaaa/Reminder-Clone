@@ -12,6 +12,7 @@
 		485C47F4264ABE8F007A56E1 /* NewListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485C47F3264ABE8F007A56E1 /* NewListView.swift */; };
 		4879905A2628343100C6F416 /* Task+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487990582628343100C6F416 /* Task+CoreDataClass.swift */; };
 		488EFEF8264BDFBD005A6669 /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488EFEF7264BDFBD005A6669 /* CircleView.swift */; };
+		488EFEFA264E61AE005A6669 /* UIGestureRecognizer+Pulbihser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488EFEF9264E61AE005A6669 /* UIGestureRecognizer+Pulbihser.swift */; };
 		48AF6E4826441DA900DD4B77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48F16E6B25A1B9820036D9A3 /* Assets.xcassets */; };
 		48AF6E4A2644219C00DD4B77 /* NewReminderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AF6E492644219C00DD4B77 /* NewReminderViewController.swift */; };
 		48BD3F1626494997008D4420 /* UITextField+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BD3F1526494997008D4420 /* UITextField+Publisher.swift */; };
@@ -70,6 +71,7 @@
 		485C47F3264ABE8F007A56E1 /* NewListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewListView.swift; sourceTree = "<group>"; };
 		487990582628343100C6F416 /* Task+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+CoreDataClass.swift"; sourceTree = "<group>"; };
 		488EFEF7264BDFBD005A6669 /* CircleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleView.swift; sourceTree = "<group>"; };
+		488EFEF9264E61AE005A6669 /* UIGestureRecognizer+Pulbihser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIGestureRecognizer+Pulbihser.swift"; sourceTree = "<group>"; };
 		48AF6E492644219C00DD4B77 /* NewReminderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewReminderViewController.swift; sourceTree = "<group>"; };
 		48BD3F1526494997008D4420 /* UITextField+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Publisher.swift"; sourceTree = "<group>"; };
 		48BD3F1726495690008D4420 /* NewListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewListViewModel.swift; sourceTree = "<group>"; };
@@ -161,6 +163,7 @@
 				48BD3F2026499F77008D4420 /* UIControl+Publisher.swift */,
 				48BD3F1526494997008D4420 /* UITextField+Publisher.swift */,
 				48BD3F222649A4B4008D4420 /* UITextView+Publisher.swift */,
+				488EFEF9264E61AE005A6669 /* UIGestureRecognizer+Pulbihser.swift */,
 			);
 			path = Publisher;
 			sourceTree = "<group>";
@@ -411,6 +414,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				488EFEFA264E61AE005A6669 /* UIGestureRecognizer+Pulbihser.swift in Sources */,
 				48F16E6A25A1B9800036D9A3 /* Reminder_Clone.xcdatamodeld in Sources */,
 				48F16E8625A1C0F60036D9A3 /* Cateogry+CoreDataClass.swift in Sources */,
 				48F16E6025A1B9800036D9A3 /* AppDelegate.swift in Sources */,

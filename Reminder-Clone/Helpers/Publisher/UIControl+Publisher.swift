@@ -9,7 +9,8 @@ import UIKit
 import Combine
 
 protocol CombineCompatible { }
-extension UIControl: CombineCompatible { }
+
+//extension UIControl: CombineCompatible { }
 
 extension CombineCompatible where Self: UIControl {
   func publisher(for events: UIControl.Event) -> UIControlPublisher<UIControl> {
@@ -18,7 +19,6 @@ extension CombineCompatible where Self: UIControl {
 }
 
 struct UIControlPublisher<Control: UIControl>: Publisher {
-
   typealias Output = Control
   typealias Failure = Never
 
@@ -35,8 +35,8 @@ struct UIControlPublisher<Control: UIControl>: Publisher {
     subscriber.receive(subscription: subscription)
   }
 }
-final class UIControlSubscription < SubscriberType: Subscriber,
-                                  Control: UIControl>: Subscription
+
+final class UIControlSubscription <SubscriberType: Subscriber, Control: UIControl>: Subscription
 where SubscriberType.Input == Control {
   private var subscriber: SubscriberType?
   private let control: Control
