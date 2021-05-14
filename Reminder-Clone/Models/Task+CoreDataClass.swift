@@ -22,6 +22,7 @@ enum TaskAttributesKey: String {
   case subtasks
   case parent
   case category
+  case isDone
 }
 
 @objc (Task)
@@ -39,6 +40,7 @@ public class Task: NSManagedObject {
     dict[.parent] = parent
     dict[.category] = category
     dict[.subtasks] = subtasks
+    dict[.isDone] = isDone
     return dict
   }
 

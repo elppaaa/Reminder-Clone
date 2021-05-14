@@ -20,7 +20,7 @@ class PersistentManager {
   }()
   private lazy var context: NSManagedObjectContext = persistentContainer.viewContext
   
-  func newEntity(entity: NSManagedObject.Type) -> NSManagedObject {
+  func newEntity<T: NSManagedObject>(entity: T.Type) -> T {
     entity.init(context: context)
   }
   

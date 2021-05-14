@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18147.2" systemVersion="20D91" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20E241" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Category" representedClassName="Category" syncable="YES" codeGenerationType="category">
         <attribute name="color" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="icon" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
@@ -11,6 +11,7 @@
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="flag" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="image" optional="YES" attributeType="Transformable" valueTransformerName="" customClassName="UIKit.[UIImage]"/>
+        <attribute name="isDone" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="link" optional="YES" attributeType="String"/>
         <attribute name="location" optional="YES" attributeType="Binary"/>
         <attribute name="notes" optional="YES" attributeType="String"/>
@@ -23,6 +24,6 @@
     </entity>
     <elements>
         <element name="Category" positionX="-185.343505859375" positionY="50.37564086914062" width="128" height="104"/>
-        <element name="Task" positionX="-198.5636596679688" positionY="-36.75836181640625" width="257.7182006835938" height="209"/>
+        <element name="Task" positionX="-198.5636596679688" positionY="-36.75836181640625" width="257.7182006835938" height="224"/>
     </elements>
 </model>
