@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20E241" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Category" representedClassName="Category" syncable="YES" codeGenerationType="category">
-        <attribute name="color" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="icon" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="name" attributeType="String"/>
-        <attribute name="order" attributeType="Decimal"/>
+        <attribute name="color" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="icon" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="order" optional="YES" attributeType="Decimal"/>
         <relationship name="tasks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Task" inverseName="category" inverseEntity="Task"/>
     </entity>
     <entity name="Task" representedClassName="Task" syncable="YES" codeGenerationType="category">
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="flag" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="image" optional="YES" attributeType="Transformable" valueTransformerName="" customClassName="UIKit.[UIImage]"/>
-        <attribute name="isDone" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="image" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="UIKit.[UIImage]"/>
+        <attribute name="isDone" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="link" optional="YES" attributeType="String"/>
         <attribute name="location" optional="YES" attributeType="Binary"/>
         <attribute name="notes" optional="YES" attributeType="String"/>
