@@ -19,5 +19,15 @@ class NewListViewModel: NSObject {
 
   let images: [String] = [ R.Image.calendar.rawValue, R.Image.clock.rawValue, R.Image.location.rawValue ]
 
+  func save() {
+    let manager = PersistentManager.shared
 
+    let entity = manager.newEntity(entity: Category.self)
+    entity.set(key: .name, value: headerText)
+    entity.set(key: .color, value: headerColor.hex)
+    entity.set(key: .icon, value: imageText)
+
+    manager.saveContext()
+    NotificationCenter.default.post(name: .CategoryChanged, object: nil)
+  }
 }

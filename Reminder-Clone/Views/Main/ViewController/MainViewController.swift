@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 class MainViewController: UITableViewController {
   fileprivate let controller = UISearchController(searchResultsController: nil)
@@ -13,6 +14,8 @@ class MainViewController: UITableViewController {
 
   fileprivate let collection = MainListCollectionWrappedView()
   fileprivate lazy var collectionView = collection.collectionView
+
+  var cancelBag = Set<AnyCancellable>()
 
   override func viewWillAppear(_ animated: Bool) {
     title = nil
@@ -31,6 +34,7 @@ class MainViewController: UITableViewController {
     defaultNavigationConfig()
     searchBarSetting()
     configLayout()
+    configBinding()
 
     tableView.dataSource = self
     tableView.delegate = self
@@ -40,18 +44,18 @@ class MainViewController: UITableViewController {
 
     collectionView.dataSource = self
     collectionView.delegate = self
-    
+
     super.viewDidLoad()
   }
   
   @objc
-  func newReminderButtonDidTapped() {
+  func didNewReminderButtonTapped() {
     let vc = UINavigationController(rootViewController: NewReminderViewController())
     navigationController?.present(vc, animated: true, completion: nil)
   }
   
   @objc
-  func addListButtonDidTapped() {
+  func didAddListButtonTapped() {
     let vc = UINavigationController(rootViewController: NewListViewController())
     navigationController?.present(vc, animated: true)
   }
@@ -106,14 +110,26 @@ extension MainViewController {
       return attributedString
     }()
     label.isUserInteractionEnabled = true
-    label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(newReminderButtonDidTapped)))
+    label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didNewReminderButtonTapped)))
     
     arr.append(UIBarButtonItem(customView: label))
     arr.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
     arr.append(
-      UIBarButtonItem(title: "Add List", style: .plain, target: self, action: #selector(addListButtonDidTapped)))
+      UIBarButtonItem(title: "Add List", style: .plain, target: self, action: #selector(didAddListButtonTapped)))
     
     toolbarItems = arr
   }
   
+}
+
+extension MainViewController {
+  func configBinding() {
+    NotificationCenter.default.publisher(for: .CategoryChanged)
+      .sink { [weak self] _ in
+        self?.collectionView.reloadData()
+        self?.tableView.reloadData()
+        self?.view.layoutSubviews()
+      }
+      .store(in: &cancelBag)
+  }
 }

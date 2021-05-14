@@ -17,7 +17,7 @@ class NewListViewController: UIViewController {
   private var selectedIconCell: IndexPath?
 
   fileprivate let cancel = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: nil)
-  fileprivate let done = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: nil)
+  fileprivate let done = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didDoneButtonTapped))
 
   override func loadView() {
     super.loadView()
@@ -39,6 +39,12 @@ class NewListViewController: UIViewController {
     
     navigationItem.leftBarButtonItem = cancel
     navigationItem.rightBarButtonItem = done
+  }
+
+  @objc
+  func didDoneButtonTapped() {
+    viewModel.save()
+    dismiss(animated: true)
   }
 }
 
