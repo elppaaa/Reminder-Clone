@@ -15,14 +15,11 @@ struct MyTask {
 
 class RemindersTableViewModel: NSObject {
   var primaryColor: UIColor?
+  var task = [Task]()
 
   override init() {
     super.init()
+    let manager = PersistentManager.shared
+    task = manager.fetch(request: Task.fetchRequest()) ?? []
   }
-  
-  var tasks = [
-    MyTask(id: 0, title: "title"),
-    MyTask(id: 1, title: "one"),
-    MyTask(id: 2, title: "two"),
-  ]
 }

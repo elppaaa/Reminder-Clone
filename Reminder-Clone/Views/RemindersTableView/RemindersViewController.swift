@@ -14,13 +14,16 @@ class RemindersViewController: UITableViewController {
   // TODO: Get from core data
   var pagePrimaryColor: UIColor = .clear
   fileprivate let viewModel = RemindersTableViewModel()
-  fileprivate var cacnelBag = Set<AnyCancellable>()
+  var cancelBag = Set<AnyCancellable>()
 
   override func loadView() {
     super.loadView()
     tableView.register(ReminderTableViewCell.self, forCellReuseIdentifier: ReminderTableViewCell.identifier)
     viewModel.primaryColor = pagePrimaryColor
-    tableView.estimatedRowHeight = 40
+
+    tableView.rowHeight = UITableView.automaticDimension
+    tableView.estimatedRowHeight = 50
+
     tableView.allowsMultipleSelectionDuringEditing = true
     tableView.keyboardDismissMode = .interactive
   }
@@ -30,6 +33,11 @@ class RemindersViewController: UITableViewController {
     view.backgroundColor = R.Color.defaultBackground
     
     configLayout()
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    PersistentManager.shared.saveContext()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -65,7 +73,7 @@ extension RemindersViewController {
   }
 
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    viewModel.tasks.count
+    viewModel.task.count
   }
 
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -73,18 +81,24 @@ extension RemindersViewController {
             withIdentifier: ReminderTableViewCell.identifier, for: indexPath) as? ReminderTableViewCell else {
       fatalError("Cell Not Founded")
     }
-    let data = viewModel.tasks[indexPath.row]
 
-    if let color = viewModel.primaryColor {
-      cell.config(color: color)
+    cell.color = viewModel.primaryColor ?? .systemBlue
+    let data = viewModel.task[indexPath.row]
+    cell.textView.text = data.title ?? "New Reminder"
+    cell.isDone = data.isDone
+
+    cell.layoutUpdate = { [weak self] in
+      self?.tableView.beginUpdates()
+      self?.tableView.endUpdates()
     }
-    cell.config(data: data)
 
-    // cell to viewModel
-    cell.$data
-      .compactMap { return $0 }
-      .assign(to: \.tasks[indexPath.row], on: viewModel)
-      .store(in: &cacnelBag)
+    cell.$isDone
+      .sink { [weak self] in self?.viewModel.task[indexPath.row].isDone = $0 }
+      .store(in: &cancelBag)
+
+    cell.textView.publisher
+      .sink { [weak self] in self?.viewModel.task[indexPath.row].title = $0 }
+      .store(in: &cancelBag)
 
     return cell
   }
@@ -94,7 +108,7 @@ extension RemindersViewController {
 extension RemindersViewController {
   override public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
     let vc = DetailReminderViewController()
-    vc.data = viewModel.tasks[indexPath.row]
+//    vc.data = viewModel.task[indexPath.row]
 
     navigationController?.present(
       UINavigationController(rootViewController: vc), animated: true, completion: nil)

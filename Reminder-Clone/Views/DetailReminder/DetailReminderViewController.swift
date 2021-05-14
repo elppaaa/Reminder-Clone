@@ -11,8 +11,7 @@ class DetailReminderViewController: UIViewController, ViewControllerDelegate {
   let tableView = DetailReminderTableView()
   var viewModel = DetailReminderViewModel()
   var tableViewHeight: NSLayoutConstraint?
-  var data: MyTask?
-  
+
   override func viewDidLoad( ) {
     super.viewDidLoad()
     title = "Detail"
