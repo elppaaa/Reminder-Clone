@@ -17,6 +17,7 @@ class HomeListTableViewModel: NSObject {
     data = manager.fetch(request: Category.fetchRequest()) ?? []
 
     NotificationCenter.default.publisher(for: .CategoryChanged)
+      .receive(on: DispatchQueue.global())
       .compactMap { _ in manager.fetch(request: Category.fetchRequest()) }
       .assign(to: \.data, on: self)
       .store(in: &cancelBag)

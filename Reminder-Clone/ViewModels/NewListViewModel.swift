@@ -20,14 +20,16 @@ class NewListViewModel: NSObject {
   let images: [String] = [ R.Image.calendar.rawValue, R.Image.clock.rawValue, R.Image.location.rawValue ]
 
   func save() {
-    let manager = PersistentManager.shared
+    DispatchQueue.global().async { [weak self] in
+      let manager = PersistentManager.shared
 
-    let entity = manager.newEntity(entity: Category.self)
-    entity.set(key: .name, value: headerText)
-    entity.set(key: .color, value: headerColor.hex)
-    entity.set(key: .icon, value: imageText)
+      let entity = manager.newEntity(entity: Category.self)
+      entity.set(key: .name, value: self?.headerText)
+      entity.set(key: .color, value: self?.headerColor.hex)
+      entity.set(key: .icon, value: self?.imageText)
 
-    manager.saveContext()
-    NotificationCenter.default.post(name: .CategoryChanged, object: nil)
+      manager.saveContext()
+      NotificationCenter.default.post(name: .CategoryChanged, object: nil)
+    }
   }
 }

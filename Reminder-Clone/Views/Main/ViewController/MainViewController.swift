@@ -130,6 +130,7 @@ extension MainViewController {
 extension MainViewController {
   func configBinding() {
     NotificationCenter.default.publisher(for: .CategoryChanged)
+      .receive(on: DispatchQueue.main)
       .sink { [weak self] _ in
         self?.collectionView.reloadData()
         self?.tableView.reloadData()
