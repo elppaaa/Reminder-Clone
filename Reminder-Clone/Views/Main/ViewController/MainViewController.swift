@@ -59,12 +59,17 @@ class MainViewController: UITableViewController {
     let vc = UINavigationController(rootViewController: NewListViewController())
     navigationController?.present(vc, animated: true)
   }
+
+  @objc
+  func didEditButtonTapped() {
+    PersistentManager.shared.deleteAll(request: Category.fetchRequest())
+  }
 }
 
 // MARK: -  Config Layout
 extension MainViewController {
   fileprivate func searchBarSetting() {
-    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: nil)
+    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(didEditButtonTapped))
     navigationItem.searchController = controller
     navigationItem.searchController?.isActive = true
     navigationItem.hidesSearchBarWhenScrolling = false

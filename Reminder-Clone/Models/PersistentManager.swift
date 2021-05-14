@@ -50,6 +50,19 @@ class PersistentManager {
       return false
     }
   }
+
+  func deleteAll<T: NSManagedObject>(request: NSFetchRequest<T>) {
+    let list = fetch(request: request)
+    list?.forEach {
+      context.delete($0)
+    }
+    do {
+      try context.save()
+      NotificationCenter.default.post(name: .CategoryChanged, object: nil)
+    } catch {
+      return
+    }
+  }
   
   func edit<T: NSManagedObject>(type entity: T.Type, filter: NSPredicate, _ completion: @escaping ([T]) -> Void) throws -> Bool {
     
