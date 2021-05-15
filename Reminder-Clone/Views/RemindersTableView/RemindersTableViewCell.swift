@@ -16,6 +16,7 @@ class ReminderTableViewCell: UITableViewCell {
     configLayout()
   }
   var layoutUpdate: (() -> Void)?
+  var cancel = Set<AnyCancellable>()
   fileprivate let inset: CGFloat = 8
   var textViewHeight: NSLayoutConstraint?
 
@@ -84,11 +85,9 @@ class ReminderTableViewCell: UITableViewCell {
   }
 
   fileprivate func configAction() {
-    toggleButton.addGestureRecognizer( UITapGestureRecognizer(target: self, action: #selector(toggleIsDone)))
-  }
-
-  @objc func toggleIsDone() {
-    isDone.toggle()
+    toggleButton.publisher(.tap)
+      .sink { [weak self] _ in self?.isDone.toggle() }
+      .store(in: &cancel)
   }
 }
 
