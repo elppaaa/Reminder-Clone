@@ -58,9 +58,9 @@ class MainListTableViewCell: UITableViewCell {
   }
 
   func config(with v: Category) {
-    icon.setImage(UIImage(systemName: v.icon ?? R.Image.listBullet.rawValue) ?? UIImage())
-    icon.setBackground(UIColor(hex: Int(v.color)))
-    text.text = v.name ?? ""
+    icon.setImage(v.icon)
+    icon.setBackground(v.color)
+    text.text = v.name
     detailText.text = String(v.tasks?.count ?? 0)
   }
 

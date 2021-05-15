@@ -8,10 +8,12 @@
 
 import Foundation
 import CoreData
+import UIKit.UIImage
+import UIKit.UIColor
 
 enum CategoryAttributeKey: String {
-  case color
-  case icon
+  case color = "colorInt"
+  case icon = "iconString"
   case name
   case order
   case tasks
@@ -22,11 +24,20 @@ public class Category: NSManagedObject {
   var dictionary: [CategoryAttributeKey: Any] {
     var dict = [CategoryAttributeKey: Any]()
     dict[.name] = name
-    dict[.icon] = icon
-    dict[.color] = color
+    dict[.icon] = iconString
+    dict[.color] = colorInt
     dict[.order] = order
     dict[.tasks] = tasks
     return dict
+  }
+
+  var icon: UIImage? {
+    UIImage(systemName: iconString ?? R.Image.listBullet.rawValue)
+  }
+
+  var color: UIColor {
+    get { UIColor(hex: Int(colorInt)) }
+    set { colorInt = Int32(newValue.hex) }
   }
 
   func set<T>(key: CategoryAttributeKey, value: T) {

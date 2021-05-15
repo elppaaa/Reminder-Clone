@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20E241" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Category" representedClassName="Category" syncable="YES" codeGenerationType="category">
-        <attribute name="color" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="icon" attributeType="String"/>
-        <attribute name="name" optional="YES" attributeType="String"/>
+    <entity name="Category" representedClassName="Category" syncable="YES">
+        <attribute name="colorInt" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="iconString" attributeType="String"/>
+        <attribute name="name" attributeType="String"/>
         <attribute name="order" optional="YES" attributeType="Decimal"/>
         <relationship name="tasks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Task" inverseName="category" inverseEntity="Task"/>
     </entity>

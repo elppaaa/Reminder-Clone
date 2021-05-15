@@ -15,12 +15,6 @@ class NewListCell: UICollectionViewCell {
     configLayout()
   }
   
-  var imageText = "" {
-    didSet {
-      circleImageView.imageView.image = UIImage(systemName: imageText)
-    }
-  }
-
   lazy var strokeLayer: CALayer = {
     let size = bounds.width
     let path = UIBezierPath(
