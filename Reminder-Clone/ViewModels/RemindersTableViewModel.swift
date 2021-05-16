@@ -14,12 +14,31 @@ struct MyTask {
 }
 
 class RemindersTableViewModel: NSObject {
-  var primaryColor: UIColor?
-  var task = [Task]()
+  let category: Category
+  var tasks = [Task]()
+  let manager = PersistentManager.shared
 
-  override init() {
+  init(category: Category) {
+    self.category = category
     super.init()
-    let manager = PersistentManager.shared
-    task = manager.fetch(request: Task.fetchRequest()) ?? []
+    if let _data = category.tasks?.allObjects as? [Task] {
+      tasks = _data
+    }
   }
+
+  func newTask() -> Task {
+    let entity = manager.newEntity(entity: Task.self)
+    entity.set(key: .title, value: "")
+//    entity.category = category
+    category.addToTasks(entity)
+    tasks.append(entity)
+    return entity
+  }
+
+  func delete(task: Task) {
+//    category.removeFromTasks(task)
+    manager.delete(task)
+    _ = tasks.drop { $0.objectID == task.objectID }
+  }
+  
 }

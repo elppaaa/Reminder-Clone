@@ -12,14 +12,19 @@ import Combine
 
 class RemindersViewController: UITableViewController {
   // TODO: Get from core data
-  var pagePrimaryColor: UIColor = .clear
-  fileprivate let viewModel = RemindersTableViewModel()
+  required init?(coder: NSCoder) { fatalError("Do not user initializer") }
+  fileprivate var viewModel: RemindersTableViewModel
+
+  init(_ category: Category) {
+    viewModel = RemindersTableViewModel(category: category)
+    super.init(style: .plain)
+  }
+
   var cancelBag = Set<AnyCancellable>()
 
   override func loadView() {
     super.loadView()
     tableView.register(ReminderTableViewCell.self, forCellReuseIdentifier: ReminderTableViewCell.identifier)
-    viewModel.primaryColor = pagePrimaryColor
 
     tableView.rowHeight = UITableView.automaticDimension
     tableView.estimatedRowHeight = 50
@@ -43,19 +48,12 @@ class RemindersViewController: UITableViewController {
   override func viewWillAppear(_ animated: Bool) {
     navigationController?.navigationBar.prefersLargeTitles = true
     defaultNavigationConfig()
-    let attribute = [NSAttributedString.Key.foregroundColor: pagePrimaryColor]
+    let attribute = [NSAttributedString.Key.foregroundColor: viewModel.category.color]
     navigationController?.navigationBar.largeTitleTextAttributes = attribute
     tableView.reloadData()
     super.viewWillAppear(true)
   }
 
-  #if DEBUG
-    @objc func injected() {
-      let vc = RemindersViewController()
-      vc.pagePrimaryColor = .blue
-      homeInject(vc)
-    }
-  #endif
 }
 
 // MARK: - Layout, Gesture setting
@@ -73,7 +71,7 @@ extension RemindersViewController {
   }
 
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    viewModel.task.count
+    viewModel.tasks.count
   }
 
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -82,8 +80,8 @@ extension RemindersViewController {
       fatalError("Cell Not Founded")
     }
 
-    cell.color = viewModel.primaryColor ?? .systemBlue
-    let data = viewModel.task[indexPath.row]
+    cell.color = viewModel.category.color
+    let data = viewModel.tasks[indexPath.row]
     cell.textView.text = data.title ?? "New Reminder"
     cell.isDone = data.isDone
 
@@ -93,11 +91,11 @@ extension RemindersViewController {
     }
 
     cell.$isDone
-      .sink { [weak self] in self?.viewModel.task[indexPath.row].isDone = $0 }
+      .sink { [weak self] in self?.viewModel.tasks[indexPath.row].isDone = $0 }
       .store(in: &cancelBag)
 
     cell.textView.publisher
-      .sink { [weak self] in self?.viewModel.task[indexPath.row].title = $0 }
+      .sink { [weak self] in self?.viewModel.tasks[indexPath.row].title = $0 }
       .store(in: &cancelBag)
 
     return cell
@@ -119,18 +117,17 @@ extension RemindersViewController {
   func configBinding() {
     view.publisher(.tap)
       .sink { [weak self] _ in
-        if self?.viewModel.task.last?.title == "" {
-          if let count = self?.viewModel.task.count {
-            guard let task = self?.viewModel.task.removeLast() else { return }
+        if self?.viewModel.tasks.last?.title == "" {
+          if let count = self?.viewModel.tasks.count {
+            guard let task = self?.viewModel.tasks.removeLast() else { return }
             self?.tableView.deleteRows(at: [.init(row: count - 1, section: 0)], with: .fade)
             PersistentManager.shared.delete(task)
           }
         } else {
-          let entity = PersistentManager.shared.newEntity(entity: Task.self)
-          entity.set(key: .title, value: "")
-          if let count = self?.viewModel.task.count {
-            self?.viewModel.task.append(entity)
-            self?.tableView.insertRows(at: [.init(row: count, section: 0)], with: .fade)
+          _ = self?.viewModel.newTask()
+          if let count = self?.viewModel.tasks.count {
+            print(count)
+            self?.tableView.insertRows(at: [.init(row: count - 1, section: 0)], with: .fade)
           }
         }
       }
