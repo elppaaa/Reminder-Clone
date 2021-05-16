@@ -40,8 +40,12 @@ class PersistentManager {
     }
     return nil
   }
-  
-  func delete(_ object: NSManagedObject) -> Bool {
+
+  func delete(_ object: NSManagedObject) {
+    context.delete(object)
+  }
+
+  func deleteAndSave(_ object: NSManagedObject) -> Bool {
     context.delete(object)
     do {
       try context.save()

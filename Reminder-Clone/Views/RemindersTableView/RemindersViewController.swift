@@ -24,7 +24,6 @@ class RemindersViewController: UITableViewController {
     tableView.rowHeight = UITableView.automaticDimension
     tableView.estimatedRowHeight = 50
 
-    tableView.allowsMultipleSelectionDuringEditing = true
     tableView.keyboardDismissMode = .interactive
   }
   
@@ -33,6 +32,7 @@ class RemindersViewController: UITableViewController {
     view.backgroundColor = R.Color.defaultBackground
     
     configLayout()
+    configBinding()
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -112,5 +112,28 @@ extension RemindersViewController {
 
     navigationController?.present(
       UINavigationController(rootViewController: vc), animated: true, completion: nil)
+  }
+}
+
+extension RemindersViewController {
+  func configBinding() {
+    view.publisher(.tap)
+      .sink { [weak self] _ in
+        if self?.viewModel.task.last?.title == "" {
+          if let count = self?.viewModel.task.count {
+            guard let task = self?.viewModel.task.removeLast() else { return }
+            self?.tableView.deleteRows(at: [.init(row: count - 1, section: 0)], with: .fade)
+            PersistentManager.shared.delete(task)
+          }
+        } else {
+          let entity = PersistentManager.shared.newEntity(entity: Task.self)
+          entity.set(key: .title, value: "")
+          if let count = self?.viewModel.task.count {
+            self?.viewModel.task.append(entity)
+            self?.tableView.insertRows(at: [.init(row: count, section: 0)], with: .fade)
+          }
+        }
+      }
+      .store(in: &cancelBag)
   }
 }
