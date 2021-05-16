@@ -35,10 +35,15 @@ class RemindersTableViewModel: NSObject {
     return entity
   }
 
+  func delete(index: Int) {
+    let task = tasks.remove(at: index)
+    manager.delete(task)
+  }
+
   func delete(task: Task) {
 //    category.removeFromTasks(task)
-    manager.delete(task)
     _ = tasks.drop { $0.objectID == task.objectID }
+    manager.delete(task)
   }
   
 }

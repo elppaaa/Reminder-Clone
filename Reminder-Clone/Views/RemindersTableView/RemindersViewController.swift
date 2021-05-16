@@ -114,6 +114,18 @@ extension RemindersViewController {
 }
 
 extension RemindersViewController {
+  override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, result in
+      self?.viewModel.delete(index: indexPath.row)
+      tableView.deleteRows(at: [indexPath], with: .fade)
+      result(true)
+    }
+
+    return UISwipeActionsConfiguration(actions: [deleteAction])
+  }
+}
+
+extension RemindersViewController {
   func configBinding() {
     view.publisher(.tap)
       .sink { [weak self] _ in

@@ -21,6 +21,7 @@ class MainViewController: UITableViewController {
     title = nil
     navigationController?.navigationBar.prefersLargeTitles = false
     configToolbar()
+    tableView.reloadData()
     super.viewWillAppear(true)
   }
   
