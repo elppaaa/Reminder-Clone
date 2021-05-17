@@ -118,7 +118,7 @@ extension RemindersViewController {
 // MARK: - Delegate
 extension RemindersViewController {
   override public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-    let vc = DetailReminderViewController()
+    let vc = DetailReminderViewController(style: .insetGrouped)
 //    vc.data = viewModel.task[indexPath.row]
 
     navigationController?.present(
