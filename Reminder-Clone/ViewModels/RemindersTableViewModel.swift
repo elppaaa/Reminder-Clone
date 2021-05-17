@@ -36,14 +36,24 @@ class RemindersTableViewModel: NSObject {
   }
 
   func delete(index: Int) {
-    let task = tasks.remove(at: index)
-    manager.delete(task)
+    if tasks.indices.contains(index) {
+      let task = tasks.remove(at: index)
+      manager.delete(task)
+    } else {
+      print("index out of range")
+    }
   }
 
   func delete(task: Task) {
 //    category.removeFromTasks(task)
-    _ = tasks.drop { $0.objectID == task.objectID }
-    manager.delete(task)
+    if let index = tasks.firstIndex(where: { $0.objectID == task.objectID }) {
+      tasks.remove(at: index)
+      manager.delete(task)
+    }
   }
-  
+
+  func index(of task: Task) -> Int? {
+    tasks.firstIndex(where: { $0.objectID == task.objectID }) 
+  }
+
 }

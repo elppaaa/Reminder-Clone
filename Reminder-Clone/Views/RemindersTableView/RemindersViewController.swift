@@ -91,11 +91,20 @@ extension RemindersViewController {
     }
 
     cell.$isDone
-      .sink { [weak self] in self?.viewModel.tasks[indexPath.row].isDone = $0 }
+      .sink { data.isDone = $0 }
       .store(in: &cancelBag)
 
-    cell.textView.publisher
-      .sink { [weak self] in self?.viewModel.tasks[indexPath.row].title = $0 }
+    cell.textView.textPublisher
+      .sink { data.title = $0 }
+      .store(in: &cancelBag)
+
+    cell.textView.endEditingPublisher
+      .sink { [weak self] in
+        if $0 == "", let index = self?.viewModel.index(of: data) {
+          self?.viewModel.delete(task: data)
+          tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .fade)
+        }
+      }
       .store(in: &cancelBag)
 
     return cell
@@ -127,19 +136,15 @@ extension RemindersViewController {
 
 extension RemindersViewController {
   func configBinding() {
-    view.publisher(.tap)
+    tableView.publisher(.tap)
       .sink { [weak self] _ in
-        if self?.viewModel.tasks.last?.title == "" {
-          if let count = self?.viewModel.tasks.count {
-            guard let task = self?.viewModel.tasks.removeLast() else { return }
-            self?.tableView.deleteRows(at: [.init(row: count - 1, section: 0)], with: .fade)
-            PersistentManager.shared.delete(task)
-          }
-        } else {
+        if self?.viewModel.tasks.last?.title != "" {
           _ = self?.viewModel.newTask()
-          if let count = self?.viewModel.tasks.count {
-            print(count)
-            self?.tableView.insertRows(at: [.init(row: count - 1, section: 0)], with: .fade)
+          guard let count = self?.viewModel.tasks.count else { return }
+          let index = IndexPath(row: count - 1, section: 0)
+          self?.tableView.insertRows(at: [index], with: .fade)
+          if let cell = self?.tableView.cellForRow(at: index) as? ReminderTableViewCell {
+            cell.textView.becomeFirstResponder()
           }
         }
       }
