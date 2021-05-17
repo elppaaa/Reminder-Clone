@@ -19,8 +19,13 @@ class ReminderTableViewCell: UITableViewCell {
   var cancel = Set<AnyCancellable>()
   fileprivate let inset: CGFloat = 8
   var textViewHeight: NSLayoutConstraint?
+  var flagVisible = false {
+    didSet { flag.isHidden = !flagVisible }
+  }
 
-  var color: UIColor = .clear
+  var color: UIColor = .clear {
+    didSet { flag.tintColor = color }
+  }
   lazy var iconSize = contentView.bounds.height * 0.6
 
   @Published var isDone = false {
@@ -43,6 +48,19 @@ class ReminderTableViewCell: UITableViewCell {
     $0.preferredSymbolConfiguration = .init(pointSize: iconSize)
     $0.isUserInteractionEnabled = true
     $0.contentMode = .center
+    $0.tintColor = color
+
+    contentView.addSubview($0)
+    return $0
+  }(UIImageView())
+
+  fileprivate lazy var flag: UIImageView = {
+    $0.bounds.size = CGSize(width: iconSize, height: iconSize)
+    $0.translatesAutoresizingMaskIntoConstraints = false
+    $0.preferredSymbolConfiguration = .init(pointSize: iconSize)
+    $0.isUserInteractionEnabled = true
+    $0.contentMode = .center
+    $0.image = R.Image.flag.image
 
     contentView.addSubview($0)
     return $0
@@ -78,7 +96,12 @@ class ReminderTableViewCell: UITableViewCell {
       textView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: inset * 0.5),
       textView.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: inset * -0.5),
       textView.leadingAnchor.constraint(equalTo: toggleButton.trailingAnchor, constant: inset),
-      textView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: inset * -1)
+      textView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: inset * -1),
+
+      flag.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: inset * -1),
+      flag.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+      flag.widthAnchor.constraint(equalToConstant: iconSize),
+      flag.heightAnchor.constraint(equalToConstant: iconSize),
     ])
 
     separatorInset.left = inset * 2 + toggleButton.bounds.width

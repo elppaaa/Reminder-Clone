@@ -29,12 +29,12 @@ class RemindersViewController: UITableViewController {
     tableView.rowHeight = UITableView.automaticDimension
     tableView.estimatedRowHeight = 50
 
-    tableView.keyboardDismissMode = .interactive
   }
   
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = R.Color.defaultBackground
+    tableView.keyboardDismissMode = .interactive
     
     configLayout()
     configBinding()
@@ -56,7 +56,7 @@ class RemindersViewController: UITableViewController {
 
 }
 
-// MARK: - Layout, Gesture setting
+// MARK: - Layout
 extension RemindersViewController {
   fileprivate func configLayout() {
     tableView.tableFooterView = UIView()
@@ -107,6 +107,10 @@ extension RemindersViewController {
       }
       .store(in: &cancelBag)
 
+    data.publisher(for: \.flag)
+      .assign(to: \.flagVisible, on: cell)
+      .store(in: &cancelBag)
+
     return cell
   }
 }
@@ -122,6 +126,7 @@ extension RemindersViewController {
   }
 }
 
+// MARK: - Swipe Action
 extension RemindersViewController {
   override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, result in
@@ -130,13 +135,25 @@ extension RemindersViewController {
       result(true)
     }
 
-    return UISwipeActionsConfiguration(actions: [deleteAction])
+    let flagAction = UIContextualAction(style: .normal, title: "Flag") { [weak self] _, _, result in
+      self?.viewModel.tasks[indexPath.row].flag.toggle()
+      result(true)
+    }
+    flagAction.backgroundColor = .systemOrange
+
+    let detailAction = UIContextualAction(style: .normal, title: "Detail") { [weak self] _, _, result in
+      self?.tableView(tableView, accessoryButtonTappedForRowWith: indexPath)
+      result(true)
+    }
+
+    return UISwipeActionsConfiguration(actions: [deleteAction, flagAction, detailAction])
   }
 }
 
+// MARK: - Binding
 extension RemindersViewController {
   func configBinding() {
-    tableView.publisher(.tap)
+    view.publisher(.tap)
       .sink { [weak self] _ in
         if self?.viewModel.tasks.last?.title != "" {
           _ = self?.viewModel.newTask()
