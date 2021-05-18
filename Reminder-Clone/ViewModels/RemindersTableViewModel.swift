@@ -6,6 +6,7 @@
 
 import UIKit
 import Combine
+import CoreData
 
 struct MyTask {
   var id: Int
@@ -14,41 +15,39 @@ struct MyTask {
 }
 
 class RemindersTableViewModel: NSObject {
+  let manager = PersistentManager.shared
+
   let category: Category
   var tasks = [Task]()
-  let manager = PersistentManager.shared
+  var tasksCancelBag = [NSManagedObjectID: Set<AnyCancellable>]() 
 
   init(category: Category) {
     self.category = category
     super.init()
     if let _data = category.tasks?.allObjects as? [Task] {
       tasks = _data
+      _data.forEach { tasksCancelBag[$0.objectID] = Set<AnyCancellable>() }
     }
   }
 
   func newTask() -> Task {
     let entity = manager.newEntity(entity: Task.self)
-    entity.set(key: .title, value: "")
-//    entity.category = category
-    category.addToTasks(entity)
     tasks.append(entity)
+    tasksCancelBag[entity.objectID] = Set<AnyCancellable>()
+    entity.set(key: .title, value: "")
+    category.addToTasks(entity)
     return entity
   }
 
-  func delete(index: Int) {
+  func delete(index: Int, completion: ((Task) -> Void)? = nil) {
     if tasks.indices.contains(index) {
       let task = tasks.remove(at: index)
+      category.removeFromTasks(task)
+      tasksCancelBag.removeValue(forKey: task.objectID)
+      completion?(task)
       manager.delete(task)
     } else {
       print("index out of range")
-    }
-  }
-
-  func delete(task: Task) {
-//    category.removeFromTasks(task)
-    if let index = tasks.firstIndex(where: { $0.objectID == task.objectID }) {
-      tasks.remove(at: index)
-      manager.delete(task)
     }
   }
 

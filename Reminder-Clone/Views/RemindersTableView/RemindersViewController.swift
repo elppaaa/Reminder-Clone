@@ -90,27 +90,31 @@ extension RemindersViewController {
       self?.tableView.endUpdates()
     }
 
-    cell.$isDone
-      .sink { data.isDone = $0 }
-      .store(in: &cancelBag)
+    viewModel.tasksCancelBag[data.objectID]?.insert(
+      cell.$isDone
+        .sink { data.isDone = $0 }
+    )
 
-    cell.textView.textPublisher
-      .sink { data.title = $0 }
-      .store(in: &cancelBag)
+    viewModel.tasksCancelBag[data.objectID]?.insert(
+      cell.textView.textPublisher
+        .sink { data.title = $0 }
+    )
 
-    cell.textView.endEditingPublisher
-      .filter { $0 == "" }
-      .sink { [weak self] _ in
-        if let index = self?.viewModel.index(of: data) {
-          self?.viewModel.delete(task: data)
-          tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .fade)
+    viewModel.tasksCancelBag[data.objectID]?.insert(
+      cell.textView.endEditingPublisher
+        .filter { $0 == "" }
+        .sink { [weak self] _ in
+          if let index = self?.viewModel.index(of: data) {
+            self?.viewModel.delete(index: index)
+            tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .fade)
+          }
         }
-      }
-      .store(in: &cancelBag)
+    )
 
-    data.publisher(for: \.flag)
-      .assign(to: \.flagVisible, on: cell)
-      .store(in: &cancelBag)
+    viewModel.tasksCancelBag[data.objectID]?.insert(
+      data.publisher(for: \.flag)
+        .assign(to: \.flagVisible, on: cell)
+    )
 
     return cell
   }
@@ -121,7 +125,9 @@ extension RemindersViewController {
   override public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
     let task = viewModel.tasks[indexPath.row]
     let vc = DetailReminderViewController(task: task)
+    vc.completionHandler = { tableView.reloadRows(at: [indexPath], with: .none) }
 
+    PersistentManager.shared.saveContext()
     navigationController?.present(
       UINavigationController(rootViewController: vc), animated: true, completion: nil)
   }
