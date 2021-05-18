@@ -6,9 +6,18 @@
 //
 
 import UIKit
+import Combine
 
 class DetailReminderViewController: UITableViewController, ViewControllerDelegate {
-  var viewModel = DetailReminderViewModel()
+  required init?(coder: NSCoder) { fatalError("Do not use this initializer") }
+  init(task: Task) {
+    viewModel = DetailReminderViewModel(task: task)
+    super.init(style: .insetGrouped)
+  }
+
+  var cancelBag = Set<AnyCancellable>()
+
+  let viewModel: DetailReminderViewModel
   var tableViewHeight: NSLayoutConstraint?
   var cells: [[UITableViewCell]] = [
     // 0
@@ -124,6 +133,31 @@ extension DetailReminderViewController {
     cell = cells[indexPath]
 
     switch (indexPath.section, indexPath.row) {
+    case (0, 0), (0, 1), (0, 2):
+      if let cell = cell as? DetailReminderInputCell {
+        if let type = cell.dataType, let text = viewModel.task.get(type) as? String {
+          cell.textView.text = text
+          cell.textView.textColor = .label
+        }
+
+        cell.textView.textPublisher
+          .sink { [weak self] in
+            guard let type = cell.dataType else { return }
+            self?.viewModel.task.set(key: type, value: $0) }
+          .store(in: &cancelBag)
+      }
+    case (1,0), (1, 2), (2, 0):
+      if let cell = cell as? DetailReminderToggleCell {
+        cell.toggle.publisher(for: .valueChanged)
+          .compactMap { $0 as? UISwitch }
+          .map(\.isOn)
+          .filter { !$0 }
+          .sink { [weak self] _ in
+            guard let type = cell.dataType else { return }
+            self?.viewModel.task.set(key: type, value: nil)
+          }
+          .store(in: &cancelBag)
+      }
     case (4, 0):
       cell.textLabel?.text = "Priority"
       cell.detailTextLabel?.text = "None" // entity.priority

@@ -44,7 +44,38 @@ public class Task: NSManagedObject {
     return dict
   }
 
-  func set<T>(key: TaskAttributesKey, value: T) {
+  func get(_ key: TaskAttributesKey) -> Any? {
+    switch key {
+    case .title:
+      return title
+    case .notes:
+      return notes
+    case .URL:
+      return link
+    case .date:
+      return notes
+    case .time:
+      return time
+    case .location:
+      return location
+    case .flag:
+      return flag
+    case .priority:
+      return priority
+    case .image:
+      return image
+    case .parent:
+      return parent
+    case .category:
+      return category
+    case .subtasks:
+      return subtasks
+    case .isDone:
+      return isDone
+    }
+  }
+
+  func set(key: TaskAttributesKey, value: Any?) {
     self.setValue(value, forKey: key.rawValue)
   }
 

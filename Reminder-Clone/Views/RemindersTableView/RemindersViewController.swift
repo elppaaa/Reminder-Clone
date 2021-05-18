@@ -82,7 +82,7 @@ extension RemindersViewController {
 
     cell.color = viewModel.category.color
     let data = viewModel.tasks[indexPath.row]
-    cell.textView.text = data.title ?? "New Reminder"
+    cell.textView.text = data.title
     cell.isDone = data.isDone
 
     cell.layoutUpdate = { [weak self] in
@@ -119,8 +119,8 @@ extension RemindersViewController {
 // MARK: - Delegate
 extension RemindersViewController {
   override public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-    let vc = DetailReminderViewController(style: .insetGrouped)
-//    vc.data = viewModel.task[indexPath.row]
+    let task = viewModel.tasks[indexPath.row]
+    let vc = DetailReminderViewController(task: task)
 
     navigationController?.present(
       UINavigationController(rootViewController: vc), animated: true, completion: nil)

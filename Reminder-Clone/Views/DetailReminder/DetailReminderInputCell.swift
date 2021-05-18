@@ -11,10 +11,11 @@ import UIKit
 class DetailReminderInputCell: DetailReminderViewCellBase {
   private var cellHeightAnchor: NSLayoutConstraint?
   private var textViewPlaceholder: String = ""
-  private let textView: UITextView = {
+  let textView: UITextView = {
     let t = UITextView()
     t.translatesAutoresizingMaskIntoConstraints = false
     t.font = .preferredFont(forTextStyle: .body)
+    t.backgroundColor = .none
     return t
   }()
   
@@ -75,7 +76,7 @@ extension DetailReminderInputCell: UITextViewDelegate {
   func textViewDidBeginEditing(_ textView: UITextView) {
     if textView.textColor == UIColor.lightGray {
       textView.text = nil
-      textView.textColor = UIColor.black
+      textView.textColor = .label
     }
   }
   

@@ -10,15 +10,24 @@ protocol DetailReminderTableViewDelegate {
 }
 
 class DetailReminderViewModel: NSObject {
+  var task: Task
   var _tableView: UITableView?
   var delegateVC: ViewControllerDelegate?
-  var dict = [TaskAttributesKey: Any]()
-  
+
+  init(task: Task) {
+    self.task = task
+    super.init()
+  }
+
+  func save() {
+    PersistentManager.shared.saveContext()
+  }
+
 }
 
 extension DetailReminderViewModel: DetailReminderTableViewDelegate {
   func setValue<T>(key: TaskAttributesKey, value: T) {
-    dict[key] = value
+    task.set(key: key, value: value)
   }
   
   var tableView: UITableView? {
