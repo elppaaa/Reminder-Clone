@@ -81,29 +81,39 @@ extension DetailReminderViewController {
   fileprivate func configNavigationBar( ) {
     title = "Detail"
     let cancelNavigationItem = UIBarButtonItem(
-      title: "Cancel", style: .plain, target: self, action: #selector(didLeftNavigationBarButtonClicked))
+      title: "Cancel", style: .plain, target: self, action: #selector(didLeftNavigationBarButtonTapped))
     let doneNavigationItem = UIBarButtonItem(
-      title: "Done", style: .done, target: self, action: #selector(didRightNavigationBarButtonClicked))
+      title: "Done", style: .done, target: self, action: #selector(didRightNavigationBarButtonTapped))
     
     navigationItem.leftBarButtonItem = cancelNavigationItem
     navigationItem.rightBarButtonItem = doneNavigationItem
   }
   
-  @objc func didLeftNavigationBarButtonClicked( ) {
-    if !isEditing {
-      dismiss(animated: true)
+  @objc
+  func didLeftNavigationBarButtonTapped( ) {
+    let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+    let discardAction = UIAlertAction(title: "Discard Changes", style: .destructive) {[weak self] _ in
+      self?.viewModel.cancel()
+      self?.dismiss(animated: true, completion: nil)
+    }
+    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+
+    alert.addAction(discardAction)
+    alert.addAction(cancelAction)
+
+    if viewModel.task.hasChanges {
+      present(alert, animated: true, completion: nil)
+    } else {
+      dismiss(animated: true, completion: nil)
     }
   }
   
-  @objc func didRightNavigationBarButtonClicked( ) {
-    // TODO: save to core data
+  @objc
+  func didRightNavigationBarButtonTapped( ) {
+    viewModel.save()
     dismiss(animated: true)
   }
   
-  @objc func injected( ) {
-    let vc = DetailReminderViewController()
-    homeInject(vc)
-  }
 }
 
 // MARK: - Config TableView

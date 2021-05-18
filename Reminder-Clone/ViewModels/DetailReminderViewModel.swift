@@ -23,6 +23,10 @@ class DetailReminderViewModel: NSObject {
     PersistentManager.shared.saveContext()
   }
 
+  func cancel() {
+    PersistentManager.shared.rollBack()
+  }
+
 }
 
 extension DetailReminderViewModel: DetailReminderTableViewDelegate {

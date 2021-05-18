@@ -101,4 +101,10 @@ class PersistentManager {
       }
     }
   }
+
+  func rollBack() {
+    if context.hasChanges {
+         context.rollback()
+    }
+  }
 }
