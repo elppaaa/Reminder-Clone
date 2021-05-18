@@ -18,8 +18,9 @@ class PersistentManager {
     })
     return container
   }()
-  private lazy var context: NSManagedObjectContext = persistentContainer.viewContext
-  
+
+  fileprivate lazy var context: NSManagedObjectContext = persistentContainer.newBackgroundContext()
+
   func newEntity<T: NSManagedObject>(entity: T.Type) -> T {
     entity.init(context: context)
   }
@@ -81,16 +82,7 @@ class PersistentManager {
     }
     return false
   }
-  
-  /*
-  func edit(with objectID: NSManagedObjectID, _ completion: (NSManagedObject)-> Bool) {
-    let entity = context.object(with: objectID)
-    if completion(entity) {
-      saveContext()
-    }
-  }
-  */
-  
+
   func saveContext() {
     if context.hasChanges {
       do {
@@ -102,9 +94,15 @@ class PersistentManager {
     }
   }
 
+  func setUndoManager() {
+    context.undoManager = UndoManager()
+  }
+
+  func unsetUndoManager() {
+    context.undoManager = nil
+  }
+
   func rollBack() {
-    if context.hasChanges {
-         context.rollback()
-    }
+    context.rollback()
   }
 }

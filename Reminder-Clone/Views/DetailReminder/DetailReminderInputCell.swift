@@ -10,7 +10,7 @@ import UIKit
 // MARK: - Create Custom Cell
 class DetailReminderInputCell: DetailReminderViewCellBase {
   private var cellHeightAnchor: NSLayoutConstraint?
-  private var textViewPlaceholder: String = ""
+  var textViewPlaceholder: String = ""
   let textView: UITextView = {
     let t = UITextView()
     t.translatesAutoresizingMaskIntoConstraints = false

@@ -123,11 +123,11 @@ extension RemindersViewController {
 // MARK: - Delegate
 extension RemindersViewController {
   override public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-    let task = viewModel.tasks[indexPath.row]
-    let vc = DetailReminderViewController(task: task)
+    PersistentManager.shared.saveContext()
+    let object = viewModel.tasks[indexPath.row]
+    let vc = DetailReminderViewController(task: object)
     vc.completionHandler = { tableView.reloadRows(at: [indexPath], with: .none) }
 
-    PersistentManager.shared.saveContext()
     navigationController?.present(
       UINavigationController(rootViewController: vc), animated: true, completion: nil)
   }

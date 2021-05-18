@@ -10,21 +10,28 @@ protocol DetailReminderTableViewDelegate {
 }
 
 class DetailReminderViewModel: NSObject {
-  var task: Task
+  @Published var task: Task
+
   var _tableView: UITableView?
-  var delegateVC: ViewControllerDelegate?
+  let manager = PersistentManager.shared
 
   init(task: Task) {
+    manager.saveContext()
+    manager.setUndoManager()
     self.task = task
     super.init()
   }
 
-  func save() {
-    PersistentManager.shared.saveContext()
+  deinit {
+    manager.unsetUndoManager()
   }
 
-  func cancel() {
-    PersistentManager.shared.rollBack()
+  func save() {
+    manager.saveContext()
+  }
+
+  func rollBack() {
+    manager.rollBack()
   }
 
 }
@@ -33,7 +40,7 @@ extension DetailReminderViewModel: DetailReminderTableViewDelegate {
   func setValue<T>(key: TaskAttributesKey, value: T) {
     task.set(key: key, value: value)
   }
-  
+
   var tableView: UITableView? {
     _tableView
   }
