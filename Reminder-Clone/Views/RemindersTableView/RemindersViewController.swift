@@ -35,7 +35,7 @@ class RemindersViewController: UITableViewController {
     super.viewDidLoad()
     view.backgroundColor = R.Color.defaultBackground
     tableView.keyboardDismissMode = .interactive
-    
+
     configLayout()
     configBinding()
   }
@@ -99,8 +99,9 @@ extension RemindersViewController {
       .store(in: &cancelBag)
 
     cell.textView.endEditingPublisher
-      .sink { [weak self] in
-        if $0 == "", let index = self?.viewModel.index(of: data) {
+      .filter { $0 == "" }
+      .sink { [weak self] _ in
+        if let index = self?.viewModel.index(of: data) {
           self?.viewModel.delete(task: data)
           tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .fade)
         }
@@ -163,6 +164,8 @@ extension RemindersViewController {
           if let cell = self?.tableView.cellForRow(at: index) as? ReminderTableViewCell {
             cell.textView.becomeFirstResponder()
           }
+        } else {
+          self?.tableView.endEditing(true)
         }
       }
       .store(in: &cancelBag)
