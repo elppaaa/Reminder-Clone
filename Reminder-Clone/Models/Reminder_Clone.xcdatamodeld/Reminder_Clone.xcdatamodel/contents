@@ -15,7 +15,7 @@
         <attribute name="link" optional="YES" attributeType="String"/>
         <attribute name="location" optional="YES" attributeType="Binary"/>
         <attribute name="notes" optional="YES" attributeType="String"/>
-        <attribute name="priority" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="priority" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="time" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" attributeType="String" defaultValueString="New Reminder"/>
         <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="tasks" inverseEntity="Category"/>

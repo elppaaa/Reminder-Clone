@@ -4,16 +4,31 @@
 
 import UIKit
 
-enum TaskPriority: String {
-  case high = "High"
-  case medium = "Medium"
-  case low = "Low"
-  case none = "None"
+enum TaskPriority: Int16 {
+  case none
+  case low
+  case medium
+  case high
+
+  var text: String {
+    switch self {
+    case .none:
+      return "None"
+    case .low:
+      return "Low"
+    case .medium:
+      return "Medium"
+    case .high:
+      return "Hight"
+    }
+  }
+
 }
 
 class DetailReminderPriorityViewController: UITableViewController {
   let options: [TaskPriority] = [.none, .low, .medium, .high]
   var selectionIndex = IndexPath(row: 0, section: 0)
+  var currentPriority: TaskPriority = .none
   
   required init?(coder: NSCoder) { fatalError("Do not use this initailizer") }
   
@@ -26,7 +41,7 @@ extension DetailReminderPriorityViewController {
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = UITableViewCell()
     if indexPath.row == 0 { cell.separatorInset = .zero }
-    cell.textLabel?.text = options[indexPath.row].rawValue
+    cell.textLabel?.text = options[indexPath.row].text
     cell.accessoryType = indexPath == selectionIndex ? .checkmark : .none
     cell.selectionStyle = .none
     return cell
