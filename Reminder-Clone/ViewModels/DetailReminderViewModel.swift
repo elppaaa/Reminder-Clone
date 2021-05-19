@@ -10,7 +10,7 @@ protocol DetailReminderTableViewDelegate {
 }
 
 class DetailReminderViewModel: NSObject {
-  @Published var task: Task
+  @Published var task: Task 
 
   var _tableView: UITableView?
   let manager = PersistentManager.shared

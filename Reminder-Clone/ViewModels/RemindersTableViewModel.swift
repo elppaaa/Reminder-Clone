@@ -19,11 +19,15 @@ class RemindersTableViewModel: NSObject {
 
   let category: Category
   var tasks = [Task]()
-  var tasksCancelBag = [NSManagedObjectID: Set<AnyCancellable>]() 
+  var tasksCancelBag = [NSManagedObjectID: Set<AnyCancellable>]()
 
   init(category: Category) {
     self.category = category
     super.init()
+    reload()
+  }
+
+  func reload() {
     if let _data = category.tasks?.allObjects as? [Task] {
       tasks = _data
       _data.forEach { tasksCancelBag[$0.objectID] = Set<AnyCancellable>() }

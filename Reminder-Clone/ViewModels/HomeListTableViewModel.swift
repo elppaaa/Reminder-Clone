@@ -26,6 +26,8 @@ class HomeListTableViewModel: NSObject {
   }
 
   func changeCategory(task: Task, category: Category) {
-    task.category = category
+    let prev = task.category
+    prev?.removeFromTasks(task)
+    category.addToTasks(task)
   }
 }

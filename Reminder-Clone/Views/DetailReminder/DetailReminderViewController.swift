@@ -20,7 +20,8 @@ class DetailReminderViewController: UITableViewController, ViewControllerDelegat
   lazy var doneNavigationItem = UIBarButtonItem(
     title: "Done", style: .done, target: self, action: #selector(didRightNavigationBarButtonTapped))
 
-  var cancelBag = Set<AnyCancellable>() 
+  var cancelBag = Set<AnyCancellable>()
+  var categoryCancel: AnyCancellable?
 
   var completionHandler: (() -> Void)?
   let viewModel: DetailReminderViewModel
@@ -115,7 +116,7 @@ extension DetailReminderViewController {
     completionHandler?()
     dismiss(animated: true)
   }
-  
+
 }
 
 // MARK: - Config TableView
@@ -167,18 +168,10 @@ extension DetailReminderViewController {
 
     case (0, 1), (0, 2):
       if let cell = cell as? DetailReminderInputCell {
-        if let type = cell.dataType {
           if let type = cell.dataType, let text = viewModel.task.get(type) as? String {
             cell.textView.text = text
             cell.textView.textColor = .label
           }
-
-          viewModel.$task
-            .compactMap { $0.get(type) as? String }
-            .filter { $0 != "" }
-            .assign(to: \.text, on: cell.textView)
-            .store(in: &cancelBag)
-        }
 
         let placeHolder = cell.textViewPlaceholder
         cell.textView.textPublisher
@@ -225,11 +218,11 @@ extension DetailReminderViewController {
       cell.accessoryType = .disclosureIndicator
     case (4, 1):
       cell.textLabel?.text = "List"
-//      cell.detailTextLabel?.text = viewModel.task.category?.name ?? "Unkown List"
-      viewModel.task
-        .publisher(for: \.category?.name)
+      viewModel.$task
+        .compactMap { $0.category?.name }
         .sink { cell.detailTextLabel?.text = $0 }
         .store(in: &cancelBag)
+
       cell.accessoryType = .disclosureIndicator
     case (5, 0):
       cell.textLabel?.text = "Subtasks"
@@ -261,8 +254,8 @@ extension DetailReminderViewController {
 
     case (4, 1):
       let vc = DetailReminderListViewController(style: .plain)
-      vc.currentCategory = viewModel.task.category
-//      vc.completionHandler = { tableView.reloadData() }
+      vc.currentTask = viewModel.task
+      vc.completionHandler = { tableView.reloadRows(at: [indexPath], with: .none) }
       navigationController?.pushViewController(vc, animated: true)
     case (5, 0):
       let vc = DetailReminderSubtasksViewController(style: .grouped)

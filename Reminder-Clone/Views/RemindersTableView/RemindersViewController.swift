@@ -126,7 +126,10 @@ extension RemindersViewController {
     PersistentManager.shared.saveContext()
     let object = viewModel.tasks[indexPath.row]
     let vc = DetailReminderViewController(task: object)
-    vc.completionHandler = { tableView.reloadRows(at: [indexPath], with: .none) }
+    vc.completionHandler = { [weak self]  in
+      self?.viewModel.reload()
+      tableView.reloadData()
+    }
 
     navigationController?.present(
       UINavigationController(rootViewController: vc), animated: true, completion: nil)
