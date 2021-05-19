@@ -7,8 +7,10 @@ import Foundation
 import Combine
 
 class HomeListTableViewModel: NSObject {
+  static let shared = HomeListTableViewModel()
+  
   var data = [Category]()
-  var cancelBag = Set<AnyCancellable>()
+  fileprivate var cancelBag = Set<AnyCancellable>()
 
   override init() {
     super.init()
@@ -21,5 +23,9 @@ class HomeListTableViewModel: NSObject {
       .compactMap { _ in manager.fetch(request: Category.fetchRequest()) }
       .assign(to: \.data, on: self)
       .store(in: &cancelBag)
+  }
+
+  func changeCategory(task: Task, category: Category) {
+    task.category = category
   }
 }

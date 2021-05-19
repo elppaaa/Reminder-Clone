@@ -12,7 +12,6 @@ class DetailReminderViewController: UITableViewController, ViewControllerDelegat
   required init?(coder: NSCoder) { fatalError("Do not use this initializer") }
   init(task: Task) {
     viewModel = DetailReminderViewModel(task: task)
-    print(task.title)
     super.init(style: .insetGrouped)
   }
 
@@ -21,7 +20,8 @@ class DetailReminderViewController: UITableViewController, ViewControllerDelegat
   lazy var doneNavigationItem = UIBarButtonItem(
     title: "Done", style: .done, target: self, action: #selector(didRightNavigationBarButtonTapped))
 
-  var cancelBag = Set<AnyCancellable>()
+  var cancelBag = Set<AnyCancellable>() 
+
   var completionHandler: (() -> Void)?
   let viewModel: DetailReminderViewModel
   var tableViewHeight: NSLayoutConstraint?
@@ -221,15 +221,19 @@ extension DetailReminderViewController {
       }
     case (4, 0):
       cell.textLabel?.text = "Priority"
-      cell.detailTextLabel?.text = "None" // entity.priority
+      cell.detailTextLabel?.text = TaskPriority(rawValue: viewModel.task.priority)?.text ?? "None"
       cell.accessoryType = .disclosureIndicator
     case (4, 1):
       cell.textLabel?.text = "List"
-      cell.detailTextLabel?.text = "미리 알림" // entity
+//      cell.detailTextLabel?.text = viewModel.task.category?.name ?? "Unkown List"
+      viewModel.task
+        .publisher(for: \.category?.name)
+        .sink { cell.detailTextLabel?.text = $0 }
+        .store(in: &cancelBag)
       cell.accessoryType = .disclosureIndicator
     case (5, 0):
       cell.textLabel?.text = "Subtasks"
-      cell.detailTextLabel?.text = "0" // entity.child.count
+      cell.detailTextLabel?.text = String(viewModel.task.subtasks?.count ?? 0)
       cell.accessoryType = .disclosureIndicator
     case (6, 0):
       cell.textLabel?.text = "Add Image"
@@ -257,6 +261,8 @@ extension DetailReminderViewController {
 
     case (4, 1):
       let vc = DetailReminderListViewController(style: .plain)
+      vc.currentCategory = viewModel.task.category
+//      vc.completionHandler = { tableView.reloadData() }
       navigationController?.pushViewController(vc, animated: true)
     case (5, 0):
       let vc = DetailReminderSubtasksViewController(style: .grouped)

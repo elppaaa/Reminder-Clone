@@ -6,30 +6,42 @@ import UIKit
 
 class DetailReminderListViewCell: UITableViewCell {
   required init?(coder: NSCoder) { fatalError("Do not use this initializer") }
-  
-  var data: HomeRadiusList?
-  
-  override init(style: CellStyle, reuseIdentifier: String?) {
+  override init(style: UITableViewCell.CellStyle, reuseIdentifier _: String? = nil) {
     super.init(style: style, reuseIdentifier: Self.identifier)
-    commonInit()
+    configLayout()
   }
-  
-  let customImage: UIImageView = {
-    let i = UIImageView()
-    i.translatesAutoresizingMaskIntoConstraints = false
-    return i
-  }()
-  
-  func commonInit() {
-    imageView?.image = UIImage().wrapBox(size: 35)
-    guard let imageView = imageView else { return }
-    customImage.pin(parent: imageView)
+
+  fileprivate let iconRate: CGFloat = 0.8
+  fileprivate let insetWidth: CGFloat = 8
+
+  lazy var icon = CircleView( frame: CGRect(origin: bounds.origin, size: CGSize(width: contentView.frame.height * iconRate, height: contentView.frame.height * iconRate)))
+
+  lazy var text = UILabel.makeView(color: .label, font: .preferredFont(forTextStyle: .body))
+  lazy var detailText = UILabel.makeView(color: .secondaryLabel, font: .preferredFont(forTextStyle: .body))
+
+  fileprivate func configLayout() {
+    icon.translatesAutoresizingMaskIntoConstraints = false
+    text.translatesAutoresizingMaskIntoConstraints = false
+    detailTextLabel?.translatesAutoresizingMaskIntoConstraints = false
+
+    contentView.addSubview(icon)
+    contentView.addSubview(text)
+    contentView.addSubview(detailText)
+
+    NSLayoutConstraint.activate([
+      icon.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+      text.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+      detailText.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+
+      icon.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: insetWidth),
+      text.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: insetWidth),
+
+      detailText.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: insetWidth * -1)
+    ])
+
+    text.sizeToFit()
+    detailText.sizeToFit()
+
+    separatorInset.left = insetWidth * 2 + icon.bounds.width
   }
-  
-  func config(data: HomeRadiusList) {
-    customImage.image = data.icon
-    customImage.tintColor = data.color
-    textLabel?.text = data.title
-  }
-  
 }

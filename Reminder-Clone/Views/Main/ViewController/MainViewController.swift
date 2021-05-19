@@ -10,7 +10,7 @@ import Combine
 
 class MainViewController: UITableViewController {
   fileprivate let controller = UISearchController(searchResultsController: nil)
-  let viewModel = HomeListTableViewModel()
+  let viewModel = HomeListTableViewModel.shared
 
   fileprivate let collection = MainListCollectionWrappedView()
   fileprivate lazy var collectionView = collection.collectionView

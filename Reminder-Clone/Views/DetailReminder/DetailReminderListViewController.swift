@@ -5,13 +5,8 @@
 import UIKit
 
 class DetailReminderListViewController: UITableViewController {
-  var list: [HomeRadiusList] = [
-    .init(title: "School", icon: R.Image.calenderCircle.image, color: .systemBlue, count: 4),
-    .init(title: "Home", icon: R.Image.folderCircle.image, color: .systemPink, count: 4),
-    .init(title: "Test", icon: R.Image.flagCircle.image, color: .systemYellow, count: 4),
-    .init(title: "List", icon: R.Image.calenderCircle.image, color: .systemOrange, count: 4),
-  ]
-  
+  fileprivate let viewModel = HomeListTableViewModel.shared
+
   required init?(coder: NSCoder) { fatalError("Do not use this initializer") }
   
   override init(style: UITableView.Style) {
@@ -20,35 +15,42 @@ class DetailReminderListViewController: UITableViewController {
     tableView.register(DetailReminderListViewCell.self, forCellReuseIdentifier: DetailReminderListViewCell.identifier)
     tableView.tableFooterView = UIView()
   }
-  
-  var selectedIndex = 0
-  
+
+  deinit {
+    completionHandler?()
+  }
+
+  var currentCategory: Category?
+  var currentTask: Task?
+
+  var completionHandler: (() -> Void)?
+
   override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     55
   }
   
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    list.count
+    viewModel.data.count
   }
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailReminderListViewCell.identifier)
       as? DetailReminderListViewCell else { return UITableViewCell() }
-    let data = list[indexPath.row]
-//    tableView.beginUpdates()
-    cell.config(data: data)
-//    tableView.endUpdates()
-    cell.accessoryType = indexPath.row == selectedIndex ? .checkmark : .none
+    let category = viewModel.data[indexPath.row]
+
+    cell.icon.setImage(category.icon)
+    cell.icon.setBackground(category.color)
+    cell.text.text = category.name
+
+    cell.accessoryType = category.objectID == currentCategory?.objectID ? .checkmark : .none
     return cell
   }
   
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    tableView.beginUpdates()
-    tableView.cellForRow(at: IndexPath(row: selectedIndex, section: 0))?.accessoryType = .none
-    tableView.cellForRow(at: IndexPath(row: indexPath.row, section: 0))?.accessoryType = .checkmark
-    tableView.endUpdates()
-    selectedIndex = indexPath.row
+    if let task = currentTask {
+      viewModel.changeCategory(task: task, category: viewModel.data[indexPath.row])
+    }
     navigationController?.popViewController(animated: true)
   }
-  
+
 }
