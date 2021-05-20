@@ -212,6 +212,19 @@ extension DetailReminderViewController {
           }
           .store(in: &cancelBag)
       }
+
+    case (3, 0):
+      if let cell = cell as? DetailReminderToggleCell {
+        cell.toggle.isOn = viewModel.task.flag
+
+        cell.toggle.publisher(for: .valueChanged)
+          .compactMap { $0 as? UISwitch }
+          .map(\.isOn)
+          .sink { [weak self] in self?.viewModel.task.set(key: .flag, value: $0) }
+          .store(in: &cancelBag)
+
+      }
+
     case (4, 0):
       cell.textLabel?.text = "Priority"
       cell.detailTextLabel?.text = TaskPriority(rawValue: viewModel.task.priority)?.text ?? "None"
