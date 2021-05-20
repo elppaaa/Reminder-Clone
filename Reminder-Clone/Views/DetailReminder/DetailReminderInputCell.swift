@@ -36,7 +36,7 @@ class DetailReminderInputCell: DetailReminderViewCellBase {
     
     cellHeightAnchor = textView.heightAnchor.constraint(
       equalToConstant: UIFont.preferredFont(forTextStyle: .body).lineHeight)
-    cellHeightAnchor?.priority = .defaultLow
+      .priority(.defaultLow)
     cellHeightAnchor?.isActive = true
     textView.text = textViewPlaceholder
     textView.textColor = .lightGray

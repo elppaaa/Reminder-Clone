@@ -12,6 +12,7 @@
 		4845DBDC264EDDE2005ED9E1 /* Notification+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4845DBDB264EDDE2005ED9E1 /* Notification+Extension.swift */; };
 		4845DBE2264F785C005ED9E1 /* Category+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4845DBE0264F785C005ED9E1 /* Category+CoreDataProperties.swift */; };
 		485C47F4264ABE8F007A56E1 /* NewListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485C47F3264ABE8F007A56E1 /* NewListView.swift */; };
+		4879438A26568CEB0089A9A3 /* NSLayoutConstraint+Chain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4879438926568CEB0089A9A3 /* NSLayoutConstraint+Chain.swift */; };
 		4879905A2628343100C6F416 /* Task+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487990582628343100C6F416 /* Task+CoreDataClass.swift */; };
 		487EDFCD2653510F00C96C7A /* Task+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487EDFCC2653510F00C96C7A /* Task+CoreDataProperties.swift */; };
 		488EFEF8264BDFBD005A6669 /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488EFEF7264BDFBD005A6669 /* CircleView.swift */; };
@@ -72,6 +73,7 @@
 		4845DBDB264EDDE2005ED9E1 /* Notification+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extension.swift"; sourceTree = "<group>"; };
 		4845DBE0264F785C005ED9E1 /* Category+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Category+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		485C47F3264ABE8F007A56E1 /* NewListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewListView.swift; sourceTree = "<group>"; };
+		4879438926568CEB0089A9A3 /* NSLayoutConstraint+Chain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+Chain.swift"; sourceTree = "<group>"; };
 		487990582628343100C6F416 /* Task+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+CoreDataClass.swift"; sourceTree = "<group>"; };
 		487EDFCC2653510F00C96C7A /* Task+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		488EFEF7264BDFBD005A6669 /* CircleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleView.swift; sourceTree = "<group>"; };
@@ -320,6 +322,7 @@
 				9413C3F2DF1A52FA608064B5 /* UIView+Extension.swift */,
 				9413925F34C95BF5178FDFAF /* UIViewController+Extension.swift */,
 				4845DBDB264EDDE2005ED9E1 /* Notification+Extension.swift */,
+				4879438926568CEB0089A9A3 /* NSLayoutConstraint+Chain.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -442,6 +445,7 @@
 				941493FB5BC04197E26E32F1 /* UILabel+Extension.swift in Sources */,
 				941F0C4757A6E540D13C04A9 /* UIView+Extension.swift in Sources */,
 				941E39095C183085BBBA3EE2 /* UIViewController+Extension.swift in Sources */,
+				4879438A26568CEB0089A9A3 /* NSLayoutConstraint+Chain.swift in Sources */,
 				487EDFCD2653510F00C96C7A /* Task+CoreDataProperties.swift in Sources */,
 				941CC9C852DD3121EE08E5B7 /* MainListCollectionWrappedView.swift in Sources */,
 				941D07F8ACC45F9A4B836BC0 /* MainListCollectionViewCell.swift in Sources */,

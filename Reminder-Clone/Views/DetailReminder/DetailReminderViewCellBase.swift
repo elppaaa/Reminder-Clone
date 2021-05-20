@@ -13,9 +13,9 @@ class DetailReminderViewCellBase: UITableViewCell {
   override init(style: CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
-    let minHeight = contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 57)
-    minHeight.priority = .defaultHigh
-    minHeight.isActive = true
+    contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 57)
+      .priority(.defaultHigh)
+      .isActive = true
   }
   
 }

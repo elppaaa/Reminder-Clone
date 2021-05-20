@@ -28,7 +28,7 @@ class DetailReminderSubtaskCell: UITableViewCell {
     
     textViewHeight = textView.heightAnchor.constraint(
       equalToConstant: UIFont.preferredFont(forTextStyle: .body).lineHeight)
-    textViewHeight?.priority = .defaultLow
+      .priority(.defaultLow)
     textViewHeight?.isActive = true
     textViewDidChange(textView)
     

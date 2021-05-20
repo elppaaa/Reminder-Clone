@@ -105,7 +105,7 @@ class ReminderTableViewCell: UITableViewCell {
 
   fileprivate func configLayout() {
     priorityView.lineBreakMode = .byWordWrapping
-    
+
     selectionStyle = .none
 
     stack.pin(safe: contentView, margin: inset)
@@ -116,7 +116,7 @@ class ReminderTableViewCell: UITableViewCell {
     stack.addArrangedSubview(flag)
 
     textViewHeight = textView.heightAnchor.constraint(equalToConstant: textView.contentSize.height)
-    textViewHeight?.priority = .defaultLow
+      .priority(.defaultLow)
     textViewHeight?.isActive = true
 
     NSLayoutConstraint.activate([
