@@ -24,8 +24,22 @@ class ReminderTableViewCell: UITableViewCell {
   }
 
   var color: UIColor = .clear {
-    didSet { flag.tintColor = color }
+    didSet {
+      flag.tintColor = color
+      priorityView.textColor = color
+    }
   }
+  var priority: Int16 = 0 {
+    didSet {
+      if priority == 0 {
+        priorityView.isHidden = true
+      } else {
+        priorityView.isHidden = false
+        priorityView.text = String(repeating: "!", count: Int(priority)) + " "
+      }
+    }
+  }
+
   lazy var iconSize = contentView.bounds.height * 0.6
 
   @Published var isDone = false {
@@ -42,6 +56,16 @@ class ReminderTableViewCell: UITableViewCell {
     }
   }
 
+  fileprivate lazy var stack: UIStackView = {
+    $0.translatesAutoresizingMaskIntoConstraints = false
+    $0.axis = .horizontal
+    $0.alignment = .firstBaseline
+    $0.distribution = .fillProportionally
+    $0.spacing = inset
+
+    return $0
+  }(UIStackView())
+
   lazy var toggleButton: UIImageView = {
     $0.bounds.size = CGSize(width: iconSize, height: iconSize)
     $0.translatesAutoresizingMaskIntoConstraints = false
@@ -50,9 +74,22 @@ class ReminderTableViewCell: UITableViewCell {
     $0.contentMode = .center
     $0.tintColor = color
 
-    contentView.addSubview($0)
     return $0
   }(UIImageView())
+
+  private lazy var priorityView = UILabel.makeView(color: color, font: .preferredFont(forTextStyle: .body))
+
+  lazy var textView: UITextView = {
+    $0.translatesAutoresizingMaskIntoConstraints = false
+    $0.isUserInteractionEnabled = true
+    $0.delegate = self
+    $0.font = .preferredFont(forTextStyle: .body)
+    $0.isScrollEnabled = false
+    $0.textContainerInset = .zero
+    $0.textContainer.lineFragmentPadding = 0
+
+    return $0
+  }(UITextView())
 
   fileprivate lazy var flag: UIImageView = {
     $0.bounds.size = CGSize(width: iconSize, height: iconSize)
@@ -62,44 +99,27 @@ class ReminderTableViewCell: UITableViewCell {
     $0.contentMode = .center
     $0.image = R.Image.flag.image
 
-    contentView.addSubview($0)
     return $0
   }(UIImageView())
 
-  lazy var textView: UITextView = {
-    $0.translatesAutoresizingMaskIntoConstraints = false
-    $0.isUserInteractionEnabled = true
-    $0.delegate = self
-    $0.font = .preferredFont(forTextStyle: .body)
-    $0.isScrollEnabled = false
-
-    contentView.addSubview($0)
-    return $0
-  }(UITextView())
-
   fileprivate func configLayout() {
     selectionStyle = .none
-    textViewHeight = textView.heightAnchor.constraint(equalToConstant: contentView.bounds.height)
 
+    stack.pin(safe: contentView, margin: inset)
+
+    stack.addArrangedSubview(toggleButton)
+    stack.addArrangedSubview(priorityView)
+    stack.addArrangedSubview(textView)
+    stack.addArrangedSubview(flag)
+
+    textViewHeight = textView.heightAnchor.constraint(equalToConstant: textView.contentSize.height)
     textViewHeight?.priority = .defaultLow
     textViewHeight?.isActive = true
-    textViewDidChange(textView)
 
     NSLayoutConstraint.activate([
-      toggleButton.topAnchor.constraint(
-        equalTo: contentView.safeAreaLayoutGuide.topAnchor,
-        constant: (contentView.bounds.height - toggleButton.bounds.height) * 0.5),
-      toggleButton.safeAreaLayoutGuide.leadingAnchor.constraint( equalTo: contentView.leadingAnchor, constant: inset),
       toggleButton.heightAnchor.constraint(equalToConstant: iconSize),
       toggleButton.widthAnchor.constraint(equalToConstant: iconSize),
 
-      textView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: inset * 0.5),
-      textView.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: inset * -0.5),
-      textView.leadingAnchor.constraint(equalTo: toggleButton.trailingAnchor, constant: inset),
-      textView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: inset * -1),
-
-      flag.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: inset * -1),
-      flag.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
       flag.widthAnchor.constraint(equalToConstant: iconSize),
       flag.heightAnchor.constraint(equalToConstant: iconSize),
     ])

@@ -27,7 +27,7 @@ class RemindersViewController: UITableViewController {
     tableView.register(ReminderTableViewCell.self, forCellReuseIdentifier: ReminderTableViewCell.identifier)
 
     tableView.rowHeight = UITableView.automaticDimension
-    tableView.estimatedRowHeight = 50
+    tableView.estimatedRowHeight = 45
 
   }
   
@@ -82,7 +82,7 @@ extension RemindersViewController {
 
     cell.color = viewModel.category.color
     let data = viewModel.tasks[indexPath.row]
-    cell.textView.text = data.title
+    cell.textView.text = data.title == "" ? nil : data.title
     cell.isDone = data.isDone
 
     cell.layoutUpdate = { [weak self] in
@@ -92,12 +92,12 @@ extension RemindersViewController {
 
     viewModel.tasksCancelBag[data.objectID]?.insert(
       cell.$isDone
-        .sink { data.isDone = $0 }
+        .sink { data.set(key: .isDone, value: $0) }
     )
 
     viewModel.tasksCancelBag[data.objectID]?.insert(
       cell.textView.textPublisher
-        .sink { data.title = $0 }
+        .sink { data.set(key: .title, value: $0) }
     )
 
     viewModel.tasksCancelBag[data.objectID]?.insert(
@@ -114,6 +114,11 @@ extension RemindersViewController {
     viewModel.tasksCancelBag[data.objectID]?.insert(
       data.publisher(for: \.flag)
         .assign(to: \.flagVisible, on: cell)
+    )
+
+    viewModel.tasksCancelBag[data.objectID]?.insert(
+      data.publisher(for: \.priority)
+        .assign(to: \.priority, on: cell)
     )
 
     return cell
