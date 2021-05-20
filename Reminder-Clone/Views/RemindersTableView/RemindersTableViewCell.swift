@@ -15,8 +15,10 @@ class ReminderTableViewCell: UITableViewCell {
     configAction()
     configLayout()
   }
-  var layoutUpdate: (() -> Void)?
   var cancel = Set<AnyCancellable>()
+  var delegate: ReminderTableViewCellDelegate?
+  var row: Int?
+
   fileprivate let inset: CGFloat = 8
   fileprivate var textViewHeight: NSLayoutConstraint?
   var flagVisible = false {
@@ -144,6 +146,9 @@ extension ReminderTableViewCell: UITextViewDelegate {
 
   func textViewDidEndEditing(_ textView: UITextView) {
     accessoryType = .none
+    if textView.text == "", let row = row {
+      delegate?.removeCell(index: row)
+    }
   }
 
   func textViewDidChange(_ textView: UITextView) {
@@ -151,7 +156,16 @@ extension ReminderTableViewCell: UITextViewDelegate {
     let size = CGSize(width: contentView.frame.width, height: .infinity)
     let estimatedSize = textView.sizeThatFits(size)
     textViewHeight?.constant = estimatedSize.height
-    layoutUpdate?()
+    delegate?.updateCellLayout(nil)
     UIView.setAnimationsEnabled(true)
+  }
+
+  func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+    if text == "\n", let row = row {
+      delegate?.insertTask(index: row, animate: .fade)
+      return false
+    }
+
+    return true
   }
 }

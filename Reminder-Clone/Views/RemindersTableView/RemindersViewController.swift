@@ -13,7 +13,7 @@ import Combine
 class RemindersViewController: UITableViewController {
   // TODO: Get from core data
   required init?(coder: NSCoder) { fatalError("Do not user initializer") }
-  fileprivate var viewModel: RemindersTableViewModel
+  let viewModel: RemindersTableViewModel
 
   init(_ category: Category) {
     viewModel = RemindersTableViewModel(category: category)
@@ -82,43 +82,33 @@ extension RemindersViewController {
 
     cell.color = viewModel.category.color
     let data = viewModel.tasks[indexPath.row]
-    cell.textView.text = data.title == "" ? nil : data.title
     cell.isDone = data.isDone
+    cell.priority = data.priority
+    cell.row = indexPath.row
+    cell.delegate = self
 
-    cell.layoutUpdate = { [weak self] in
-      self?.tableView.beginUpdates()
-      self?.tableView.endUpdates()
-    }
+    viewModel.tasksCancelBag[data.objectID]?.insert(
+      data.publisher(for: \.title)
+        .removeDuplicates()
+        .sink { cell.textView.text = $0 }
+      )
 
     viewModel.tasksCancelBag[data.objectID]?.insert(
       cell.$isDone
+        .removeDuplicates()
         .sink { data.set(key: .isDone, value: $0) }
     )
 
     viewModel.tasksCancelBag[data.objectID]?.insert(
       cell.textView.textPublisher
+        .removeDuplicates()
         .sink { data.set(key: .title, value: $0) }
     )
 
     viewModel.tasksCancelBag[data.objectID]?.insert(
-      cell.textView.endEditingPublisher
-        .filter { $0 == "" }
-        .sink { [weak self] _ in
-          if let index = self?.viewModel.index(of: data) {
-            self?.viewModel.delete(index: index)
-            tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .fade)
-          }
-        }
-    )
-
-    viewModel.tasksCancelBag[data.objectID]?.insert(
       data.publisher(for: \.flag)
+        .removeDuplicates()
         .assign(to: \.flagVisible, on: cell)
-    )
-
-    viewModel.tasksCancelBag[data.objectID]?.insert(
-      data.publisher(for: \.priority)
-        .assign(to: \.priority, on: cell)
     )
 
     return cell
@@ -130,6 +120,10 @@ extension RemindersViewController {
   override public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
     PersistentManager.shared.saveContext()
     let object = viewModel.tasks[indexPath.row]
+    if object.title == "" {
+      object.set(key: .title, value: "New Reminder")
+    }
+
     let vc = DetailReminderViewController(task: object)
     vc.completionHandler = { [weak self]  in
       self?.viewModel.reload()
@@ -169,15 +163,11 @@ extension RemindersViewController {
 extension RemindersViewController {
   func configBinding() {
     view.publisher(.tap)
+      .debounce(for: .milliseconds(50), scheduler: RunLoop.main)
       .sink { [weak self] _ in
         if self?.viewModel.tasks.last?.title != "" {
-          _ = self?.viewModel.newTask()
           guard let count = self?.viewModel.tasks.count else { return }
-          let index = IndexPath(row: count - 1, section: 0)
-          self?.tableView.insertRows(at: [index], with: .fade)
-          if let cell = self?.tableView.cellForRow(at: index) as? ReminderTableViewCell {
-            cell.textView.becomeFirstResponder()
-          }
+          self?.insertTask(index: count - 1, animate: .none)
         } else {
           self?.tableView.endEditing(true)
         }
