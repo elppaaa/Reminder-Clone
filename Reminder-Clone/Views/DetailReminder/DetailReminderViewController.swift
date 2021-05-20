@@ -160,7 +160,7 @@ extension DetailReminderViewController {
             } else {
               self?.doneNavigationItem.isEnabled = true
               guard let type = cell.dataType else { return }
-              self?.viewModel.task.set(key: type, value: $0)
+              self?.viewModel.set(key: type, value: $0)
             }
           }
           .store(in: &cancelBag)
@@ -179,9 +179,9 @@ extension DetailReminderViewController {
           .sink { [weak self] in
             guard let type = cell.dataType else { return }
             if $0 == "" {
-              self?.viewModel.task.set(key: type, value: nil)
+              self?.viewModel.setNil(type)
             } else {
-              self?.viewModel.task.set(key: type, value: $0)
+              self?.viewModel.set(key: type, value: $0)
             }
           }
           .store(in: &cancelBag)
@@ -208,7 +208,7 @@ extension DetailReminderViewController {
           .filter { !$0 }
           .sink { [weak self] _ in
             guard let type = cell.dataType else { return }
-            self?.viewModel.task.set(key: type, value: nil)
+            self?.viewModel.setNil(type)
           }
           .store(in: &cancelBag)
       }
@@ -252,7 +252,8 @@ extension DetailReminderViewController {
       let vc = DetailReminderPriorityViewController(style: .insetGrouped)
       vc.currentPriority = viewModel.task.priority
       vc.completionHandler = { [weak self] priority in
-        self?.viewModel.task.set(key: .priority, value: priority)
+        
+        self?.viewModel.set(key: .priority, value: priority)
         tableView.reloadRows(at: [indexPath], with: .none)
       }
       navigationController?.pushViewController(vc, animated: true)

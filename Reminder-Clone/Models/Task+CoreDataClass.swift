@@ -23,6 +23,7 @@ enum TaskAttributesKey: String {
   case parent
   case category
   case isDone
+
 }
 
 @objc (Task)
@@ -75,7 +76,7 @@ public class Task: NSManagedObject {
     }
   }
 
-  func set(key: TaskAttributesKey, value: Any?) {
+  func set<T>(key: TaskAttributesKey, value: T) {
     self.setValue(value, forKey: key.rawValue)
   }
 

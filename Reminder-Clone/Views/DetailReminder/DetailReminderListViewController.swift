@@ -42,7 +42,7 @@ class DetailReminderListViewController: UITableViewController {
   }
   
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    if let task = currentTask, task.category != viewModel.data[indexPath.row] {
+    if let task = currentTask {
       viewModel.changeCategory(task: task, category: viewModel.data[indexPath.row])
     } 
     navigationController?.popViewController(animated: true)
