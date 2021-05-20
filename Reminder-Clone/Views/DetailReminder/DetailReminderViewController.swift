@@ -250,6 +250,11 @@ extension DetailReminderViewController {
     switch (indexPath.section, indexPath.row) {
     case (4, 0):
       let vc = DetailReminderPriorityViewController(style: .insetGrouped)
+      vc.currentPriority = viewModel.task.priority
+      vc.completionHandler = { [weak self] priority in
+        self?.viewModel.task.set(key: .priority, value: priority)
+        tableView.reloadRows(at: [indexPath], with: .none)
+      }
       navigationController?.pushViewController(vc, animated: true)
 
     case (4, 1):

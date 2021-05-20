@@ -27,13 +27,19 @@ enum TaskPriority: Int16 {
 
 class DetailReminderPriorityViewController: UITableViewController {
   let options: [TaskPriority] = [.none, .low, .medium, .high]
-  var selectionIndex = IndexPath(row: 0, section: 0)
-  var currentPriority: TaskPriority = .none
+
+  var completionHandler: ((Int16) -> Void)?
+  var currentPriority: Int16 = 0
   
   required init?(coder: NSCoder) { fatalError("Do not use this initailizer") }
   
   override init(style: UITableView.Style) {
     super.init(style: style)
+  }
+
+  override func viewDidDisappear(_ animated: Bool) {
+    completionHandler?(currentPriority)
+    super.viewDidDisappear(true)
   }
 }
 
@@ -42,7 +48,7 @@ extension DetailReminderPriorityViewController {
     let cell = UITableViewCell()
     if indexPath.row == 0 { cell.separatorInset = .zero }
     cell.textLabel?.text = options[indexPath.row].text
-    cell.accessoryType = indexPath == selectionIndex ? .checkmark : .none
+    cell.accessoryType = indexPath.row == currentPriority ? .checkmark : .none
     cell.selectionStyle = .none
     return cell
   }
@@ -52,10 +58,11 @@ extension DetailReminderPriorityViewController {
   }
   
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    tableView.beginUpdates()
-    tableView.cellForRow(at: selectionIndex)?.accessoryType = .none
-    tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-    tableView.endUpdates()
-    selectionIndex = indexPath
+    tableView.performBatchUpdates {
+      tableView.cellForRow(at: IndexPath(row: Int(currentPriority), section: 0))?.accessoryType = .none
+      tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+    }
+
+    currentPriority = Int16(indexPath.row)
   }
 }
