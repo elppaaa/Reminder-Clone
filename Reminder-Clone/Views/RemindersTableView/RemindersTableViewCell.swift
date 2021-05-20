@@ -18,7 +18,7 @@ class ReminderTableViewCell: UITableViewCell {
   var layoutUpdate: (() -> Void)?
   var cancel = Set<AnyCancellable>()
   fileprivate let inset: CGFloat = 8
-  var textViewHeight: NSLayoutConstraint?
+  fileprivate var textViewHeight: NSLayoutConstraint?
   var flagVisible = false {
     didSet { flag.isHidden = !flagVisible }
   }
@@ -29,6 +29,7 @@ class ReminderTableViewCell: UITableViewCell {
       priorityView.textColor = color
     }
   }
+
   var priority: Int16 = 0 {
     didSet {
       if priority == 0 {
@@ -40,7 +41,7 @@ class ReminderTableViewCell: UITableViewCell {
     }
   }
 
-  lazy var iconSize = contentView.bounds.height * 0.6
+  fileprivate lazy var iconSize = contentView.bounds.height * 0.6
 
   @Published var isDone = false {
     didSet {
@@ -66,7 +67,7 @@ class ReminderTableViewCell: UITableViewCell {
     return $0
   }(UIStackView())
 
-  lazy var toggleButton: UIImageView = {
+  fileprivate lazy var toggleButton: UIImageView = {
     $0.bounds.size = CGSize(width: iconSize, height: iconSize)
     $0.translatesAutoresizingMaskIntoConstraints = false
     $0.preferredSymbolConfiguration = .init(pointSize: iconSize)
@@ -103,6 +104,8 @@ class ReminderTableViewCell: UITableViewCell {
   }(UIImageView())
 
   fileprivate func configLayout() {
+    priorityView.lineBreakMode = .byWordWrapping
+    
     selectionStyle = .none
 
     stack.pin(safe: contentView, margin: inset)
