@@ -5,9 +5,11 @@
 import UIKit
 import CoreData
 
+let CoreDataQueue = DispatchQueue(label: "CoreData", attributes: .concurrent)
+
 class PersistentManager {
   static let shared = PersistentManager()
-  
+
   private lazy var persistentContainer: NSPersistentContainer = {
     let container = NSPersistentContainer(name: "Reminder_Clone")
     container.loadPersistentStores(completionHandler: {

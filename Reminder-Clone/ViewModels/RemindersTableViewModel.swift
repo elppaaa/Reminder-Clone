@@ -34,24 +34,34 @@ class RemindersTableViewModel: NSObject {
     }
   }
 
-  func newTask() -> Task {
-    let entity = manager.newEntity(entity: Task.self)
-    tasks.append(entity)
-    tasksCancelBag[entity.objectID] = Set<AnyCancellable>()
-    entity.set(key: .title, value: "")
-    category.addToTasks(entity)
-    return entity
+  func newTask(index: Int) -> Task {
+    CoreDataQueue.sync {
+      let entity = manager.newEntity(entity: Task.self)
+      if tasks.indices.contains(index) {
+        tasks.insert(entity, at: index)
+      } else {
+        tasks.append(entity)
+      }
+      tasksCancelBag[entity.objectID] = Set<AnyCancellable>()
+      entity.set(key: .title, value: "")
+      category.addToTasks(entity)
+      return entity
+    }
   }
 
   func delete(index: Int, completion: ((Task) -> Void)? = nil) {
-    if tasks.indices.contains(index) {
-      let task = tasks.remove(at: index)
-      category.removeFromTasks(task)
-      tasksCancelBag.removeValue(forKey: task.objectID)
-      completion?(task)
-      manager.delete(task)
-    } else {
-      print("index out of range")
+    CoreDataQueue.sync {
+      if tasks.indices.contains(index) {
+        let task = tasks.remove(at: index)
+        category.removeFromTasks(task)
+        tasksCancelBag.removeValue(forKey: task.objectID)
+        DispatchQueue.main.async {
+          completion?(task)
+        }
+        manager.delete(task)
+      } else {
+        print("index out of range")
+      }
     }
   }
 
