@@ -15,13 +15,13 @@ extension UIView {
     ])
   }
 
-  func pin(safe parent: UIView) {
+  func pin(safe parent: UIView, margin: CGFloat = 0) {
     parent.addSubview(self)
     NSLayoutConstraint.activate([
-      topAnchor.constraint(equalTo: parent.safeAreaLayoutGuide.topAnchor),
-      bottomAnchor.constraint(equalTo: parent.safeAreaLayoutGuide.bottomAnchor),
-      leadingAnchor.constraint(equalTo: parent.safeAreaLayoutGuide.leadingAnchor),
-      trailingAnchor.constraint(equalTo: parent.safeAreaLayoutGuide.trailingAnchor),
+      topAnchor.constraint(equalTo: parent.safeAreaLayoutGuide.topAnchor, constant: margin),
+      bottomAnchor.constraint(equalTo: parent.safeAreaLayoutGuide.bottomAnchor, constant: margin * -1),
+      leadingAnchor.constraint(equalTo: parent.safeAreaLayoutGuide.leadingAnchor, constant: margin),
+      trailingAnchor.constraint(equalTo: parent.safeAreaLayoutGuide.trailingAnchor, constant: margin * -1),
     ])
   }
 }
