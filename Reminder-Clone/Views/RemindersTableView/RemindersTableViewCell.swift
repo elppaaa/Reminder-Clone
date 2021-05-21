@@ -140,12 +140,7 @@ class ReminderTableViewCell: UITableViewCell {
 }
 
 extension ReminderTableViewCell: UITextViewDelegate {
-  func textViewDidBeginEditing(_ textView: UITextView) {
-    accessoryType = .detailButton
-  }
-
   func textViewDidEndEditing(_ textView: UITextView) {
-    accessoryType = .none
     if textView.text == "", let row = row {
       delegate?.removeCell(index: row)
     }

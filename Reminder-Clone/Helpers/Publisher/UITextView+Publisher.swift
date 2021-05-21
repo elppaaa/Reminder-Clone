@@ -17,11 +17,17 @@ extension UITextView {
       .eraseToAnyPublisher()
   }
 
-  var endEditingPublisher: AnyPublisher<String, Never> {
+  var endEditingPublisher: AnyPublisher<UITextView, Never> {
     NotificationCenter.default
       .publisher(for: UITextView.textDidEndEditingNotification, object: self)
       .compactMap { $0.object as? UITextView }
-      .compactMap(\.text)
       .eraseToAnyPublisher()
+  }
+  
+  var beginEditingPublisher: AnyPublisher<UITextView, Never> {
+    NotificationCenter.default
+    .publisher(for: UITextView.textDidBeginEditingNotification, object: self)
+    .compactMap { $0.object as? UITextView }
+    .eraseToAnyPublisher()
   }
 }

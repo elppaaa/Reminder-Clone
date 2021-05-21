@@ -18,7 +18,7 @@ class DetailReminderSubtasksViewController: UITableViewController {
   
   override func loadView() {
     super.loadView()
-    tableView.register(DetailReminderSubtaskCell.self, forCellReuseIdentifier: DetailReminderSubtaskCell.identifier)
+    tableView.register(ReminderTableViewCell.self, forCellReuseIdentifier: ReminderTableViewCell.identifier)
   }
 }
 
@@ -37,19 +37,30 @@ extension DetailReminderSubtasksViewController {
       return cell
     }
     
-    guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailReminderSubtaskCell.identifier)
-      as? DetailReminderSubtaskCell else { return UITableViewCell() }
-    let config = UIImage.SymbolConfiguration(pointSize: 21, weight: .light, scale: .medium)
-    
+    guard let cell = tableView.dequeueReusableCell(withIdentifier: ReminderTableViewCell.identifier)
+      as? ReminderTableViewCell else { return UITableViewCell() }
+  
+    cell.color = viewModel.color
     let data = viewModel[indexPath.row]
+    cell.textView.text = data.title
+    cell.isDone = data.isDone
+    cell.flagVisible = data.flag
+    cell.row = indexPath.row
+    
+    cell.delegate = self
     
     viewModel.tasksCancelBag[data.objectID]?.insert(
       cell.textView.textPublisher
+        .removeDuplicates()
         .sink { data.set(key: .title, value: $0) }
     )
+  
+    viewModel.tasksCancelBag[data.objectID]?.insert(
+      cell.$isDone
+      .removeDuplicates()
+        .sink { data.set(key: .isDone, value: $0) }
+    )
     
-    cell.imageView?.image = R.Image.emptyCircle.image.withConfiguration(config)
-    cell.textView.text = viewModel[indexPath.row].title
     return cell
   }
   
@@ -66,7 +77,7 @@ extension DetailReminderSubtasksViewController {
       tableView.performBatchUpdates {
         tableView.insertRows(at: [indexPath], with: .fade)
       }
-      if let cell = tableView.cellForRow(at: indexPath) as? DetailReminderSubtaskCell {
+      if let cell = tableView.cellForRow(at: indexPath) as? ReminderTableViewCell {
         cell.textView.becomeFirstResponder()
       }
     }
@@ -74,6 +85,8 @@ extension DetailReminderSubtasksViewController {
   
   public override func tableView(_ tableView: UITableView,
     trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    if indexPath.row == viewModel.count { return nil }
+    
     let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, completion in
       self?.viewModel.delete(index: indexPath.row)
       tableView.deleteRows(at: [indexPath], with: .fade)
@@ -84,9 +97,30 @@ extension DetailReminderSubtasksViewController {
   }
 }
 
-extension DetailReminderSubtasksViewController: DetailReminderSubtaskCellDelegate {
-  func updateCell() {
-    tableView.beginUpdates()
-    tableView.endUpdates()
+extension DetailReminderSubtasksViewController: ReminderTableViewCellDelegate {
+  func updateCellLayout(_ handler: (() -> Void)? = nil) {
+    tableView.performBatchUpdates { handler?() }
+  }
+  
+  func insertTask(index: Int, animate: UITableView.RowAnimation) {
+    if viewModel[index].title == "" {
+      if let cell = tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? ReminderTableViewCell {
+        cell.textView.endEditing(true)
+      }
+      return
+    }
+  
+    _ = viewModel.newTask(index: index + 1)
+    let index = IndexPath(row: index + 1, section: 0)
+    tableView.insertRows(at: [index], with: animate)
+    if let cell = tableView.cellForRow(at: index) as? ReminderTableViewCell {
+      cell.textView.becomeFirstResponder()
+    }
+  
+  }
+  
+  func removeCell(index: Int) {
+    viewModel.delete(index: index)
+    tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .fade)
   }
 }

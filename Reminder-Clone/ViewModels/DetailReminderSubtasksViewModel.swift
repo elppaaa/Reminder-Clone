@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreData.NSManagedObjectID
+import UIKit.UIColor
 import Combine
 
 class DetailReminderSubtasksViewModel: NSObject {
@@ -26,6 +27,7 @@ class DetailReminderSubtasksViewModel: NSObject {
   
   var count: Int { data.count }
   var isLastEmpty: Bool { data.last?.title == "" }
+  var color: UIColor { parentTask.category?.color ?? .systemBlue }
   
   func newTask(index: Int) -> Task {
     CoreDataQueue.sync {

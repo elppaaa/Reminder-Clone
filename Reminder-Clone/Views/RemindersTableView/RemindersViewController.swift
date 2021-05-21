@@ -13,33 +13,34 @@ import Combine
 class RemindersViewController: UITableViewController {
   // TODO: Get from core data
   required init?(coder: NSCoder) { fatalError("Do not user initializer") }
+  
   let viewModel: RemindersTableViewModel
-
+  
   init(_ category: Category) {
     viewModel = RemindersTableViewModel(category: category)
     super.init(style: .plain)
   }
-
+  
   var cancelBag = Set<AnyCancellable>()
-
+  
   override func loadView() {
     super.loadView()
     tableView.register(ReminderTableViewCell.self, forCellReuseIdentifier: ReminderTableViewCell.identifier)
-
+    
     tableView.rowHeight = UITableView.automaticDimension
     tableView.estimatedRowHeight = 45
-
+    
   }
   
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = R.Color.defaultBackground
     tableView.keyboardDismissMode = .interactive
-
+    
     configLayout()
     configBinding()
   }
-
+  
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     PersistentManager.shared.saveContext()
@@ -53,7 +54,7 @@ class RemindersViewController: UITableViewController {
     tableView.reloadData()
     super.viewWillAppear(true)
   }
-
+  
 }
 
 // MARK: - Layout
@@ -69,48 +70,58 @@ extension RemindersViewController {
   override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
     true
   }
-
+  
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     viewModel.tasks.count
   }
-
+  
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: ReminderTableViewCell.identifier, for: indexPath) as? ReminderTableViewCell else {
+      withIdentifier: ReminderTableViewCell.identifier, for: indexPath) as? ReminderTableViewCell else {
       fatalError("Cell Not Founded")
     }
-
+    
     cell.color = viewModel.category.color
     let data = viewModel.tasks[indexPath.row]
     cell.isDone = data.isDone
     cell.priority = data.priority
     cell.row = indexPath.row
     cell.delegate = self
-
+    
     viewModel.tasksCancelBag[data.objectID]?.insert(
       data.publisher(for: \.title)
-        .removeDuplicates()
-        .sink { cell.textView.text = $0 }
-      )
-
+          .removeDuplicates()
+          .sink { cell.textView.text = $0 }
+    )
+    
     viewModel.tasksCancelBag[data.objectID]?.insert(
       cell.$isDone
         .removeDuplicates()
         .sink { data.set(key: .isDone, value: $0) }
     )
-
+    
     viewModel.tasksCancelBag[data.objectID]?.insert(
       cell.textView.textPublisher
         .removeDuplicates()
         .sink { data.set(key: .title, value: $0) }
     )
-
+    
     viewModel.tasksCancelBag[data.objectID]?.insert(
       data.publisher(for: \.flag)
-        .removeDuplicates()
-        .assign(to: \.flagVisible, on: cell)
+          .removeDuplicates()
+          .assign(to: \.flagVisible, on: cell)
     )
-
+    
+    viewModel.tasksCancelBag[data.objectID]?.insert(
+      cell.textView.beginEditingPublisher
+        .sink { _ in cell.accessoryType = .detailButton }
+    )
+    
+    viewModel.tasksCancelBag[data.objectID]?.insert(
+      cell.textView.endEditingPublisher
+        .sink { _ in cell.accessoryType = .none }
+    )
+    
     return cell
   }
 }
@@ -123,13 +134,13 @@ extension RemindersViewController {
     if object.title == "" {
       object.set(key: .title, value: "New Reminder")
     }
-
+    
     let vc = DetailReminderViewController(task: object)
-    vc.completionHandler = { [weak self]  in
+    vc.completionHandler = { [weak self] in
       self?.viewModel.reload()
       tableView.reloadData()
     }
-
+    
     navigationController?.present(
       UINavigationController(rootViewController: vc), animated: true, completion: nil)
   }
@@ -137,24 +148,25 @@ extension RemindersViewController {
 
 // MARK: - Swipe Action
 extension RemindersViewController {
-  override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+  override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+  ) -> UISwipeActionsConfiguration? {
     let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, result in
       self?.viewModel.delete(index: indexPath.row)
       tableView.deleteRows(at: [indexPath], with: .fade)
       result(true)
     }
-
+    
     let flagAction = UIContextualAction(style: .normal, title: "Flag") { [weak self] _, _, result in
       self?.viewModel.tasks[indexPath.row].flag.toggle()
       result(true)
     }
     flagAction.backgroundColor = .systemOrange
-
+    
     let detailAction = UIContextualAction(style: .normal, title: "Detail") { [weak self] _, _, result in
       self?.tableView(tableView, accessoryButtonTappedForRowWith: indexPath)
       result(true)
     }
-
+    
     return UISwipeActionsConfiguration(actions: [deleteAction, flagAction, detailAction])
   }
 }
@@ -163,15 +175,15 @@ extension RemindersViewController {
 extension RemindersViewController {
   func configBinding() {
     view.publisher(.tap)
-      .debounce(for: .milliseconds(50), scheduler: RunLoop.main)
-      .sink { [weak self] _ in
-        if self?.viewModel.tasks.last?.title != "" {
-          guard let count = self?.viewModel.tasks.count else { return }
-          self?.insertTask(index: count - 1, animate: .none)
-        } else {
-          self?.tableView.endEditing(true)
+        .debounce(for: .milliseconds(50), scheduler: RunLoop.main)
+        .sink { [weak self] _ in
+          if self?.viewModel.tasks.last?.title != "" {
+            guard let count = self?.viewModel.tasks.count else { return }
+            self?.insertTask(index: count - 1, animate: .none)
+          } else {
+            self?.tableView.endEditing(true)
+          }
         }
-      }
-      .store(in: &cancelBag)
+        .store(in: &cancelBag)
   }
 }
