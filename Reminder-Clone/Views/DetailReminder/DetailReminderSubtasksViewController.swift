@@ -41,9 +41,33 @@ extension DetailReminderSubtasksViewController {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailReminderSubtaskCell.identifier)
       as? DetailReminderSubtaskCell else { return UITableViewCell() }
     let config = UIImage.SymbolConfiguration(pointSize: 21, weight: .light, scale: .medium)
+    
+    let data = viewModel[indexPath.row]
+    
+    viewModel.tasksCancelBag[data.objectID]?.insert(
+      cell.textView.textPublisher
+        .sink { data.set(key: .title, value: $0) }
+    )
+    
     cell.imageView?.image = R.Image.emptyCircle.image.withConfiguration(config)
-    cell.textView.text = data[indexPath.row]
+    cell.textView.text = viewModel[indexPath.row].title
     return cell
+  }
+  
+  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    tableView.deselectRow(at: indexPath, animated: true)
+    
+    if viewModel.isLastEmpty { return }
+    
+    if indexPath.row == viewModel.count {
+      _ = viewModel.newTask(index: indexPath.row)
+      tableView.performBatchUpdates {
+        tableView.insertRows(at: [indexPath], with: .fade)
+      }
+      if let cell = tableView.cellForRow(at: indexPath) as? DetailReminderSubtaskCell {
+        cell.textView.becomeFirstResponder()
+      }
+    }
   }
 }
 
