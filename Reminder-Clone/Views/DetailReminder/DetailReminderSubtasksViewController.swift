@@ -31,8 +31,7 @@ extension DetailReminderSubtasksViewController {
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     if indexPath.row == viewModel.count {
       let cell = UITableViewCell()
-      cell.imageView?.image = UIImage()
-      cell.indentationLevel = 5
+      cell.indentationLevel = 4
       cell.textLabel?.text = "Add Reminder"
       cell.textLabel?.textColor = .systemBlue
       return cell
@@ -54,6 +53,9 @@ extension DetailReminderSubtasksViewController {
     return cell
   }
   
+}
+
+extension DetailReminderSubtasksViewController {
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
     
@@ -68,6 +70,17 @@ extension DetailReminderSubtasksViewController {
         cell.textView.becomeFirstResponder()
       }
     }
+  }
+  
+  public override func tableView(_ tableView: UITableView,
+    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, completion in
+      self?.viewModel.delete(index: indexPath.row)
+      tableView.deleteRows(at: [indexPath], with: .fade)
+      completion(true)
+    }
+  
+    return UISwipeActionsConfiguration(actions: [deleteAction])
   }
 }
 

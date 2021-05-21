@@ -44,4 +44,16 @@ class DetailReminderSubtasksViewModel: NSObject {
     }
   }
   
+  func delete(index: Int) {
+    CoreDataQueue.sync {
+      if data.indices.contains(index) {
+        let task = data.remove(at: index)
+        parentTask.removeFromSubtasks(task)
+        PersistentManager.shared.delete(task)
+      } else {
+        print("Index out of range")
+      }
+    }
+  }
+  
 }
