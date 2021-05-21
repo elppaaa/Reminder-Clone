@@ -277,7 +277,7 @@ extension DetailReminderViewController {
       vc.completionHandler = { tableView.reloadRows(at: [indexPath], with: .none) }
       navigationController?.pushViewController(vc, animated: true)
     case (5, 0):
-      let vc = DetailReminderSubtasksViewController(style: .grouped)
+      let vc = DetailReminderSubtasksViewController(task: viewModel.task)
       navigationController?.pushViewController(vc, animated: true)
 
     default:
