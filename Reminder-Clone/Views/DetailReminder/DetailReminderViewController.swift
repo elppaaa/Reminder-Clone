@@ -175,6 +175,7 @@ extension DetailReminderViewController {
 
         let placeHolder = cell.textViewPlaceholder
         cell.textView.textPublisher
+          .receive(on: DispatchQueue.global(qos: .userInitiated))
           .filter { $0 != placeHolder }
           .sink { [weak self] in
             guard let type = cell.dataType else { return }
@@ -203,6 +204,7 @@ extension DetailReminderViewController {
         }
 
         cell.toggle.publisher(for: .valueChanged)
+          .receive(on: DispatchQueue.global(qos: .userInitiated))
           .compactMap { $0 as? UISwitch }
           .map(\.isOn)
           .filter { !$0 }

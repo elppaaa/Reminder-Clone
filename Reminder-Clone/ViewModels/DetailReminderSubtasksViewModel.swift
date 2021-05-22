@@ -30,31 +30,28 @@ class DetailReminderSubtasksViewModel: NSObject {
   var color: UIColor { parentTask.category?.color ?? .systemBlue }
   
   func newTask(index: Int) -> Task {
-    CoreDataQueue.sync {
-      let entity = PersistentManager.shared.newEntity(entity: Task.self)
-      if data.indices.contains(index) {
-        data.insert(entity, at: index)
-      } else {
-        data.append(entity)
-      }
-      tasksCancelBag[entity.objectID] = Set<AnyCancellable>()
-      
-      entity.set(key: .title, value: "")
-      parentTask.addToSubtasks(entity)
-      
-      return entity
+    let entity = PersistentManager.shared.newEntity(entity: Task.self)
+    if data.indices.contains(index) {
+      data.insert(entity, at: index)
+    } else {
+      data.append(entity)
     }
+    tasksCancelBag[entity.objectID] = Set<AnyCancellable>()
+    
+    entity.set(key: .title, value: "")
+    parentTask.addToSubtasks(entity)
+    
+    return entity
   }
   
   func delete(index: Int) {
-    CoreDataQueue.sync {
-      if data.indices.contains(index) {
-        let task = data.remove(at: index)
-        parentTask.removeFromSubtasks(task)
-        PersistentManager.shared.delete(task)
-      } else {
-        print("Index out of range")
-      }
+    if data.indices.contains(index) {
+      let task = data.remove(at: index)
+      tasksCancelBag.removeValue(forKey: task.objectID)
+      parentTask.removeFromSubtasks(task)
+      PersistentManager.shared.delete(task)
+    } else {
+      print("Index out of range")
     }
   }
   

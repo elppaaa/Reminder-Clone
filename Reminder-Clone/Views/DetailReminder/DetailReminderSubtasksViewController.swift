@@ -51,13 +51,15 @@ extension DetailReminderSubtasksViewController {
     
     viewModel.tasksCancelBag[data.objectID]?.insert(
       cell.textView.textPublisher
+        .receive(on: DispatchQueue.global(qos: .userInitiated))
         .removeDuplicates()
         .sink { data.set(key: .title, value: $0) }
     )
   
     viewModel.tasksCancelBag[data.objectID]?.insert(
       cell.$isDone
-      .removeDuplicates()
+        .receive(on: DispatchQueue.global(qos: .userInitiated))
+        .removeDuplicates()
         .sink { data.set(key: .isDone, value: $0) }
     )
     

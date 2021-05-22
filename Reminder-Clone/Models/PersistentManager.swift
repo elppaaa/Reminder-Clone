@@ -5,8 +5,6 @@
 import UIKit
 import CoreData
 
-let CoreDataQueue = DispatchQueue(label: "CoreData", attributes: .concurrent)
-
 class PersistentManager {
   static let shared = PersistentManager()
 
@@ -20,8 +18,8 @@ class PersistentManager {
     })
     return container
   }()
-
-  fileprivate lazy var context: NSManagedObjectContext = persistentContainer.newBackgroundContext()
+  
+  fileprivate lazy var context: NSManagedObjectContext = persistentContainer.viewContext
 
   func newEntity<T: NSManagedObject>(entity: T.Type) -> T {
     entity.init(context: context)
@@ -47,14 +45,13 @@ class PersistentManager {
   func delete(_ object: NSManagedObject) {
     context.delete(object)
   }
-
-  func deleteAndSave(_ object: NSManagedObject) -> Bool {
-    context.delete(object)
+  
+  func deleteAndSave(_ object: NSManagedObject) {
     do {
+      context.delete(object)
       try context.save()
-      return true
-    } catch {
-      return false
+    } catch let e{
+      assert(false, e.localizedDescription)
     }
   }
 
@@ -71,8 +68,7 @@ class PersistentManager {
     }
   }
   
-  func edit<T: NSManagedObject>(type entity: T.Type, filter: NSPredicate, _ completion: @escaping ([T]) -> Void) throws -> Bool {
-    
+  func edit<T: NSManagedObject>(type entity: T.Type, filter: NSPredicate, result completion: ([T]) -> Void) throws -> Bool {
     let request = entity.fetchRequest()
     request.predicate = filter
     if let fetchResult = try context.fetch(request) as? [T] {
@@ -84,18 +80,18 @@ class PersistentManager {
     }
     return false
   }
-
+  
   func saveContext() {
     if context.hasChanges {
       do {
         try context.save()
       } catch {
-        let nserror = error as NSError
-        fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+        let nsError = error as NSError
+        fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
       }
     }
   }
-
+  
   func setUndoManager() {
     context.undoManager = UndoManager()
   }

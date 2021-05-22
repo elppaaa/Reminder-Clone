@@ -130,6 +130,7 @@ class ReminderTableViewCell: UITableViewCell {
     ])
 
     separatorInset.left = inset * 2 + toggleButton.bounds.width
+    textViewDidChange(textView)
   }
 
   fileprivate func configAction() {
