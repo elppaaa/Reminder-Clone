@@ -164,6 +164,8 @@ extension DetailReminderViewController {
             }
           }
           .store(in: &cancelBag)
+        
+        cell.textViewDidChange(cell.textView)
       }
 
     case (0, 1), (0, 2):
@@ -186,6 +188,8 @@ extension DetailReminderViewController {
             }
           }
           .store(in: &cancelBag)
+        
+        cell.textViewDidChange(cell.textView)
       }
 
     case (1,0), (1, 2), (2, 0):

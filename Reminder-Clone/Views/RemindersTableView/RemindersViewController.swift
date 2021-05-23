@@ -121,7 +121,8 @@ extension RemindersViewController {
       cell.textView.endEditingPublisher
         .sink { _ in cell.accessoryType = .none }
     )
-    
+  
+    cell.textViewDidChange(cell.textView)
     return cell
   }
 }
