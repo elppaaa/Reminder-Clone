@@ -21,7 +21,6 @@ class DetailReminderViewController: UITableViewController, ViewControllerDelegat
     title: "Done", style: .done, target: self, action: #selector(didRightNavigationBarButtonTapped))
 
   var cancelBag = Set<AnyCancellable>()
-  var categoryCancel: AnyCancellable?
 
   var completionHandler: (() -> Void)?
   let viewModel: DetailReminderViewModel
@@ -154,6 +153,7 @@ extension DetailReminderViewController {
         }
 
         cell.textView.textPublisher
+          .removeDuplicates()
           .sink { [weak self] in
             if $0 == "" {
               self?.doneNavigationItem.isEnabled = false
@@ -258,9 +258,9 @@ extension DetailReminderViewController {
     default:
       break
     }
-
-    if let _cell = cell as? DetailReminderViewCellBase {
-      _cell.delegate = viewModel
+    
+    if let cell = cell as? DetailReminderViewCellBase {
+      cell.delegate = self
     }
 
     cell.selectionStyle = .none
@@ -294,5 +294,11 @@ extension DetailReminderViewController {
     default:
       break
     }
+  }
+}
+
+extension DetailReminderViewController: DetailReminderViewCellBaseDelegate {
+  func updateLayout(_ handler: (() -> Void)?) {
+    tableView.performBatchUpdates { handler?() }
   }
 }

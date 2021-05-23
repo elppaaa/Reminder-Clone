@@ -4,15 +4,8 @@
 
 import UIKit
 
-protocol DetailReminderTableViewDelegate {
-  var tableView: UITableView? { get }
-  func setValue<T>(key: TaskAttributesKey, value: T);
-}
-
 class DetailReminderViewModel: NSObject {
-  @Published var task: Task 
-
-  var _tableView: UITableView?
+  @Published var task: Task
   let manager = PersistentManager.shared
 
   init(task: Task) {
@@ -44,14 +37,4 @@ class DetailReminderViewModel: NSObject {
     task.setNilValueForKey(key.rawValue)
   }
 
-}
-
-extension DetailReminderViewModel: DetailReminderTableViewDelegate {
-  func setValue<T>(key: TaskAttributesKey, value: T) {
-    task.set(key: key, value: value)
-  }
-
-  var tableView: UITableView? {
-    _tableView
-  }
 }

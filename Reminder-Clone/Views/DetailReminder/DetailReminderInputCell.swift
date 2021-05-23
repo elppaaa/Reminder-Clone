@@ -41,8 +41,8 @@ class DetailReminderInputCell: DetailReminderViewCellBase {
     textView.text = textViewPlaceholder
     textView.textColor = .lightGray
     textView.isScrollEnabled = true
-    textViewDidChange(textView)
     contentView.addSubview(textView)
+    textViewDidChange(textView)
     
     let maxHeight = textView.heightAnchor.constraint(lessThanOrEqualToConstant: 120)
     maxHeight.priority = .defaultHigh
@@ -68,8 +68,7 @@ extension DetailReminderInputCell: UITextViewDelegate {
     let size = CGSize(width: contentView.frame.width, height: .infinity)
     let estimatedSize = textView.sizeThatFits(size)
     cellHeightAnchor?.constant = estimatedSize.height
-    delegate?.tableView?.beginUpdates()
-    delegate?.tableView?.endUpdates()
+    delegate?.updateLayout(nil)
     UIView.setAnimationsEnabled(true)
   }
   
@@ -81,18 +80,9 @@ extension DetailReminderInputCell: UITextViewDelegate {
   }
   
   func textViewDidEndEditing(_ textView: UITextView) {
-    guard let valueType = dataType else {
-      return
-    }
-    
     if textView.text.isEmpty {
       textView.text = textViewPlaceholder
       textView.textColor = UIColor.lightGray
-      delegate?.setValue(key: valueType, value: "")
-    } else {
-      if let text = textView.text {
-        delegate?.setValue(key: valueType, value: text)
-      }
     }
   }
 }

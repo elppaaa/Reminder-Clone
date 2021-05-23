@@ -36,13 +36,5 @@ class DetailReminderDateCell: DetailReminderViewCellBase {
   
   func commonInit() {
     datePicker.pin(parent: contentView)
-    datePicker.addTarget(self, action: #selector(setDate), for: .valueChanged)
   }
-  
-  @objc func setDate() {
-    if let type = dataType {
-      delegate?.setValue(key: type, value: datePicker.date)
-    }
-  }
-  
 }
