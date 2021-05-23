@@ -214,7 +214,16 @@ extension DetailReminderViewController {
           }
           .store(in: &cancelBag)
       }
-
+    case (1, 1), (1, 3):
+      if let cell = cell as? DetailReminderDateCell {
+        if let type = cell.dataType {
+          cell.datePicker.publisher(for: .valueChanged)
+          .compactMap { $0 as? UIDatePicker }
+          .map(\.date)
+          .sink { [weak self] in self?.viewModel.set(key: type, value: $0) }
+          .store(in: &cancelBag)
+        }
+      }
     case (3, 0):
       if let cell = cell as? DetailReminderToggleCell {
         cell.toggle.isOn = viewModel.task.flag
