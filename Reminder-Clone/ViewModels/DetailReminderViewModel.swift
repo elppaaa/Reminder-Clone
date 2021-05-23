@@ -26,9 +26,9 @@ class DetailReminderViewModel: NSObject {
   func rollBack() {
     manager.rollBack()
   }
-
+  
   func set<T: Comparable>(key: TaskAttributesKey, value newValue: T) {
-    if let oldValue = task.get(key) as? T, oldValue != newValue {
+    if let oldValue = task.get(key) as? T?, oldValue != newValue {
       task.set(key: key, value: newValue)
     }
   }
