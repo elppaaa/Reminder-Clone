@@ -14,11 +14,14 @@ class DetailReminderViewModel: NSObject {
     self.task = task
     super.init()
   }
-
+  
   deinit {
-    manager.unsetUndoManager()
+    unsetUndoManager()
   }
 
+  func unsetUndoManager() {
+    manager.unsetUndoManager()
+  }
   func save() {
     manager.saveContext()
   }

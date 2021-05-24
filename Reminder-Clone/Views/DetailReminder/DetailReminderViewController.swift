@@ -10,18 +10,19 @@ import Combine
 
 class DetailReminderViewController: UITableViewController, ViewControllerDelegate {
   required init?(coder: NSCoder) { fatalError("Do not use this initializer") }
+  
   init(task: Task) {
     viewModel = DetailReminderViewModel(task: task)
     super.init(style: .insetGrouped)
   }
-
+  
   lazy var cancelNavigationItem: UIBarButtonItem = UIBarButtonItem(
     title: "Cancel", style: .plain, target: self, action: #selector(didLeftNavigationBarButtonTapped))
   lazy var doneNavigationItem = UIBarButtonItem(
     title: "Done", style: .done, target: self, action: #selector(didRightNavigationBarButtonTapped))
-
+  
   var cancelBag = Set<AnyCancellable>()
-
+  
   var completionHandler: (() -> Void)?
   let viewModel: DetailReminderViewModel
   var tableViewHeight: NSLayoutConstraint?
@@ -61,8 +62,8 @@ class DetailReminderViewController: UITableViewController, ViewControllerDelegat
       UITableViewCell(style: .value1, reuseIdentifier: nil)
     ],
   ]
-
-  override func viewDidLoad( ) {
+  
+  override func viewDidLoad() {
     super.viewDidLoad()
     title = "Detail"
     view.backgroundColor = R.Color.applicationBackground
@@ -74,17 +75,18 @@ class DetailReminderViewController: UITableViewController, ViewControllerDelegat
     navigationController?.isToolbarHidden = true
   }
   
-  func commonInit( ) {
+  func commonInit() {
     configTableView()
     configNavigationBar()
+    navigationController?.presentationController?.delegate = self
   }
 }
 
 // MARK: - Navigation Setting
 extension DetailReminderViewController {
-  fileprivate func configNavigationBar( ) {
+  fileprivate func configNavigationBar() {
     title = "Detail"
-
+    
     navigationItem.leftBarButtonItem = cancelNavigationItem
     navigationItem.rightBarButtonItem = doneNavigationItem
   }
@@ -96,6 +98,7 @@ extension DetailReminderViewController {
       let discardAction = UIAlertAction(title: "Discard Changes", style: .destructive) {[weak self] _ in
         self?.dismiss(animated: true, completion: {
           self?.viewModel.rollBack()
+          self?.viewModel.unsetUndoManager()
         })
       }
       let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -110,12 +113,11 @@ extension DetailReminderViewController {
   }
   
   @objc
-  func didRightNavigationBarButtonTapped( ) {
+  func didRightNavigationBarButtonTapped() {
     viewModel.save()
     completionHandler?()
     dismiss(animated: true)
   }
-
 }
 
 // MARK: - Config TableView
@@ -124,7 +126,7 @@ extension DetailReminderViewController {
     tableView.register(DetailReminderInputCell.self, forCellReuseIdentifier: DetailReminderInputCell.identifier)
     tableView.register(DetailReminderDateCell.self, forCellReuseIdentifier: DetailReminderDateCell.identifier)
     tableView.register(DetailReminderToggleCell.self, forCellReuseIdentifier: DetailReminderToggleCell.identifier)
-
+    
     tableView.rowHeight = UITableView.automaticDimension
     tableView.estimatedRowHeight = 50
     tableView.keyboardDismissMode = .interactive
@@ -135,15 +137,15 @@ extension DetailReminderViewController {
   override func numberOfSections(in tableView: UITableView) -> Int {
     cells.count
   }
-
+  
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     cells[section].count
   }
-
+  
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     var cell: UITableViewCell
     cell = cells[indexPath]
-
+    
     switch (indexPath.section, indexPath.row) {
     case (0, 0):
       if let cell = cell as? DetailReminderInputCell {
@@ -151,7 +153,7 @@ extension DetailReminderViewController {
           cell.textView.text = text
           cell.textView.textColor = .label
         }
-
+        
         cell.textView.textPublisher
           .removeDuplicates()
           .sink { [weak self] in
@@ -170,11 +172,11 @@ extension DetailReminderViewController {
 
     case (0, 1), (0, 2):
       if let cell = cell as? DetailReminderInputCell {
-          if let type = cell.dataType, let text = viewModel.task.get(type) as? String {
-            cell.textView.text = text
-            cell.textView.textColor = .label
-          }
-
+        if let type = cell.dataType, let text = viewModel.task.get(type) as? String {
+          cell.textView.text = text
+          cell.textView.textColor = .label
+        }
+        
         let placeHolder = cell.textViewPlaceholder
         cell.textView.textPublisher
           .receive(on: DispatchQueue.global(qos: .userInitiated))
@@ -192,9 +194,9 @@ extension DetailReminderViewController {
         cell.textViewDidChange(cell.textView)
       }
 
-    case (1,0), (1, 2), (2, 0):
+    case (1, 0), (1, 2), (2, 0):
       if let cell = cell as? DetailReminderToggleCell {
-
+        
         if let type = cell.dataType {
           viewModel.$task
             .sink {
@@ -206,7 +208,7 @@ extension DetailReminderViewController {
             }
             .store(in: &cancelBag)
         }
-
+        
         cell.toggle.publisher(for: .valueChanged)
           .receive(on: DispatchQueue.global(qos: .userInitiated))
           .compactMap { $0 as? UISwitch }
@@ -222,22 +224,22 @@ extension DetailReminderViewController {
       if let cell = cell as? DetailReminderDateCell {
         if let type = cell.dataType {
           cell.datePicker.publisher(for: .valueChanged)
-          .compactMap { $0 as? UIDatePicker }
-          .map(\.date)
-          .sink { [weak self] in self?.viewModel.set(key: type, value: $0) }
-          .store(in: &cancelBag)
+            .compactMap { $0 as? UIDatePicker }
+            .map(\.date)
+            .sink { [weak self] in self?.viewModel.set(key: type, value: $0) }
+            .store(in: &cancelBag)
         }
       }
     case (3, 0):
       if let cell = cell as? DetailReminderToggleCell {
         cell.toggle.isOn = viewModel.task.flag
-
+        
         cell.toggle.publisher(for: .valueChanged)
           .compactMap { $0 as? UISwitch }
           .map(\.isOn)
           .sink { [weak self] in self?.viewModel.task.set(key: .flag, value: $0) }
           .store(in: &cancelBag)
-
+        
       }
 
     case (4, 0):
@@ -250,7 +252,7 @@ extension DetailReminderViewController {
         .compactMap { $0.category?.name }
         .sink { cell.detailTextLabel?.text = $0 }
         .store(in: &cancelBag)
-
+      
       cell.accessoryType = .disclosureIndicator
     case (5, 0):
       cell.textLabel?.text = "Subtasks"
@@ -266,9 +268,9 @@ extension DetailReminderViewController {
     if let cell = cell as? DetailReminderViewCellBase {
       cell.delegate = self
     }
-
+    
     cell.selectionStyle = .none
-
+    
     return cell
   }
 }
@@ -299,10 +301,22 @@ extension DetailReminderViewController {
       break
     }
   }
+
 }
 
 extension DetailReminderViewController: DetailReminderViewCellBaseDelegate {
   func updateLayout(_ handler: (() -> Void)?) {
     tableView.performBatchUpdates { handler?() }
+  }
+}
+
+// MARK: - Navigation Dismiss event
+extension DetailReminderViewController: UIAdaptivePresentationControllerDelegate {
+  func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
+    didLeftNavigationBarButtonTapped()
+  }
+
+  func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
+    !viewModel.task.hasChanges
   }
 }
