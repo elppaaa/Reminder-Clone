@@ -14,9 +14,14 @@ class DetailReminderViewModel: NSObject {
     self.task = task
     super.init()
   }
-  
+
   deinit {
     unsetUndoManager()
+  }
+
+  var priority: Int16 {
+    get { task.priority }
+    set { task.set(key: .priority, value: newValue) }
   }
 
   func unsetUndoManager() {
