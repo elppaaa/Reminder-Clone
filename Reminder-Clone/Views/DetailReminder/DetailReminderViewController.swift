@@ -194,23 +194,29 @@ extension DetailReminderViewController {
         cell.textViewDidChange(cell.textView)
       }
 
-    case (1, 0), (1, 2), (2, 0):
+    case (1, 0), (1, 2):
       if let cell = cell as? DetailReminderToggleCell {
         
         if let type = cell.dataType {
-          viewModel.$task
-            .sink {
-              if $0.get(type) != nil {
-                cell.toggle.isOn = true
-              } else {
-                cell.toggle.isOn = false
-              }
-            }
-            .store(in: &cancelBag)
+          if viewModel.task.get(type) != nil {
+            cell.toggle.isOn = true
+          } else {
+            cell.toggle.isOn = false
+          }
+          cell.detailTextLabel?.text = viewModel.dateText(type)
+
+          if indexPath.row == 0 {
+            viewModel.task.publisher(for: \.date)
+              .sink { [weak self] _ in cell.detailTextLabel?.text = self?.viewModel.dateText(type) }
+              .store(in: &cancelBag)
+          } else {
+            viewModel.task.publisher(for: \.time)
+              .sink { [weak self] _ in cell.detailTextLabel?.text = self?.viewModel.dateText(type) }
+              .store(in: &cancelBag)
+          }
         }
         
         cell.toggle.publisher(for: .valueChanged)
-          .receive(on: DispatchQueue.global(qos: .userInitiated))
           .compactMap { $0 as? UISwitch }
           .map(\.isOn)
           .filter { !$0 }
@@ -229,6 +235,28 @@ extension DetailReminderViewController {
             .sink { [weak self] in self?.viewModel.set(key: type, value: $0) }
             .store(in: &cancelBag)
         }
+      }
+
+    case (2, 0):
+      if let cell = cell as? DetailReminderToggleCell {
+
+        if let type = cell.dataType {
+          if viewModel.task.get(type) != nil {
+            cell.toggle.isOn = true
+          } else {
+            cell.toggle.isOn = false
+          }
+        }
+
+        cell.toggle.publisher(for: .valueChanged)
+          .compactMap { $0 as? UISwitch }
+          .map(\.isOn)
+          .filter { !$0 }
+          .sink { [weak self] _ in
+            guard let type = cell.dataType else { return }
+            self?.viewModel.setNil(type)
+          }
+          .store(in: &cancelBag)
       }
     case (3, 0):
       if let cell = cell as? DetailReminderToggleCell {

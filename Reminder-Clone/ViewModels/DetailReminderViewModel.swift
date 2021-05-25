@@ -5,8 +5,25 @@
 import UIKit
 
 class DetailReminderViewModel: NSObject {
-  @Published var task: Task
+  @Published var task: Task 
   let manager = PersistentManager.shared
+
+  func dateText(_ key: TaskAttributesKey) -> String? {
+    let formatter = DateFormatter()
+    formatter.timeZone = .current
+    switch key {
+    case .date:
+      guard let value = task.date else { return nil }
+      formatter.dateFormat = "yyyy-MM-dd"
+      return formatter.string(from: value)
+    case .time:
+      guard let value = task.time else { return nil }
+      formatter.dateFormat = "HH:mm"
+      return formatter.string(from: value)
+    default:
+      return nil
+    }
+  }
 
   init(task: Task) {
     manager.saveContext()

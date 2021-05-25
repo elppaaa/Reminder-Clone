@@ -30,6 +30,8 @@ class DetailReminderToggleCell: DetailReminderViewCellBase {
   fileprivate func commonInit() {
     accessoryView = toggle
     imageView?.layer.cornerRadius = 7
+
+    detailTextLabel?.textColor = .systemBlue
   }
   
 }

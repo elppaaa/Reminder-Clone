@@ -28,23 +28,6 @@ enum TaskAttributesKey: String {
 
 @objc (Task)
 public class Task: NSManagedObject {
-  var dictionary: [TaskAttributesKey: Any] {
-    var dict = [TaskAttributesKey: Any]()
-    dict[.title] = title
-    dict[.notes] = notes
-    dict[.URL] = link
-    dict[.date] = date
-    dict[.time] = time
-    dict[.location] = location
-    dict[.flag] = flag
-    dict[.image] = image
-    dict[.parent] = parent
-    dict[.category] = category
-    dict[.subtasks] = subtasks
-    dict[.isDone] = isDone
-    return dict
-  }
-
   func get(_ key: TaskAttributesKey) -> Any? {
     switch key {
     case .title:
@@ -85,5 +68,5 @@ public class Task: NSManagedObject {
       setValue(v, forKey: k.rawValue)
     }
   }
-  
+
 }
