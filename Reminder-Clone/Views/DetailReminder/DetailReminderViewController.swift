@@ -22,7 +22,7 @@ class DetailReminderViewController: UITableViewController, ViewControllerDelegat
     title: "Done", style: .done, target: self, action: #selector(didRightNavigationBarButtonTapped))
   
   var cancelBag = Set<AnyCancellable>()
-  var collapsedCells = [UITableViewCell]()
+  var collapsedCells = [DetailReminderViewCellBase]()
   
   var completionHandler: (() -> Void)?
   let viewModel: DetailReminderViewModel
@@ -38,10 +38,8 @@ class DetailReminderViewController: UITableViewController, ViewControllerDelegat
     [
       DetailReminderToggleCell(
         title: "Date", image: R.Image.calendar.image, color: .systemRed, type: .date),
-      DetailReminderDateCell(isTimePicker: false, type: .date),
       DetailReminderToggleCell(
         title: "Time", image: R.Image.clock.image, color: .systemBlue, type: .time),
-      DetailReminderDateCell(isTimePicker: true, type: .time)
     ],
     // 2
     [
@@ -131,6 +129,9 @@ extension DetailReminderViewController {
     tableView.rowHeight = UITableView.automaticDimension
     tableView.estimatedRowHeight = 50
     tableView.keyboardDismissMode = .interactive
+
+    collapsedCells.append(DetailReminderDateCell(isTimePicker: false, type: .date))
+    collapsedCells.append(DetailReminderDateCell(isTimePicker: true, type: .time))
   }
 }
 
@@ -352,9 +353,10 @@ extension DetailReminderViewController {
           let dataType = _cell.dataType,
           dataType == key else { return }
 
-    let cell = cells[indexPath.section].remove(at: indexPath.row + 1)
-    collapsedCells.append(cell)
-    tableView.deleteRows(at: [indexPath.nextRow], with: .automatic)
+    if let cell = cells[indexPath.section].remove(at: indexPath.row + 1) as? DetailReminderViewCellBase {
+      collapsedCells.append(cell)
+      tableView.deleteRows(at: [indexPath.nextRow], with: .automatic)
+    }
   }
 
   func insertNextRow(indexPath: IndexPath, key: TaskAttributesKey) {
@@ -365,10 +367,7 @@ extension DetailReminderViewController {
   }
 
   func findCollapsedCell(with key: TaskAttributesKey) -> Int? {
-    collapsedCells.firstIndex {
-      if let cell = $0 as? DetailReminderViewCellBase { return cell.dataType == key }
-      else { return false }
-    }
+    collapsedCells.firstIndex { $0.dataType == key }
   }
 }
 
