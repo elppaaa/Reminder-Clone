@@ -37,7 +37,7 @@ public class Task: NSManagedObject {
     case .URL:
       return link
     case .date:
-      return notes
+      return date
     case .time:
       return time
     case .location:

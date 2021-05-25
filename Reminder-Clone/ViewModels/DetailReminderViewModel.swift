@@ -11,14 +11,17 @@ class DetailReminderViewModel: NSObject {
   func dateText(_ key: TaskAttributesKey) -> String? {
     let formatter = DateFormatter()
     formatter.timeZone = .current
+    formatter.locale = Locale.current
+    formatter.doesRelativeDateFormatting = true
+
     switch key {
     case .date:
       guard let value = task.date else { return nil }
-      formatter.dateFormat = "yyyy-MM-dd"
+      formatter.dateStyle = .full
       return formatter.string(from: value)
     case .time:
       guard let value = task.time else { return nil }
-      formatter.dateFormat = "HH:mm"
+      formatter.timeStyle = .short
       return formatter.string(from: value)
     default:
       return nil
@@ -59,7 +62,7 @@ class DetailReminderViewModel: NSObject {
   }
 
   func setNil(_ key: TaskAttributesKey) {
-    task.setNilValueForKey(key.rawValue)
+    task.setValue(nil, forKey: key.rawValue)
   }
 
 }
