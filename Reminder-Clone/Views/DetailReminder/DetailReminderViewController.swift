@@ -22,6 +22,7 @@ class DetailReminderViewController: UITableViewController, ViewControllerDelegat
     title: "Done", style: .done, target: self, action: #selector(didRightNavigationBarButtonTapped))
   
   var cancelBag = Set<AnyCancellable>()
+  var collapsedCells = [UITableViewCell]()
   
   var completionHandler: (() -> Void)?
   let viewModel: DetailReminderViewModel
@@ -145,7 +146,8 @@ extension DetailReminderViewController {
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     var cell: UITableViewCell
     cell = cells[indexPath]
-    
+    cell.selectionStyle = .none
+
     switch (indexPath.section, indexPath.row) {
     case (0, 0):
       if let cell = cell as? DetailReminderInputCell {
@@ -179,7 +181,6 @@ extension DetailReminderViewController {
         
         let placeHolder = cell.textViewPlaceholder
         cell.textView.textPublisher
-          .receive(on: DispatchQueue.global(qos: .userInitiated))
           .filter { $0 != placeHolder }
           .sink { [weak self] in
             guard let type = cell.dataType else { return }
@@ -219,16 +220,27 @@ extension DetailReminderViewController {
         cell.toggle.publisher(for: .valueChanged)
           .compactMap { $0 as? UISwitch }
           .map(\.isOn)
-          .filter { !$0 }
-          .sink { [weak self] _ in
+          .filter { $0 }
+          .sink { [weak self]  in
             guard let type = cell.dataType else { return }
-            self?.viewModel.setNil(type)
+            switch $0 {
+            case true:
+              cell.selectionStyle = .default
+              self?.viewModel.set(key: type, value: Date())
+            case false:
+              cell.selectionStyle = .none
+              self?.viewModel.setNil(type)
+            }
           }
           .store(in: &cancelBag)
       }
     case (1, 1), (1, 3):
       if let cell = cell as? DetailReminderDateCell {
         if let type = cell.dataType {
+          if let value = viewModel.task.get(type) as? Date {
+            cell.datePicker.setDate(value, animated: false)
+          }
+
           cell.datePicker.publisher(for: .valueChanged)
             .compactMap { $0 as? UIDatePicker }
             .map(\.date)
@@ -296,16 +308,26 @@ extension DetailReminderViewController {
     if let cell = cell as? DetailReminderViewCellBase {
       cell.delegate = self
     }
-    
-    cell.selectionStyle = .none
-    
+
     return cell
   }
 }
 
 extension DetailReminderViewController {
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    defer { tableView.deselectRow(at: indexPath, animated: true) }
+
     switch (indexPath.section, indexPath.row) {
+    case (1, 0), (1, 1), (1, 2):
+      guard let cell = tableView.cellForRow(at: indexPath) as? DetailReminderToggleCell,
+            cell.toggle.isOn, let dataType = cell.dataType else { return }
+
+      if tableView.cellForRow(at: indexPath.nextRow) is DetailReminderDateCell {
+        deleteNextRow(indexPath: indexPath, key: dataType)
+      } else {
+        insertNextRow(indexPath: indexPath, key: dataType)
+      }
+
     case (4, 0):
       let vc = DetailReminderPriorityViewController(viewModel: viewModel)
       vc.completionHandler = { tableView.reloadRows(at: [indexPath], with: .none) }
@@ -325,6 +347,29 @@ extension DetailReminderViewController {
     }
   }
 
+  func deleteNextRow(indexPath: IndexPath, key: TaskAttributesKey) {
+    guard let _cell = tableView.cellForRow(at: indexPath.nextRow) as? DetailReminderViewCellBase,
+          let dataType = _cell.dataType,
+          dataType == key else { return }
+
+    let cell = cells[indexPath.section].remove(at: indexPath.row + 1)
+    collapsedCells.append(cell)
+    tableView.deleteRows(at: [indexPath.nextRow], with: .automatic)
+  }
+
+  func insertNextRow(indexPath: IndexPath, key: TaskAttributesKey) {
+    guard let index = findCollapsedCell(with: key) else { return }
+    let cell = collapsedCells.remove(at: index)
+    cells[indexPath.section].insert(cell, at: indexPath.nextRow.row)
+    tableView.insertRows(at: [indexPath.nextRow], with: .automatic)
+  }
+
+  func findCollapsedCell(with key: TaskAttributesKey) -> Int? {
+    collapsedCells.firstIndex {
+      if let cell = $0 as? DetailReminderViewCellBase { return cell.dataType == key }
+      else { return false }
+    }
+  }
 }
 
 extension DetailReminderViewController: DetailReminderViewCellBaseDelegate {
