@@ -17,7 +17,7 @@ extension Category {
 
     @NSManaged public var colorInt: Int32
     @NSManaged public var iconString: String?
-    @NSManaged public var name: String?
+    @NSManaged public var name: String
     @NSManaged public var order: NSDecimalNumber?
     @NSManaged public var tasks: NSSet?
 

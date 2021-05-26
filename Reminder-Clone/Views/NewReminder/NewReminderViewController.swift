@@ -59,31 +59,9 @@ extension NewReminderViewController {
     case (2,0):
       let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
       cell.textLabel?.text = "List"
-
-      cell.detailTextLabel?.attributedText = {
-        let str = NSMutableAttributedString(string: "")
-
-        let imageAttach: NSTextAttachment = {
-          let attach = NSTextAttachment()
-          let size: CGFloat = 8
-
-          let imageConfig = UIImage.SymbolConfiguration(pointSize: size)
-          let image = R.Image.circleFill.image
-            .withTintColor(.systemBlue) // color
-            .withConfiguration(imageConfig)
-
-          attach.image = image
-          if let fontHeight = cell.detailTextLabel?.font.capHeight {
-            attach.bounds = CGRect(x: -1, y: (fontHeight - size).rounded() / 2, width: size, height: size)
-          }
-          return attach
-        }()
-
-        str.append(NSAttributedString(attachment: imageAttach))
-        str.append(NSAttributedString(string: " Reminders"))  // list name
-
-        return str
-      }()
+      
+      let category = HomeListTableViewModel.shared.data[0]
+      cell.detailTextLabel?.attributedText = BadgeText(color: category.color, text: category.name).text
 
       cell.accessoryType = .disclosureIndicator
       return cell
@@ -100,6 +78,5 @@ extension NewReminderViewController {
 
     navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: nil)
     navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: nil)
-
   }
 }

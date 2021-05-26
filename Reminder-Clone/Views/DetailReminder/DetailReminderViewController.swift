@@ -286,11 +286,14 @@ extension DetailReminderViewController {
       cell.textLabel?.text = "Priority"
       cell.detailTextLabel?.text = TaskPriority(rawValue: viewModel.task.priority)?.text ?? "None"
       cell.accessoryType = .disclosureIndicator
+
     case (4, 1):
       cell.textLabel?.text = "List"
       viewModel.$task
-        .compactMap { $0.category?.name }
-        .sink { cell.detailTextLabel?.text = $0 }
+        .compactMap { $0.category }
+        .sink {
+          cell.detailTextLabel?.attributedText = BadgeText(color: $0.color, text: $0.name).text
+        }
         .store(in: &cancelBag)
       
       cell.accessoryType = .disclosureIndicator
