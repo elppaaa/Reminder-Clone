@@ -11,15 +11,13 @@ import Combine
 class NewReminderViewController: UITableViewController {
   convenience init() {
     self.init(style: .insetGrouped)
-    commonInit()
-    binding()
   }
 
   let viewModel = NewReminderViewModel()
 
-  let cancelButton =
+  lazy var cancelButton =
     UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(didCancelButtonTapped))
-  let addButton =
+  lazy var addButton =
     UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(didAddButtonTapped))
 
   var cancelBag = Set<AnyCancellable>()
@@ -31,6 +29,13 @@ class NewReminderViewController: UITableViewController {
     tableView.estimatedRowHeight = CGFloat(50)
 
     tableView.register(DetailReminderInputCell.self, forCellReuseIdentifier: DetailReminderInputCell.identifier)
+  }
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    commonInit()
+    binding()
+    navigationController?.presentationController?.delegate = self
   }
 }
 
@@ -61,7 +66,11 @@ extension NewReminderViewController {
       vc.textView.textPublisher
         .removeDuplicates()
         .sink { [weak self] in
-          self?.viewModel.set(key: dataType, value: $0)
+          if $0 == "" {
+            self?.viewModel.setNil(dataType)
+          } else {
+            self?.viewModel.set(key: dataType, value: $0)
+          }
         }
         .store(in: &cancelBag)
 
@@ -74,7 +83,11 @@ extension NewReminderViewController {
       vc.textView.textPublisher
         .removeDuplicates()
         .sink { [weak self] in
-          self?.viewModel.set(key: dataType, value: $0)
+          if $0 == "" {
+            self?.viewModel.setNil(dataType)
+          } else {
+            self?.viewModel.set(key: dataType, value: $0)
+          }
         }
         .store(in: &cancelBag)
 
@@ -133,12 +146,28 @@ extension NewReminderViewController {
 
   @objc
   func didAddButtonTapped() {
-
+    viewModel.save()
+    dismiss(animated: true, completion: nil)
   }
 
   @objc
   func didCancelButtonTapped() {
+    if viewModel.task.hasChanges {
+      let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+      let discardAction = UIAlertAction(title: "Discard Changes", style: .destructive) {[weak self] _ in
+        self?.viewModel.cancel()
+        self?.dismiss(animated: true)
+      }
+      let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 
+      alert.addAction(discardAction)
+      alert.addAction(cancelAction)
+
+      present(alert, animated: true)
+    } else {
+      viewModel.cancel()
+      dismiss(animated: true, completion: nil)
+    }
   }
 
   func binding() {
@@ -150,5 +179,15 @@ extension NewReminderViewController {
       }
       .store(in: &cancelBag)
 
+  }
+}
+
+extension NewReminderViewController: UIAdaptivePresentationControllerDelegate {
+  func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
+    !viewModel.task.hasChanges
+  }
+
+  func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
+    didCancelButtonTapped()
   }
 }

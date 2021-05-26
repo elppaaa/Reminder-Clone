@@ -13,14 +13,18 @@ class NewReminderViewModel: NSObject {
 
   override init() {
     self.task = manager.newEntity(entity: Task.self)
-    super.init()
-
     let category = HomeListTableViewModel.shared.data[0] // set default category
     category.addToTasks(task)
+    task.set(key: .title, value: "")
+    manager.saveContext()
+
+    super.init()
   }
 
   deinit {
-    manager.saveContext()
+    if task.hasChanges {
+      manager.deleteAndSave(task)
+    }
   }
 
   func set<T: Comparable>(key: TaskAttributesKey, value newValue: T) {
@@ -35,7 +39,11 @@ class NewReminderViewModel: NSObject {
   
   var category: Category { task.category ?? HomeListTableViewModel.shared.data[0] }
 
+  func save() {
+    manager.saveContext()
+  }
+
   func cancel() {
-    manager.delete(task)
+    manager.deleteAndSave(task)
   }
 }
