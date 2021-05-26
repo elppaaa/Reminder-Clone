@@ -122,11 +122,6 @@ extension NewListViewController {
       .assign(to: \.headerText, on: viewModel)
       .store(in: &cancelBag)
 
-    viewModel.$headerText
-      .map { $0 }
-      .assign(to: \.text, on: contentView.header.textField)
-      .store(in: &cancelBag)
-
     viewModel.$headerColor
       .map { $0 }
       .assign(to: \.color, on: contentView.header)

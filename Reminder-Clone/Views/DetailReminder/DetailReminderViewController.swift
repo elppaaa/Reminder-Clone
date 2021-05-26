@@ -217,11 +217,10 @@ extension DetailReminderViewController {
               .store(in: &cancelBag)
           }
         }
-        
+
         cell.toggle.publisher(for: .valueChanged)
           .compactMap { $0 as? UISwitch }
           .map(\.isOn)
-          .filter { $0 }
           .sink { [weak self]  in
             guard let type = cell.dataType else { return }
             switch $0 {
