@@ -7,10 +7,8 @@ import UIKit
 class DetailReminderListViewController: UITableViewController {
   fileprivate let viewModel = HomeListTableViewModel.shared
 
-  required init?(coder: NSCoder) { fatalError("Do not use this initializer") }
-  
-  override init(style: UITableView.Style) {
-    super.init(style: style)
+  convenience init() {
+    self.init(style: .plain)
     tableView.rowHeight = 55
     tableView.register(DetailReminderListViewCell.self, forCellReuseIdentifier: DetailReminderListViewCell.identifier)
     tableView.tableFooterView = UIView()

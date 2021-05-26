@@ -6,15 +6,23 @@
 //
 
 import UIKit
+import Combine
 
 class NewReminderViewController: UITableViewController {
-  required init?(coder: NSCoder) { fatalError("No not use this initialzier") }
-  override init(style: UITableView.Style) { super.init(style: style) }
-
   convenience init() {
     self.init(style: .insetGrouped)
     commonInit()
+    binding()
   }
+
+  let viewModel = NewReminderViewModel()
+
+  let cancelButton =
+    UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(didCancelButtonTapped))
+  let addButton =
+    UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(didAddButtonTapped))
+
+  var cancelBag = Set<AnyCancellable>()
 
   func commonInit() {
     configNavigation()
@@ -47,9 +55,30 @@ extension NewReminderViewController {
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     switch (indexPath.section, indexPath.row) {
     case (0, 0):
-      return DetailReminderInputCell(placeHolder: "Title", type: .title)
+      let dataType = TaskAttributesKey.title
+      let vc = DetailReminderInputCell(placeHolder: "Title", type: dataType)
+
+      vc.textView.textPublisher
+        .removeDuplicates()
+        .sink { [weak self] in
+          self?.viewModel.set(key: dataType, value: $0)
+        }
+        .store(in: &cancelBag)
+
+      return vc
+
     case (0, 1):
-      return DetailReminderInputCell(placeHolder: "Notes", type: .notes)
+      let dataType = TaskAttributesKey.notes
+      let vc = DetailReminderInputCell(placeHolder: "Notes", type: dataType)
+
+      vc.textView.textPublisher
+        .removeDuplicates()
+        .sink { [weak self] in
+          self?.viewModel.set(key: dataType, value: $0)
+        }
+        .store(in: &cancelBag)
+
+      return vc
 
     case (1,0):
       let cell = UITableViewCell()
@@ -60,7 +89,7 @@ extension NewReminderViewController {
       let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
       cell.textLabel?.text = "List"
       
-      let category = HomeListTableViewModel.shared.data[0]
+      let category = viewModel.category
       cell.detailTextLabel?.attributedText = BadgeText(color: category.color, text: category.name).text
 
       cell.accessoryType = .disclosureIndicator
@@ -68,7 +97,29 @@ extension NewReminderViewController {
     default:
       return UITableViewCell()
     }
+  }
 
+  override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+    switch (indexPath.section, indexPath.row) {
+    case (1, 0), (2, 0):
+      return indexPath
+    default:
+      return nil
+    }
+  }
+
+  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    switch (indexPath.section, indexPath.row) {
+    case (1, 0):
+      return // detail page
+    case (2, 0):
+      let vc = DetailReminderListViewController()
+      vc.currentTask = viewModel.task
+      vc.completionHandler = { tableView.reloadRows(at: [indexPath], with: .none) }
+      navigationController?.pushViewController(vc, animated: true)
+    default:
+      return
+    }
   }
 }
 
@@ -76,7 +127,28 @@ extension NewReminderViewController {
   func configNavigation() {
     title = "New Reminder"
 
-    navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: nil)
-    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: nil)
+    navigationItem.leftBarButtonItem = cancelButton
+    navigationItem.rightBarButtonItem = addButton
+  }
+
+  @objc
+  func didAddButtonTapped() {
+
+  }
+
+  @objc
+  func didCancelButtonTapped() {
+
+  }
+
+  func binding() {
+    viewModel.task.publisher(for: \.title)
+      .map { $0.count > 0 }
+      .removeDuplicates()
+      .sink { [weak self] in
+        self?.addButton.isEnabled = $0
+      }
+      .store(in: &cancelBag)
+
   }
 }
