@@ -16,9 +16,10 @@ class RemindersViewController: UITableViewController {
   
   let viewModel: RemindersTableViewModel
   
-  init(_ category: Category) {
+  init(category: Category) {
     viewModel = RemindersTableViewModel(category: category)
     super.init(style: .plain)
+    title = category.name
   }
   
   var cancelBag = Set<AnyCancellable>()

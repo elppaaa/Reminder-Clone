@@ -34,10 +34,10 @@ extension MainViewController {
 // MARK: - TableView Delegate
 extension MainViewController {
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    defer { tableView.deselectRow(at: indexPath, animated: true) }
+    
     let data = viewModel.data[indexPath.row]
-    let reminderVC = RemindersViewController(data)
-    reminderVC.title = data.name
+    let reminderVC = RemindersViewController(category: data)
     navigationController?.pushViewController(reminderVC, animated: true)
-    tableView.deselectRow(at: indexPath, animated: true)
   }
 }
