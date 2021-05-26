@@ -8,10 +8,7 @@
 import UIKit
 import Combine
 
-// TODO: Get from core data
-
 class RemindersViewController: UITableViewController {
-  // TODO: Get from core data
   required init?(coder: NSCoder) { fatalError("Do not user initializer") }
   
   let viewModel: RemindersTableViewModel

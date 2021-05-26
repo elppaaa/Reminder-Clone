@@ -43,7 +43,7 @@ class DetailReminderInputCell: DetailReminderViewCellBase {
     textView.isScrollEnabled = true
     contentView.addSubview(textView)
     textViewDidChange(textView)
-    
+
     let maxHeight = textView.heightAnchor.constraint(lessThanOrEqualToConstant: 120)
     maxHeight.priority = .defaultHigh
     
@@ -54,11 +54,6 @@ class DetailReminderInputCell: DetailReminderViewCellBase {
       textView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -8),
       maxHeight
     ])
-  }
-  
-  override func awakeFromNib() {
-    super.awakeFromNib()
-    contentView.updateConstraintsIfNeeded()
   }
 }
 
