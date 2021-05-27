@@ -19,21 +19,16 @@ class HomeListTableViewModel: NSObject {
     data = manager.fetch(request: Category.fetchRequest()) ?? []
 
     NotificationCenter.default.publisher(for: .CategoryChanged)
-      .receive(on: DispatchQueue.global())
+      .receive(on: DispatchQueue.global(qos: .userInitiated))
       .compactMap { _ in manager.fetch(request: Category.fetchRequest()) }
       .assign(to: \.data, on: self)
       .store(in: &cancelBag)
   }
 
   func changeCategory(task: Task, category: Category) {
-    guard let prev = task.category else {
-      category.addToTasks(task)
-      return
-    }
-
-    if prev.objectID != category.objectID {
-      prev.removeFromTasks(task)
-      category.addToTasks(task)
-    }
+    task.set(key: .category, value: category)
+    category.addToTasks(task)
+    NotificationCenter.default.post(name: .TaskChanged, object: task)
+    NotificationCenter.default.post(name: .CategoryChanged, object: category)
   }
 }

@@ -20,11 +20,17 @@ class RemindersTableViewModel: NSObject {
   let category: Category
   var tasks = [Task]()
   var tasksCancelBag = [NSManagedObjectID: Set<AnyCancellable>]()
+  var cancelBag = Set<AnyCancellable>()
 
   init(category: Category) {
     self.category = category
     super.init()
     reload()
+
+    category.publisher(for: \.tasks)
+      .receive(on: DispatchQueue.global())
+      .sink { [weak self] _ in self?.reload() }
+      .store(in: &cancelBag)
   }
 
   func reload() {

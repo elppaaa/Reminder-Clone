@@ -21,14 +21,9 @@ class NewReminderViewModel: NSObject {
     super.init()
   }
 
-  deinit {
-    if task.hasChanges {
-      manager.deleteAndSave(task)
-    }
-  }
-
   func set<T: Comparable>(key: TaskAttributesKey, value newValue: T) {
     if let oldValue = task.get(key) as? T?, oldValue != newValue {
+      NotificationCenter.default.post(name: .TaskChanged, object: task)
       task.set(key: key, value: newValue)
     }
   }
@@ -40,6 +35,7 @@ class NewReminderViewModel: NSObject {
   var category: Category { task.category ?? HomeListTableViewModel.shared.data[0] }
 
   func save() {
+    NotificationCenter.default.post(name: .CategoryChanged, object: nil)
     manager.saveContext()
   }
 

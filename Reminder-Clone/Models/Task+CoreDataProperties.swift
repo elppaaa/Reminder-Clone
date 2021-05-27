@@ -26,7 +26,7 @@ extension Task {
     @NSManaged public var priority: Int16
     @NSManaged public var time: Date?
     @NSManaged public var title: String
-    @NSManaged public var category: Category?
+    @NSManaged public var category: Category
     @NSManaged public var parent: Task?
     @NSManaged public var subtasks: NSSet?
 

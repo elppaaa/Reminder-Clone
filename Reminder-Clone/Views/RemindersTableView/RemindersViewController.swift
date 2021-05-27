@@ -135,11 +135,7 @@ extension RemindersViewController {
     }
     
     let vc = DetailReminderViewController(task: object)
-    vc.completionHandler = { [weak self] in
-      self?.viewModel.reload()
-      tableView.reloadData()
-    }
-    
+
     navigationController?.present(
       UINavigationController(rootViewController: vc), animated: true, completion: nil)
   }
@@ -184,5 +180,12 @@ extension RemindersViewController {
           }
         }
         .store(in: &cancelBag)
+
+    viewModel.category.publisher(for: \.tasks)
+      .receive(on: RunLoop.main)
+      .sink { [weak self] _ in
+        self?.tableView.reloadData()
+      }
+      .store(in: &cancelBag)
   }
 }

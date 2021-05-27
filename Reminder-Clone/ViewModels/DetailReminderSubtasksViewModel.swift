@@ -27,7 +27,7 @@ class DetailReminderSubtasksViewModel: NSObject {
   
   var count: Int { data.count }
   var isLastEmpty: Bool { data.last?.title == "" }
-  var color: UIColor { parentTask.category?.color ?? .systemBlue }
+  var color: UIColor { parentTask.category.color }
   
   func newTask(index: Int) -> Task {
     let entity = PersistentManager.shared.newEntity(entity: Task.self)
@@ -39,8 +39,9 @@ class DetailReminderSubtasksViewModel: NSObject {
     tasksCancelBag[entity.objectID] = Set<AnyCancellable>()
     
     entity.set(key: .title, value: "")
+    entity.set(key: .category, value: parentTask.category)
     parentTask.addToSubtasks(entity)
-    
+
     return entity
   }
   

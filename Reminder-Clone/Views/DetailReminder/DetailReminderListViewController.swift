@@ -16,8 +16,6 @@ class DetailReminderListViewController: UITableViewController {
 
   var currentTask: Task?
 
-  var completionHandler: (() -> Void)?
-
   override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     55
   }
@@ -35,7 +33,7 @@ class DetailReminderListViewController: UITableViewController {
     cell.icon.setBackground(category.color)
     cell.text.text = category.name
 
-    cell.accessoryType = category.objectID == currentTask?.category?.objectID ? .checkmark : .none
+    cell.accessoryType = category.objectID == currentTask?.category.objectID ? .checkmark : .none
     return cell
   }
   
@@ -44,7 +42,6 @@ class DetailReminderListViewController: UITableViewController {
       viewModel.changeCategory(task: task, category: viewModel.data[indexPath.row])
     } 
     navigationController?.popViewController(animated: true)
-    completionHandler?()
   }
 
 }

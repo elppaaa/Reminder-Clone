@@ -39,14 +39,13 @@ class DetailReminderViewModel: NSObject {
     unsetUndoManager()
   }
 
-  var priority: Int16 {
-    get { task.priority }
-    set { task.set(key: .priority, value: newValue) }
-  }
+  var priority: Int16 { task.priority }
+  var category: Category { task.category }
 
   func unsetUndoManager() {
     manager.unsetUndoManager()
   }
+  
   func save() {
     manager.saveContext()
   }
@@ -57,11 +56,13 @@ class DetailReminderViewModel: NSObject {
   
   func set<T: Comparable>(key: TaskAttributesKey, value newValue: T) {
     if let oldValue = task.get(key) as? T?, oldValue != newValue {
+      NotificationCenter.default.post(name: .TaskChanged, object: task)
       task.set(key: key, value: newValue)
     }
   }
 
   func setNil(_ key: TaskAttributesKey) {
+    NotificationCenter.default.post(name: .TaskChanged, object: task)
     task.setValue(nil, forKey: key.rawValue)
   }
 

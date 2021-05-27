@@ -28,7 +28,6 @@ enum TaskPriority: Int16 {
 class DetailReminderPriorityViewController: UITableViewController {
   let options: [TaskPriority] = [.none, .low, .medium, .high]
 
-  var completionHandler: (() -> Void)?
   var viewModel: DetailReminderViewModel
   
   required init?(coder: NSCoder) { fatalError("Do not use this initailizer") }
@@ -37,10 +36,6 @@ class DetailReminderPriorityViewController: UITableViewController {
     super.init(style: style)
   }
 
-  override func viewDidDisappear(_ animated: Bool) {
-    completionHandler?()
-    super.viewDidDisappear(true)
-  }
 }
 
 extension DetailReminderPriorityViewController {
@@ -63,6 +58,6 @@ extension DetailReminderPriorityViewController {
       tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
     }
 
-    viewModel.priority = Int16(indexPath.row)
+    viewModel.set(key: .priority, value: Int16(indexPath.row))
   }
 }
