@@ -89,26 +89,37 @@ extension RemindersViewController {
 
     viewModel.tasksCancelBag[data.objectID]?.insert(
       data.publisher(for: \.title)
-          .removeDuplicates()
-          .sink { cell.textView.text = $0 }
+        .receive(on: RunLoop.main)
+        .removeDuplicates()
+        .sink { cell.textView.text = $0 }
     )
     
     viewModel.tasksCancelBag[data.objectID]?.insert(
       cell.$isDone
+        .receive(on: RunLoop.main)
         .removeDuplicates()
         .sink { data.set(key: .isDone, value: $0) }
     )
     
     viewModel.tasksCancelBag[data.objectID]?.insert(
       cell.textView.textPublisher
+        .receive(on: RunLoop.main)
         .removeDuplicates()
         .sink { data.set(key: .title, value: $0) }
     )
     
     viewModel.tasksCancelBag[data.objectID]?.insert(
       data.publisher(for: \.flag)
-          .removeDuplicates()
-          .assign(to: \.flagVisible, on: cell)
+        .receive(on: RunLoop.main)
+        .removeDuplicates()
+        .assign(to: \.flagVisible, on: cell)
+    )
+
+    viewModel.tasksCancelBag[data.objectID]?.insert(
+      data.publisher(for: \.priority)
+        .receive(on: RunLoop.main)
+        .removeDuplicates()
+        .sink { cell.priority = $0 }
     )
 
     return cell
