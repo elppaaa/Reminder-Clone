@@ -56,14 +56,14 @@ class DetailReminderViewModel: NSObject {
   
   func set<T: Comparable>(key: TaskAttributesKey, value newValue: T) {
     if let oldValue = task.get(key) as? T?, oldValue != newValue {
-      NotificationCenter.default.post(name: .TaskChanged, object: task)
       task.set(key: key, value: newValue)
+      NotificationCenter.default.post(name: .TaskChanged, object: task)
     }
   }
 
   func setNil(_ key: TaskAttributesKey) {
-    NotificationCenter.default.post(name: .TaskChanged, object: task)
     task.setValue(nil, forKey: key.rawValue)
+    NotificationCenter.default.post(name: .TaskChanged, object: task)
   }
 
 }

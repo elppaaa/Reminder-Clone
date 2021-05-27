@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import CoreData.NSManagedObjectID
 
 class ReminderTableViewCell: UITableViewCell {
   required init?(coder: NSCoder) { fatalError("Do not use this initializer") }
@@ -17,7 +18,7 @@ class ReminderTableViewCell: UITableViewCell {
   }
   var cancel = Set<AnyCancellable>()
   var delegate: ReminderTableViewCellDelegate?
-  var row: Int?
+  var id: NSManagedObjectID?
 
   fileprivate let inset: CGFloat = 8
   fileprivate var textViewHeight: NSLayoutConstraint?
@@ -142,9 +143,14 @@ class ReminderTableViewCell: UITableViewCell {
 
 extension ReminderTableViewCell: UITextViewDelegate {
   func textViewDidEndEditing(_ textView: UITextView) {
-    if textView.text == "", let row = row {
-      delegate?.removeCell(index: row)
+    accessoryType = .none
+    if textView.text == "", let id = id {
+      delegate?.removeCell(id: id)
     }
+  }
+
+  func textViewDidBeginEditing(_ textView: UITextView) {
+    accessoryType = .detailButton
   }
 
   func textViewDidChange(_ textView: UITextView) {
@@ -157,8 +163,8 @@ extension ReminderTableViewCell: UITextViewDelegate {
   }
 
   func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-    if text == "\n", let row = row {
-      delegate?.insertTask(index: row, animate: .fade)
+    if text == "\n", let id = id {
+      delegate?.insertTask(id: id, animate: .fade)
       return false
     }
 

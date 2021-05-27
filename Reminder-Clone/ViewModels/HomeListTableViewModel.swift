@@ -27,7 +27,6 @@ class HomeListTableViewModel: NSObject {
 
   func changeCategory(task: Task, category: Category) {
     task.set(key: .category, value: category)
-    category.addToTasks(task)
     NotificationCenter.default.post(name: .TaskChanged, object: task)
     NotificationCenter.default.post(name: .CategoryChanged, object: category)
   }

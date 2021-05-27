@@ -81,11 +81,12 @@ extension RemindersViewController {
     
     cell.color = viewModel.category.color
     let data = viewModel.tasks[indexPath.row]
+    cell.textView.text = data.title
     cell.isDone = data.isDone
     cell.priority = data.priority
-    cell.row = indexPath.row
     cell.delegate = self
-    
+    cell.id = data.objectID
+
     viewModel.tasksCancelBag[data.objectID]?.insert(
       data.publisher(for: \.title)
           .removeDuplicates()
@@ -109,18 +110,7 @@ extension RemindersViewController {
           .removeDuplicates()
           .assign(to: \.flagVisible, on: cell)
     )
-    
-    viewModel.tasksCancelBag[data.objectID]?.insert(
-      cell.textView.beginEditingPublisher
-        .sink { _ in cell.accessoryType = .detailButton }
-    )
-    
-    viewModel.tasksCancelBag[data.objectID]?.insert(
-      cell.textView.endEditingPublisher
-        .sink { _ in cell.accessoryType = .none }
-    )
-  
-    cell.textViewDidChange(cell.textView)
+
     return cell
   }
 }
@@ -146,8 +136,13 @@ extension RemindersViewController {
   override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
   ) -> UISwipeActionsConfiguration? {
     let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, result in
-      self?.viewModel.delete(index: indexPath.row)
-      tableView.deleteRows(at: [indexPath], with: .fade)
+      guard let cell = tableView.cellForRow(at: indexPath) as? ReminderTableViewCell,
+            let id = cell.id else { return }
+
+      self?.viewModel.delete(id: id) { [weak self] _ in
+        self?.tableView.deleteRows(at: [indexPath], with: .fade)
+      }
+
       result(true)
     }
     
@@ -170,21 +165,14 @@ extension RemindersViewController {
 extension RemindersViewController {
   func configBinding() {
     view.publisher(.tap)
-        .debounce(for: .milliseconds(50), scheduler: RunLoop.main)
-        .sink { [weak self] _ in
-          if self?.viewModel.tasks.last?.title != "" {
-            guard let count = self?.viewModel.tasks.count else { return }
-            self?.insertTask(index: count - 1, animate: .none)
-          } else {
-            self?.tableView.endEditing(true)
-          }
-        }
-        .store(in: &cancelBag)
-
-    viewModel.category.publisher(for: \.tasks)
-      .receive(on: RunLoop.main)
+      .debounce(for: .milliseconds(50), scheduler: RunLoop.main)
       .sink { [weak self] _ in
-        self?.tableView.reloadData()
+        if self?.viewModel.tasks.last?.title != "" {
+          guard let last = self?.viewModel.tasks.last else { return }
+          self?.insertTask(id: last.objectID, animate: .none)
+        } else {
+          self?.tableView.endEditing(true)
+        }
       }
       .store(in: &cancelBag)
   }

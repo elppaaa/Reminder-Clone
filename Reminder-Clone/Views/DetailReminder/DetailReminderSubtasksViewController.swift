@@ -45,7 +45,7 @@ extension DetailReminderSubtasksViewController {
     cell.textView.text = data.title
     cell.isDone = data.isDone
     cell.flagVisible = data.flag
-    cell.row = indexPath.row
+    cell.id = data.objectID
     
     cell.delegate = self
     
@@ -90,8 +90,12 @@ extension DetailReminderSubtasksViewController {
     if indexPath.row == viewModel.count { return nil }
     
     let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, completion in
-      self?.viewModel.delete(index: indexPath.row)
-      tableView.deleteRows(at: [indexPath], with: .fade)
+      guard let cell = tableView.cellForRow(at: indexPath) as? ReminderTableViewCell,
+            let id = cell.id else { return }
+
+      self?.viewModel.delete(id: id) { _ in
+        tableView.deleteRows(at: [indexPath], with: .fade)
+      }
       completion(true)
     }
   
@@ -100,29 +104,26 @@ extension DetailReminderSubtasksViewController {
 }
 
 extension DetailReminderSubtasksViewController: ReminderTableViewCellDelegate {
+
   func updateCellLayout(_ handler: (() -> Void)? = nil) {
     tableView.performBatchUpdates { handler?() }
   }
-  
-  func insertTask(index: Int, animate: UITableView.RowAnimation) {
-    if viewModel[index].title == "" {
-      if let cell = tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? ReminderTableViewCell {
-        cell.textView.endEditing(true)
-      }
-      return
-    }
-  
-    _ = viewModel.newTask(index: index + 1)
-    let index = IndexPath(row: index + 1, section: 0)
+
+  func insertTask(id objectID: NSManagedObjectID, animate: UITableView.RowAnimation) {
+    guard let _index = viewModel.index(of: objectID) else { return }
+
+    _ = viewModel.newTask(index: _index + 1)
+    let index = IndexPath(row: _index + 1, section: 0)
     tableView.insertRows(at: [index], with: animate)
     if let cell = tableView.cellForRow(at: index) as? ReminderTableViewCell {
       cell.textView.becomeFirstResponder()
     }
   
   }
-  
-  func removeCell(index: Int) {
-    viewModel.delete(index: index)
-    tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .fade)
+
+  func removeCell(id objectID: NSManagedObjectID) {
+    viewModel.delete(id: objectID) { [weak self] index in
+      self?.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .fade)
+    }
   }
 }

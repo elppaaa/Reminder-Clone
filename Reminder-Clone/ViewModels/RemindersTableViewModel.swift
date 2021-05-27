@@ -27,7 +27,7 @@ class RemindersTableViewModel: NSObject {
     super.init()
     reload()
 
-    category.publisher(for: \.tasks)
+    NotificationCenter.default.publisher(for: .CategoryChanged, object: category)
       .receive(on: DispatchQueue.global())
       .sink { [weak self] _ in self?.reload() }
       .store(in: &cancelBag)
@@ -39,32 +39,41 @@ class RemindersTableViewModel: NSObject {
       _data.forEach { tasksCancelBag[$0.objectID] = Set<AnyCancellable>() }
     }
   }
-  
+
+  func isLast(id: NSManagedObjectID) -> Bool {
+    if let last = tasks.last, last.objectID == id {
+      return true
+    }
+    return false
+  }
+
   func newTask(index: Int) -> Task {
     let entity = manager.newEntity(entity: Task.self)
-    if tasks.indices.contains(index) {
-      tasks.insert(entity, at: index)
-    } else {
-      tasks.append(entity)
-    }
     tasksCancelBag[entity.objectID] = Set<AnyCancellable>()
     entity.set(key: .title, value: "")
-    category.addToTasks(entity)
+    entity.set(key: .category, value: category)
+
+    tasks.insert(entity, at: index)
     return entity
   }
   
-  func delete(index: Int, completion: ((Task) -> Void)? = nil) {
-    if tasks.indices.contains(index) {
-      let task = tasks.remove(at: index)
-      category.removeFromTasks(task)
-      tasksCancelBag.removeValue(forKey: task.objectID)
-      DispatchQueue.main.async {
-        completion?(task)
-      }
-      manager.delete(task)
-    } else {
-      print("index out of range")
+  func delete(id objectID: NSManagedObjectID, completion: @escaping ((Int) -> Void)) {
+    guard let index = index(of: objectID) else {
+      print("not founded")
+      return
     }
+    let task = tasks.remove(at: index)
+    tasksCancelBag.removeValue(forKey: objectID)
+    DispatchQueue.main.async {
+      completion(index)
+    }
+    manager.delete(task)
+    manager.saveContext()
+    reload()
+  }
+
+  func index(of objectID: NSManagedObjectID) -> Int? {
+    tasks.firstIndex(where: { $0.objectID == objectID })
   }
 
   func index(of task: Task) -> Int? {

@@ -6,11 +6,12 @@
 //
 
 import UIKit
+import CoreData.NSManagedObjectID
 
 protocol ReminderTableViewCellDelegate {
   func updateCellLayout(_ handler: (() -> Void)?)
-  func insertTask(index: Int, animate: UITableView.RowAnimation)
-  func removeCell(index: Int)
+  func insertTask(id objectID: NSManagedObjectID, animate: UITableView.RowAnimation)
+  func removeCell(id objectID: NSManagedObjectID)
 }
 
 extension RemindersViewController: ReminderTableViewCellDelegate {
@@ -20,23 +21,22 @@ extension RemindersViewController: ReminderTableViewCellDelegate {
     }
   }
 
-  func insertTask(index: Int, animate: UITableView.RowAnimation = .fade) {
-    if viewModel.tasks.indices.contains(index), viewModel.tasks[index].title == "",
-       let cell = tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? ReminderTableViewCell {
-      cell.textView.endEditing(true)
-      return
-    }
+  func insertTask(id objectID: NSManagedObjectID, animate: UITableView.RowAnimation) {
+    guard let _index = viewModel.index(of: objectID) else { return }
 
-    _ = viewModel.newTask(index: index + 1)
-    let index = IndexPath(row: index + 1, section: 0)
+    _ = viewModel.newTask(index: _index + 1)
+    let index = IndexPath(row: _index + 1, section: 0)
     tableView.insertRows(at: [index], with: animate)
-    if let cell = tableView.cellForRow(at: index) as? ReminderTableViewCell {
-      cell.textView.becomeFirstResponder()
+    DispatchQueue.main.async { [weak self] in
+      if let cell = self?.tableView.cellForRow(at: index) as? ReminderTableViewCell {
+        cell.textView.becomeFirstResponder()
+      }
     }
   }
 
-  func removeCell(index: Int) {
-    viewModel.delete(index: index)
-    tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .fade)
+  func removeCell(id objectID: NSManagedObjectID) {
+    viewModel.delete(id: objectID) { [weak self] index in
+      self?.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+    }
   }
 }

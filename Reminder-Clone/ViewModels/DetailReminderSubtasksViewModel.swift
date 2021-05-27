@@ -44,16 +44,21 @@ class DetailReminderSubtasksViewModel: NSObject {
 
     return entity
   }
-  
-  func delete(index: Int) {
-    if data.indices.contains(index) {
-      let task = data.remove(at: index)
-      tasksCancelBag.removeValue(forKey: task.objectID)
-      parentTask.removeFromSubtasks(task)
-      PersistentManager.shared.delete(task)
-    } else {
-      print("Index out of range")
+
+  func delete(id: NSManagedObjectID, completionHandler: @escaping ((Int) -> Void) ) {
+    guard let _index = index(of: id) else { return }
+
+    let task = data.remove(at: _index)
+    DispatchQueue.main.async {
+      completionHandler(_index)
     }
+    tasksCancelBag.removeValue(forKey: id)
+    parentTask.removeFromSubtasks(task)
+    PersistentManager.shared.delete(task)
+  }
+
+  func index(of id: NSManagedObjectID) -> Int? {
+    data.firstIndex(where: { $0.objectID == id })
   }
   
 }

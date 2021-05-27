@@ -14,8 +14,8 @@ class NewReminderViewModel: NSObject {
   override init() {
     self.task = manager.newEntity(entity: Task.self)
     let category = HomeListTableViewModel.shared.data[0] // set default category
-    category.addToTasks(task)
     task.set(key: .title, value: "")
+    task.set(key: .category, value: category)
     manager.saveContext()
 
     super.init()
@@ -23,8 +23,8 @@ class NewReminderViewModel: NSObject {
 
   func set<T: Comparable>(key: TaskAttributesKey, value newValue: T) {
     if let oldValue = task.get(key) as? T?, oldValue != newValue {
-      NotificationCenter.default.post(name: .TaskChanged, object: task)
       task.set(key: key, value: newValue)
+      NotificationCenter.default.post(name: .TaskChanged, object: task)
     }
   }
 
@@ -32,14 +32,15 @@ class NewReminderViewModel: NSObject {
     task.setValue(nil, forKey: key.rawValue)
   }
   
-  var category: Category { task.category ?? HomeListTableViewModel.shared.data[0] }
+  var category: Category { task.category }
 
   func save() {
-    NotificationCenter.default.post(name: .CategoryChanged, object: nil)
     manager.saveContext()
   }
 
   func cancel() {
-    manager.deleteAndSave(task)
+    manager.delete(task)
+    manager.saveContext()
   }
+
 }
