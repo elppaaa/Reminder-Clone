@@ -162,8 +162,9 @@ extension NewReminderViewController {
     if viewModel.task.hasChanges {
       let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
       let discardAction = UIAlertAction(title: "Discard Changes", style: .destructive) {[weak self] _ in
-//        self?.viewModel.cancel()
-        self?.dismiss(animated: true)
+        self?.dismiss(animated: true) {
+          self?.viewModel.cancel()
+        }
       }
       let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 
@@ -172,8 +173,9 @@ extension NewReminderViewController {
 
       present(alert, animated: true)
     } else {
-//      viewModel.cancel()
-      dismiss(animated: true, completion: nil)
+      dismiss(animated: true) { [weak self] in
+        self?.viewModel.cancel()
+      }
     }
   }
 
@@ -185,7 +187,6 @@ extension NewReminderViewController {
         self?.addButton.isEnabled = $0
       }
       .store(in: &cancelBag)
-
   }
 }
 
@@ -198,4 +199,7 @@ extension NewReminderViewController: UIAdaptivePresentationControllerDelegate {
     didCancelButtonTapped()
   }
 
+  func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+    viewModel.cancel()
+  }
 }

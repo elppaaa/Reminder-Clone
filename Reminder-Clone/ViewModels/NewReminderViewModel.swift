@@ -17,14 +17,12 @@ class NewReminderViewModel: NSObject {
     task.set(key: .title, value: "")
     task.set(key: .category, value: category)
     manager.saveContext()
-
     super.init()
   }
 
   func set<T: Comparable>(key: TaskAttributesKey, value newValue: T) {
     if let oldValue = task.get(key) as? T?, oldValue != newValue {
       task.set(key: key, value: newValue)
-      NotificationCenter.default.post(name: .TaskChanged, object: task)
     }
   }
 
@@ -35,12 +33,16 @@ class NewReminderViewModel: NSObject {
   var category: Category { task.category }
 
   func save() {
+    NotificationCenter.default.post(name: .CategoryChanged, object: nil)
     manager.saveContext()
   }
 
   func cancel() {
-    manager.delete(task)
-    manager.saveContext()
+    DispatchQueue.global().async { [weak self] in
+      if let task = self?.task {
+        self?.manager.deleteAndSave(task)
+      }
+    }
   }
 
 }
