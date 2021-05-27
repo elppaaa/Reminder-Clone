@@ -189,4 +189,8 @@ extension NewReminderViewController: UIAdaptivePresentationControllerDelegate {
   func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
     didCancelButtonTapped()
   }
+
+  func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
+    viewModel.cancel()
+  }
 }
