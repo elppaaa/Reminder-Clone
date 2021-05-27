@@ -282,7 +282,7 @@ extension DetailReminderViewController {
 
     case (4, 0):
       cell.textLabel?.text = "Priority"
-//      cell.detailTextLabel?.text = TaskPriority(rawValue: viewModel.task.priority)?.text ?? "None"
+      cell.detailTextLabel?.text = TaskPriority(rawValue: viewModel.task.priority)?.text ?? "None"
       cell.accessoryType = .disclosureIndicator
 
       viewModel.task.publisher(for: \.priority)
@@ -308,6 +308,14 @@ extension DetailReminderViewController {
       cell.textLabel?.text = "Subtasks"
       cell.detailTextLabel?.text = String(viewModel.task.subtasks?.count ?? 0)
       cell.accessoryType = .disclosureIndicator
+
+      viewModel.task.publisher(for: \.subtasks)
+        .receive(on: RunLoop.main)
+        .map { $0?.count ?? 0 }
+        .sink {
+          cell.detailTextLabel?.text = String($0)
+        }
+        .store(in: &cancelBag)
     case (6, 0):
       cell.textLabel?.text = "Add Image"
       cell.textLabel?.textColor = .systemBlue

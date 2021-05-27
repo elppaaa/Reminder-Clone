@@ -102,10 +102,18 @@ extension NewReminderViewController {
       let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
       cell.textLabel?.text = "List"
       
-      let category = viewModel.category
+      let category = viewModel.category 
       cell.detailTextLabel?.attributedText = BadgeText(color: category.color, text: category.name).text
 
       cell.accessoryType = .disclosureIndicator
+
+      viewModel.task.publisher(for: \.category)
+        .receive(on: RunLoop.main)
+        .sink {
+          cell.detailTextLabel?.attributedText = BadgeText(color: $0.color, text: $0.name).text
+        }
+        .store(in: &cancelBag)
+
       return cell
     default:
       return UITableViewCell()
