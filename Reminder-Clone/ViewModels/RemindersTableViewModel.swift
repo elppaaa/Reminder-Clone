@@ -26,15 +26,11 @@ class RemindersTableViewModel: NSObject {
     self.category = category
     super.init()
     reload()
-
-    NotificationCenter.default.publisher(for: .CategoryChanged, object: category)
-      .receive(on: DispatchQueue.global())
-      .sink { [weak self] _ in self?.reload() }
-      .store(in: &cancelBag)
   }
 
   func reload() {
     if let _data = category.tasks?.allObjects as? [Task] {
+      tasksCancelBag.removeAll()
       tasks = _data
       _data.forEach { tasksCancelBag[$0.objectID] = Set<AnyCancellable>() }
     }
@@ -66,7 +62,6 @@ class RemindersTableViewModel: NSObject {
     }
     manager.delete(task)
     manager.saveContext()
-    reload()
   }
 
   func index(of objectID: NSManagedObjectID) -> Int? {

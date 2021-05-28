@@ -25,9 +25,4 @@ class HomeListTableViewModel: NSObject {
       .store(in: &cancelBag)
   }
 
-  func changeCategory(task: Task, category: Category) {
-    task.set(key: .category, value: category)
-    NotificationCenter.default.post(name: .TaskChanged, object: task)
-    NotificationCenter.default.post(name: .CategoryChanged, object: category)
-  }
 }

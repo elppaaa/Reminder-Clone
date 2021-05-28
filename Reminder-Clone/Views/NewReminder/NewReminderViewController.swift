@@ -134,8 +134,7 @@ extension NewReminderViewController {
     case (1, 0):
       return // detail page
     case (2, 0):
-      let vc = DetailReminderListViewController()
-      vc.currentTask = viewModel.task
+      let vc = DetailReminderListViewController(with: viewModel.createDetailViewModel())
       navigationController?.pushViewController(vc, animated: true)
     default:
       return

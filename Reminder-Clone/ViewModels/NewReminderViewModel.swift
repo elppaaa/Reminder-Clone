@@ -26,6 +26,10 @@ class NewReminderViewModel: NSObject {
     }
   }
 
+  func createDetailViewModel() -> DetailReminderViewModel {
+    DetailReminderViewModel(task: task)
+  }
+
   func setNil(_ key: TaskAttributesKey) {
     task.setValue(nil, forKey: key.rawValue)
   }

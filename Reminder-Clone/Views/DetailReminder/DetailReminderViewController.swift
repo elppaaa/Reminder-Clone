@@ -351,9 +351,9 @@ extension DetailReminderViewController {
       navigationController?.pushViewController(vc, animated: true)
 
     case (4, 1):
-      let vc = DetailReminderListViewController()
-      vc.currentTask = viewModel.task
+      let vc = DetailReminderListViewController(with: viewModel)
       navigationController?.pushViewController(vc, animated: true)
+      
     case (5, 0):
       let vc = DetailReminderSubtasksViewController(task: viewModel.task)
       navigationController?.pushViewController(vc, animated: true)

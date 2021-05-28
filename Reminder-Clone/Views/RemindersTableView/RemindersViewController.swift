@@ -19,8 +19,9 @@ class RemindersViewController: UITableViewController {
     title = category.name
   }
   
-  var cancelBag = Set<AnyCancellable>()
-  
+  fileprivate var cancelBag = Set<AnyCancellable>()
+  fileprivate var isKeyboardHidden = true
+
   override func loadView() {
     super.loadView()
     tableView.register(ReminderTableViewCell.self, forCellReuseIdentifier: ReminderTableViewCell.identifier)
@@ -36,7 +37,7 @@ class RemindersViewController: UITableViewController {
     tableView.keyboardDismissMode = .interactive
     
     configLayout()
-    configBinding()
+    configGesture()
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -49,7 +50,6 @@ class RemindersViewController: UITableViewController {
     defaultNavigationConfig()
     let attribute = [NSAttributedString.Key.foregroundColor: viewModel.category.color]
     navigationController?.navigationBar.largeTitleTextAttributes = attribute
-    tableView.reloadData()
     super.viewWillAppear(true)
   }
   

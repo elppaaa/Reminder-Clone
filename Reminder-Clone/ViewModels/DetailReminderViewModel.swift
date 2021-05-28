@@ -5,8 +5,9 @@
 import UIKit
 
 class DetailReminderViewModel: NSObject {
-  @Published var task: Task 
-  let manager = PersistentManager.shared
+  var task: Task
+  fileprivate let prevCategory: Category
+  fileprivate let manager = PersistentManager.shared
 
   func dateText(_ key: TaskAttributesKey) -> String? {
     let formatter = DateFormatter()
@@ -32,7 +33,17 @@ class DetailReminderViewModel: NSObject {
     manager.saveContext()
     manager.setUndoManager()
     self.task = task
+    prevCategory = task.category
     super.init()
+  }
+
+  convenience init(_ newTask: Bool = true) {
+    let entity = PersistentManager.shared.newEntity(entity: Task.self)
+    let category = HomeListTableViewModel.shared.data[0] // need to set default
+
+    entity.set(key: .title, value: "")
+    entity.set(key: .category, value: category)
+    self.init(task: entity)
   }
 
   deinit {
@@ -41,6 +52,7 @@ class DetailReminderViewModel: NSObject {
 
   var priority: Int16 { task.priority }
   var category: Category { task.category }
+  var categoryList: [Category] { HomeListTableViewModel.shared.data }
 
   func unsetUndoManager() {
     manager.unsetUndoManager()
@@ -48,22 +60,27 @@ class DetailReminderViewModel: NSObject {
   
   func save() {
     manager.saveContext()
+    NotificationCenter.default.post(name: .TaskChanged, object: task)
+    if prevCategory != category {
+      NotificationCenter.default.post(name: .CategoryChanged, object: prevCategory)
+    }
   }
 
   func rollBack() {
     manager.rollBack()
   }
-  
+
   func set<T: Comparable>(key: TaskAttributesKey, value newValue: T) {
     if let oldValue = task.get(key) as? T?, oldValue != newValue {
       task.set(key: key, value: newValue)
-      NotificationCenter.default.post(name: .TaskChanged, object: task)
     }
+  }
+
+  func setCategory(value: Category) {
+    task.set(key: .category, value: value)
   }
 
   func setNil(_ key: TaskAttributesKey) {
     task.setValue(nil, forKey: key.rawValue)
-    NotificationCenter.default.post(name: .TaskChanged, object: task)
   }
-
 }
