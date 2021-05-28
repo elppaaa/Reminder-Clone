@@ -172,19 +172,46 @@ extension RemindersViewController {
   }
 }
 
-// MARK: - Binding
-extension RemindersViewController {
-  func configBinding() {
-    view.publisher(.tap)
-      .debounce(for: .milliseconds(50), scheduler: RunLoop.main)
-      .sink { [weak self] _ in
-        if self?.viewModel.tasks.last?.title != "" {
-          guard let last = self?.viewModel.tasks.last else { return }
-          self?.insertTask(id: last.objectID, animate: .none)
-        } else {
-          self?.tableView.endEditing(true)
-        }
+// MARK: - Tap Gesture Recognizer
+extension RemindersViewController: UIGestureRecognizerDelegate {
+  func configGesture() {
+    let gesture = UITapGestureRecognizer(target: self, action: #selector(didTableViewTapped))
+    gesture.delegate = self
+    tableView.addGestureRecognizer(gesture)
+
+    NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)
+      .map { _ in true }
+      .assign(to: \.isKeyboardHidden, on: self)
+      .store(in: &cancelBag)
+
+    NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
+      .map { _ in false }
+      .assign(to: \.isKeyboardHidden, on: self)
+      .store(in: &cancelBag)
+
+    NotificationCenter.default.publisher(for: .CategoryChanged, object: viewModel.category)
+      .compactMap { $0.object as? Category }
+      .map(\.tasks?.count)
+      .removeDuplicates()
+      .sink {[weak self] _ in
+        self?.viewModel.reload()
+        self?.tableView.reloadData()
       }
       .store(in: &cancelBag)
+  }
+
+  @objc
+  func didTableViewTapped() {
+    if isKeyboardHidden {
+      guard let id = viewModel.tasks.last?.objectID else { return }
+      insertTask(id: id, animate: .none)
+    } else {
+      tableView.endEditing(false)
+    }
+  }
+
+  func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+    if gestureRecognizer is UITapGestureRecognizer, touch.view == tableView { return true }
+    return false
   }
 }
