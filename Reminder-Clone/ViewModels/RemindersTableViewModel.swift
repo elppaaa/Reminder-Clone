@@ -43,14 +43,16 @@ class RemindersTableViewModel: NSObject {
     return false
   }
 
-  func newTask(index: Int) -> Task {
+  func newTask(index: Int, handler: @escaping (() -> Void)) {
     let entity = manager.newEntity(entity: Task.self)
     tasksCancelBag[entity.objectID] = Set<AnyCancellable>()
     entity.set(key: .title, value: "")
     entity.set(key: .category, value: category)
 
     tasks.insert(entity, at: index)
-    return entity
+    DispatchQueue.main.async {
+      handler()
+    }
   }
   
   func delete(id objectID: NSManagedObjectID, completion: @escaping ((Int) -> Void)) {

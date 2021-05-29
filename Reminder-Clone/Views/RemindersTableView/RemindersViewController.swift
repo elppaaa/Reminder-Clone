@@ -203,8 +203,11 @@ extension RemindersViewController: UIGestureRecognizerDelegate {
   @objc
   func didTableViewTapped() {
     if isKeyboardHidden {
-      guard let id = viewModel.tasks.last?.objectID else { return }
-      insertTask(id: id, animate: .none)
+      if viewModel.tasks.count == 0 { insertTask(index: -1, animate: .none) }
+      else {
+        guard let id = viewModel.tasks.last?.objectID else { return }
+        insertTask(id: id, animate: .none)
+      }
     } else {
       tableView.endEditing(false)
     }

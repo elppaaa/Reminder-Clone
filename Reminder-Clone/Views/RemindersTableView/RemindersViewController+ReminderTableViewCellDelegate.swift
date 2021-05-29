@@ -24,10 +24,13 @@ extension RemindersViewController: ReminderTableViewCellDelegate {
   func insertTask(id objectID: NSManagedObjectID, animate: UITableView.RowAnimation) {
     guard let _index = viewModel.index(of: objectID) else { return }
 
-    _ = viewModel.newTask(index: _index + 1)
-    let index = IndexPath(row: _index + 1, section: 0)
-    tableView.insertRows(at: [index], with: animate)
-    DispatchQueue.main.async { [weak self] in
+    insertTask(index: _index + 1, animate: animate)
+  }
+
+  func insertTask(index: Int, animate: UITableView.RowAnimation) {
+    viewModel.newTask(index: index) { [weak self] in
+      let index = IndexPath(row: index, section: 0)
+      self?.tableView.insertRows(at: [index], with: animate)
       if let cell = self?.tableView.cellForRow(at: index) as? ReminderTableViewCell {
         cell.textView.becomeFirstResponder()
       }
