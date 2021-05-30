@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NewListViewControllerHeader: UICollectionReusableView {
+class ListSettingViewControllerHeader: UICollectionReusableView {
   override var reuseIdentifier: String? { Self.identifier }
   fileprivate let iconSize: CGFloat = 150
   

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NewListCell: UICollectionViewCell {
+class ListSettingCell: UICollectionViewCell {
   override var reuseIdentifier: String? { Self.identifier }
   required init?(coder: NSCoder) { fatalError("Do not use this initializer") }
   override init(frame: CGRect) {

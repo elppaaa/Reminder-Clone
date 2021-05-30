@@ -37,7 +37,6 @@ class RemindersViewController: UITableViewController {
     tableView.keyboardDismissMode = .interactive
     configLayout()
     configGesture()
-    configTabBar()
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -203,7 +202,7 @@ extension RemindersViewController: UIGestureRecognizerDelegate {
   @objc
   func didTableViewTapped() {
     if isKeyboardHidden {
-      if viewModel.tasks.count == 0 { insertTask(index: -1, animate: .none) }
+      if viewModel.tasks.count == 0 { insertTask(index: 0, animate: .none) }
       else {
         guard let id = viewModel.tasks.last?.objectID else { return }
         insertTask(id: id, animate: .none)

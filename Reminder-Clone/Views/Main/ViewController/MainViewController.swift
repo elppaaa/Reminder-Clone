@@ -58,8 +58,9 @@ class MainViewController: UITableViewController {
   
   @objc
   func didAddListButtonTapped() {
-    let vc = UINavigationController(rootViewController: NewListViewController())
-    navigationController?.present(vc, animated: true)
+    let vc = ListSettingViewController(with: ListSettingViewModel())
+    vc.title = "New List"
+    navigationController?.present(UINavigationController(rootViewController: vc), animated: true)
   }
 
   @objc

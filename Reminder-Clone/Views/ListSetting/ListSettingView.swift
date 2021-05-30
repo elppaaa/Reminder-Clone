@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NewListView: UIView {
+class ListSettingView: UIView {
   required init?(coder: NSCoder) { fatalError("Do not use this initializer") }
   init() {
     super.init(frame: .zero)
@@ -23,13 +23,13 @@ class NewListView: UIView {
     return $0
   }(UIStackView())
 
-  lazy var header = NewListViewControllerHeader()
+  lazy var header = ListSettingViewControllerHeader()
   lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
 
 }
 
 // MARK: - layout
-extension NewListView {
+extension ListSettingView {
   func configLayout() {
     backgroundColor = .white
     collectionView.backgroundColor = .white
@@ -46,7 +46,7 @@ extension NewListView {
   }
   
   func registerCells() {
-    collectionView.register(NewListCell.self, forCellWithReuseIdentifier: NewListCell.identifier)
+    collectionView.register(ListSettingCell.self, forCellWithReuseIdentifier: ListSettingCell.identifier)
   }
 
   func createLayout() -> UICollectionViewLayout {
