@@ -148,7 +148,9 @@ extension RemindersViewController {
 extension RemindersViewController {
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     guard let cell = tableView.cellForRow(at: indexPath) as? ReminderTableViewCell else { return }
-    cell.textView.becomeFirstResponder()
+    if !tableView.isEditing {
+      cell.textView.becomeFirstResponder()
+    }
   }
   
   override public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {

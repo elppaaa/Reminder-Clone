@@ -85,6 +85,7 @@ class ReminderTableViewCell: UITableViewCell {
 
   lazy var textView: UITextView = {
     $0.translatesAutoresizingMaskIntoConstraints = false
+    $0.isUserInteractionEnabled = false
     $0.backgroundColor = .none
     $0.delegate = self
     $0.font = .preferredFont(forTextStyle: .body)
