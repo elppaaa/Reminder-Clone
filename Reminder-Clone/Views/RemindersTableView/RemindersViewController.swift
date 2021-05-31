@@ -244,16 +244,19 @@ extension RemindersViewController: UIGestureRecognizerDelegate {
         self?.tableView.reloadData()
       }
       .store(in: &cancelBag)
+
+    viewModel.category.publisher(for: \.name)
+      .compactMap { $0 }
+      .receive(on: RunLoop.main)
+      .assign(to: \.title, on: self)
+      .store(in: &cancelBag)
     
-    if #available(iOS 14, *) {
-      viewModel.category.publisher(for: \.isShownCompleted)
-        .receive(on: RunLoop.main)
-        .sink { [weak self] _ in
-          guard let self = self else { return }
-          self.navigationItem.rightBarButtonItem?.menu = UIMenu(children: self.createMenu())
-        }
-        .store(in: &cancelBag)
-    }
+    viewModel.category.publisher(for: \.isShownCompleted)
+      .receive(on: RunLoop.main)
+      .sink { [weak self] _ in
+        self?.setBarButtonMore()
+      }
+      .store(in: &cancelBag)
   }
-  
+
 }
