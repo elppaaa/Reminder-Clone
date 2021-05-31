@@ -17,6 +17,7 @@ enum CategoryAttributeKey: String {
   case name
   case order
   case tasks
+  case isShownCompleted
 }
 
 @objc (Category)
@@ -28,6 +29,7 @@ public class Category: NSManagedObject {
     dict[.color] = colorInt
     dict[.order] = order
     dict[.tasks] = tasks
+    dict[.isShownCompleted] = isShownCompleted
     return dict
   }
 

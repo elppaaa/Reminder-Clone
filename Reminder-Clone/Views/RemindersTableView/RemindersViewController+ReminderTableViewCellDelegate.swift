@@ -20,13 +20,13 @@ extension RemindersViewController: ReminderTableViewCellDelegate {
       handler?()
     }
   }
-
+  
   func insertTask(id objectID: NSManagedObjectID, animate: UITableView.RowAnimation) {
     guard let _index = viewModel.index(of: objectID) else { return }
-
+    
     insertTask(index: _index + 1, animate: animate)
   }
-
+  
   func insertTask(index: Int, animate: UITableView.RowAnimation) {
     viewModel.newTask(index: index) { [weak self] in
       let index = IndexPath(row: index, section: 0)
@@ -36,7 +36,7 @@ extension RemindersViewController: ReminderTableViewCellDelegate {
       }
     }
   }
-
+  
   func removeCell(id objectID: NSManagedObjectID) {
     viewModel.delete(id: objectID) { [weak self] index in
       self?.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)

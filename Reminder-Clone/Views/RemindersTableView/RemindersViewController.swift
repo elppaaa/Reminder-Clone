@@ -10,7 +10,6 @@ import Combine
 
 class RemindersViewController: UITableViewController {
   required init?(coder: NSCoder) { fatalError("Do not user initializer") }
-  
   let viewModel: RemindersTableViewModel
   
   init(category: Category) {
@@ -19,16 +18,15 @@ class RemindersViewController: UITableViewController {
     title = category.name
   }
   
-  fileprivate var cancelBag = Set<AnyCancellable>()
+  var cancelBag = Set<AnyCancellable>()
   fileprivate var isKeyboardHidden = true
-
+  
   override func loadView() {
     super.loadView()
     tableView.register(ReminderTableViewCell.self, forCellReuseIdentifier: ReminderTableViewCell.identifier)
     
     tableView.rowHeight = UITableView.automaticDimension
     tableView.estimatedRowHeight = 45
-    
   }
   
   override func viewDidLoad() {
@@ -37,12 +35,13 @@ class RemindersViewController: UITableViewController {
     tableView.keyboardDismissMode = .interactive
     configLayout()
     configGesture()
-		configBinding()
-		configTabBar()
+    configBinding()
+    setBarButtonMore()
   }
-
+  
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
+    tableView.endEditing(true)
     PersistentManager.shared.saveContext()
   }
   
@@ -86,7 +85,7 @@ extension RemindersViewController {
     cell.delegate = self
     cell.id = data.objectID
     viewModel.tasksCancelBag[data.objectID]?.removeAll()
-
+    
     viewModel.tasksCancelBag[data.objectID]?.insert(
       data.publisher(for: \.title)
         .receive(on: RunLoop.main)
@@ -114,21 +113,21 @@ extension RemindersViewController {
         .removeDuplicates()
         .assign(to: \.flagVisible, on: cell)
     )
-
+    
     viewModel.tasksCancelBag[data.objectID]?.insert(
       data.publisher(for: \.priority)
         .receive(on: RunLoop.main)
         .removeDuplicates()
         .sink { cell.priority = $0 }
     )
-
+    
     viewModel.tasksCancelBag[data.objectID]?.insert(
       data.publisher(for: \.isDone)
         .debounce(for: .seconds(3), scheduler: RunLoop.main)
         .filter { $0 }
         .sink { [weak self] _ in self?.hideCell(id: data.objectID) }
     )
-
+    
     return cell
   }
 }
@@ -143,7 +142,7 @@ extension RemindersViewController {
     }
     
     let vc = DetailReminderViewController(task: object)
-
+    
     navigationController?.present(
       UINavigationController(rootViewController: vc), animated: true, completion: nil)
   }
@@ -156,11 +155,11 @@ extension RemindersViewController {
     let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, result in
       guard let cell = tableView.cellForRow(at: indexPath) as? ReminderTableViewCell,
             let id = cell.id else { return }
-
+      
       self?.viewModel.delete(id: id) { [weak self] _ in
         self?.tableView.deleteRows(at: [indexPath], with: .fade)
       }
-
+      
       result(true)
     }
     
@@ -185,27 +184,25 @@ extension RemindersViewController: UIGestureRecognizerDelegate {
     let gesture = UITapGestureRecognizer(target: self, action: #selector(didTableViewTapped))
     gesture.delegate = self
     tableView.addGestureRecognizer(gesture)
-
+    
     NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)
-      .map { _ in true }
-      .assign(to: \.isKeyboardHidden, on: self)
-      .store(in: &cancelBag)
-
-    NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
-      .map { _ in false }
-      .assign(to: \.isKeyboardHidden, on: self)
-      .store(in: &cancelBag)
-
-    NotificationCenter.default.publisher(for: .CategoryChanged, object: viewModel.category)
-      .compactMap { $0.object as? Category }
-      .removeDuplicates()
-      .sink {[weak self] _ in
-        self?.viewModel.reload()
-        self?.tableView.reloadData()
+      .receive(on: RunLoop.main)
+      .sink { [weak self] _ in
+        self?.isKeyboardHidden = true
+        self?.setBarButtonMore()
       }
       .store(in: &cancelBag)
+    
+    NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
+      .receive(on: RunLoop.main)
+      .sink { [weak self] _ in
+        self?.isKeyboardHidden = false
+        self?.setBarButtonDone()
+      }
+      .store(in: &cancelBag)
+    
   }
-
+  
   @objc
   func didTableViewTapped() {
     if isKeyboardHidden {
@@ -218,7 +215,7 @@ extension RemindersViewController: UIGestureRecognizerDelegate {
       tableView.endEditing(false)
     }
   }
-
+  
   func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
     if gestureRecognizer is UITapGestureRecognizer, touch.view == tableView { return true }
     return false
@@ -226,13 +223,37 @@ extension RemindersViewController: UIGestureRecognizerDelegate {
   
   // MARK: - Config Binding
   func configBinding() {
-		viewModel.category.publisher(for: \.colorInt)
-    .receive(on: RunLoop.main)
-    .sink { [weak self] color in
-      let attribute = [NSAttributedString.Key.foregroundColor: UIColor(hex: Int(color) )]
-      self?.navigationController?.navigationBar.largeTitleTextAttributes = attribute
-			self?.tableView.reloadData()
+    
+    //  Reload when data updated
+    NotificationCenter.default
+      .publisher(for: .CategoryChanged, object: viewModel.category)
+      .sink {
+        [weak self] _ in
+        self?.viewModel.reload()
+        self?.tableView.reloadData()
+      }
+      .store(in: &cancelBag)
+    
+    viewModel.category
+      .publisher(for: \.colorInt)
+      .receive(on: RunLoop.main)
+      .sink {
+        [weak self] color in
+        let attribute = [NSAttributedString.Key.foregroundColor: UIColor(hex: Int(color))]
+        self?.navigationController?.navigationBar.largeTitleTextAttributes = attribute
+        self?.tableView.reloadData()
+      }
+      .store(in: &cancelBag)
+    
+    if #available(iOS 14, *) {
+      viewModel.category.publisher(for: \.isShownCompleted)
+        .receive(on: RunLoop.main)
+        .sink { [weak self] _ in
+          guard let self = self else { return }
+          self.navigationItem.rightBarButtonItem?.menu = UIMenu(children: self.createMenu())
+        }
+        .store(in: &cancelBag)
     }
-    .store(in: &cancelBag)
   }
+  
 }

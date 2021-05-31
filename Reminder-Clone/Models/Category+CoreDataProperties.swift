@@ -19,6 +19,7 @@ extension Category {
     @NSManaged public var iconString: String?
     @NSManaged public var name: String
     @NSManaged public var order: NSDecimalNumber?
+    @NSManaged public var isShownCompleted: Bool
     @NSManaged public var tasks: NSSet?
 
 }
