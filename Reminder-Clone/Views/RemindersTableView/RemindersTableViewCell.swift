@@ -70,7 +70,7 @@ class ReminderTableViewCell: UITableViewCell {
     return $0
   }(UIStackView())
 
-  fileprivate lazy var toggleButton: UIImageView = {
+  lazy var toggleButton: UIImageView = {
     $0.bounds.size = CGSize(width: iconSize, height: iconSize)
     $0.translatesAutoresizingMaskIntoConstraints = false
     $0.preferredSymbolConfiguration = .init(pointSize: iconSize)
@@ -86,6 +86,7 @@ class ReminderTableViewCell: UITableViewCell {
   lazy var textView: UITextView = {
     $0.translatesAutoresizingMaskIntoConstraints = false
     $0.isUserInteractionEnabled = true
+    $0.backgroundColor = .none
     $0.delegate = self
     $0.font = .preferredFont(forTextStyle: .body)
     $0.isScrollEnabled = false
@@ -108,8 +109,6 @@ class ReminderTableViewCell: UITableViewCell {
 
   fileprivate func configLayout() {
     priorityView.lineBreakMode = .byWordWrapping
-
-    selectionStyle = .none
 
     stack.pin(safe: contentView, margin: inset)
 

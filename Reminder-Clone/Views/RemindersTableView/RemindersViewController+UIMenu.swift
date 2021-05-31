@@ -23,22 +23,29 @@ extension RemindersViewController {
         menu: UIMenu(children: createMenu()))
     } else {
       navigationItem.rightBarButtonItem =
-        UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain, target: self, action: #selector(didMoreBarButtonTapped))
+        UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain,
+                        target: self, action: #selector(didMoreBarButtonTapped))
     }
   }
   
   @objc
   func didDoneButtonTapped() {
-    tableView.endEditing(true)
+    if tableView.isEditing {
+      unsetEditingMode()
+    } else {
+      tableView.endEditing(true)
+    }
   }
   
   @objc
   func didMoreBarButtonTapped() {
     let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-    alert.addAction( UIAlertAction(title: "Name & Appearance", style: .default, handler: { [weak self] _ in self?.nameAndAppearanceAction() }) )
-    //    alert.addAction( UIAlertAction(title: "Share List", style: .default, handler: { _ in print("action") }) )
-    alert.addAction( UIAlertAction(title: "Select Reminders", style: .default, handler: { _ in print("action") }) )
-    //    alert.addAction( UIAlertAction(title: "Sort By", style: .default, handler: { _ in print("action") }) )
+    alert.addAction( UIAlertAction(title: "Name & Appearance", style: .default,
+                                   handler: { [weak self] _ in self?.nameAndAppearanceAction() }) )
+    // alert.addAction( UIAlertAction(title: "Share List", style: .default, handler: { _ in print("action") }) )
+    alert.addAction( UIAlertAction(title: "Select Reminders", style: .default,
+                                   handler: { [weak self] _ in self?.setEditingMode() }) )
+    // alert.addAction( UIAlertAction(title: "Sort By", style: .default, handler: { _ in print("action") }) )
     let isShown = viewModel.category.isShownCompleted
     alert.addAction(UIAlertAction(
                       title: isShown ? "Hide Completed" : "Show Completed",
@@ -54,8 +61,10 @@ extension RemindersViewController {
     let nameAppearance = UIAction(title: "Name & Appearance", image: UIImage(systemName: "pencil"), handler: { [weak self] _ in
       self?.nameAndAppearanceAction()
     })
-    let selectReminders = UIAction(title: "Select Reminders", image: UIImage(systemName: "checkmark.circle"), handler: { _ in print("action called") })
-    let sortBy = UIAction(title: "Sort By", image: UIImage(systemName: "arrow.up.arrow.down"), handler: { _ in print("action called") })
+    let selectReminders = UIAction(title: "Select Reminders", image: UIImage(systemName: "checkmark.circle"),
+                                   handler: { [weak self] _ in self?.setEditingMode() })
+    let sortBy = UIAction(title: "Sort By", image: UIImage(systemName: "arrow.up.arrow.down"),
+                          handler: { _ in print("action called") })
     
     let isShown = viewModel.category.isShownCompleted
     let showCompleted = UIAction(
@@ -78,9 +87,17 @@ extension RemindersViewController {
     vc.title = "Name & Appearance"
     present(UINavigationController(rootViewController: vc), animated: true)
   }
-  
-  fileprivate func showCompletedAction() {
-    viewModel.category.isShownCompleted.toggle()
+
+  fileprivate func setEditingMode() {
+    tableView.setEditing(true, animated: true)
+    setBarButtonDone()
+    isTableViewEditing = true
   }
-  
+
+  fileprivate func unsetEditingMode() {
+    tableView.setEditing(false, animated: true)
+    setBarButtonMore()
+    isTableViewEditing = false
+  }
+
 }

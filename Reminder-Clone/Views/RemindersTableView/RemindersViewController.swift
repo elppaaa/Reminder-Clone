@@ -11,12 +11,14 @@ import Combine
 class RemindersViewController: UITableViewController {
   required init?(coder: NSCoder) { fatalError("Do not user initializer") }
   let viewModel: RemindersTableViewModel
-  
+
   init(category: Category) {
     viewModel = RemindersTableViewModel(category: category)
     super.init(style: .plain)
     title = category.name
   }
+
+  @Published var isTableViewEditing = false 
   
   var cancelBag = Set<AnyCancellable>()
   fileprivate var isKeyboardHidden = true
@@ -33,6 +35,8 @@ class RemindersViewController: UITableViewController {
     super.viewDidLoad()
     view.backgroundColor = R.Color.defaultBackground
     tableView.keyboardDismissMode = .interactive
+    tableView.allowsMultipleSelectionDuringEditing = true
+    tableView.allowsSelection = true
     configLayout()
     configGesture()
     configBinding()
@@ -127,6 +131,14 @@ extension RemindersViewController {
         .filter { $0 }
         .sink { [weak self] _ in self?.hideCell(id: data.objectID) }
     )
+
+    viewModel.tasksCancelBag[data.objectID]?.insert(
+      $isTableViewEditing
+        .sink {
+          cell.selectionStyle = $0 ? .default : .none
+          cell.toggleButton.isHidden = $0 ? true : false
+        }
+    )
     
     return cell
   }
@@ -187,11 +199,14 @@ extension RemindersViewController {
 
 // MARK: - Tap Gesture Recognizer
 extension RemindersViewController: UIGestureRecognizerDelegate {
+  func setCellInsertGesture() {
+    let addTaskGesture = UITapGestureRecognizer(target: self, action: #selector(didTableViewTapped))
+    addTaskGesture.delegate = self
+    tableView.addGestureRecognizer(addTaskGesture)
+  }
+
   func configGesture() {
-    let gesture = UITapGestureRecognizer(target: self, action: #selector(didTableViewTapped))
-    gesture.delegate = self
-    tableView.addGestureRecognizer(gesture)
-    
+    setCellInsertGesture()
     NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)
       .receive(on: RunLoop.main)
       .sink { [weak self] _ in
@@ -212,6 +227,7 @@ extension RemindersViewController: UIGestureRecognizerDelegate {
   
   @objc
   func didTableViewTapped() {
+    if tableView.isEditing { return }
     if isKeyboardHidden {
       if viewModel.tasks.count == 0 { insertTask(index: 0, animate: .none) }
       else {
@@ -227,7 +243,7 @@ extension RemindersViewController: UIGestureRecognizerDelegate {
     if gestureRecognizer is UITapGestureRecognizer, touch.view == tableView { return true }
     return false
   }
-  
+
   // MARK: - Config Binding
   func configBinding() {
     
@@ -264,6 +280,7 @@ extension RemindersViewController: UIGestureRecognizerDelegate {
         self?.setBarButtonMore()
       }
       .store(in: &cancelBag)
+
   }
 
 }
