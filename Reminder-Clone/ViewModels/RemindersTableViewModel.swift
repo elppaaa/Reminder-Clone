@@ -43,7 +43,7 @@ class RemindersTableViewModel: NSObject {
     return false
   }
 
-  func newTask(index: Int, handler: @escaping (() -> Void)) {
+  func newTask(index: Int, handler: @escaping () -> Void) {
     let entity = manager.newEntity(entity: Task.self)
     tasksCancelBag[entity.objectID] = Set<AnyCancellable>()
     entity.set(key: .title, value: "")
@@ -55,7 +55,7 @@ class RemindersTableViewModel: NSObject {
     }
   }
   
-  func delete(id objectID: NSManagedObjectID, completion: @escaping ((Int) -> Void)) {
+  func delete(id objectID: NSManagedObjectID, completion: @escaping (Int) -> Void) {
     guard let index = index(of: objectID) else { return }
     let task = tasks.remove(at: index)
     tasksCancelBag.removeValue(forKey: objectID)

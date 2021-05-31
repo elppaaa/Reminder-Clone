@@ -152,6 +152,8 @@ extension ListSettingViewController: UICollectionViewDelegate {
 
 extension ListSettingViewController {
 	fileprivate func binding() {
+		contentView.header.textField.text = viewModel.category.name
+		
 		contentView.header.textField.textPublisher
 			.receive(on: RunLoop.main)
 			.sink { [weak self] in self?.viewModel.set(key: .name, value: $0) }

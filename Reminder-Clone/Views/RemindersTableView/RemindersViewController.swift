@@ -37,6 +37,8 @@ class RemindersViewController: UITableViewController {
     tableView.keyboardDismissMode = .interactive
     configLayout()
     configGesture()
+		configBinding()
+		configTabBar()
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -47,8 +49,6 @@ class RemindersViewController: UITableViewController {
   override func viewWillAppear(_ animated: Bool) {
     navigationController?.navigationBar.prefersLargeTitles = true
     defaultNavigationConfig()
-    let attribute = [NSAttributedString.Key.foregroundColor: viewModel.category.color]
-    navigationController?.navigationBar.largeTitleTextAttributes = attribute
     super.viewWillAppear(true)
   }
   
@@ -85,6 +85,7 @@ extension RemindersViewController {
     cell.priority = data.priority
     cell.delegate = self
     cell.id = data.objectID
+    viewModel.tasksCancelBag[data.objectID]?.removeAll()
 
     viewModel.tasksCancelBag[data.objectID]?.insert(
       data.publisher(for: \.title)
@@ -190,7 +191,6 @@ extension RemindersViewController: UIGestureRecognizerDelegate {
 
     NotificationCenter.default.publisher(for: .CategoryChanged, object: viewModel.category)
       .compactMap { $0.object as? Category }
-      .map(\.tasks?.count)
       .removeDuplicates()
       .sink {[weak self] _ in
         self?.viewModel.reload()
@@ -216,51 +216,16 @@ extension RemindersViewController: UIGestureRecognizerDelegate {
     if gestureRecognizer is UITapGestureRecognizer, touch.view == tableView { return true }
     return false
   }
-
-  var menus: [UIAction] {
-    [
-      UIAction(title: "Name & Appearance", image: UIImage(systemName: "pencil"), handler: { _ in print("action called") }),
-      UIAction(title: "Share List", image: UIImage(systemName: "person.crop.circle.fill.badge.plus"), handler: { _ in print("action called") }),
-      UIAction(title: "Select Reminders", image: UIImage(systemName: "checkmark.circle"), handler: { _ in print("action called") }),
-      UIAction(title: "Sort By", image: UIImage(systemName: "arrow.up.arrow.down"), handler: { _ in print("action called") }),
-      UIAction(title: "Show Completed", image: UIImage(systemName: "eye"), handler: { _ in print("action called") }),
-      UIAction(title: "Print", image: UIImage(systemName: "printer"), handler: { _ in print("action called") }),
-      UIAction(title: "Delete List", image: UIImage(systemName: "trash"), attributes: .destructive, handler: { _ in print("action called") }),
-    ]
-  }
-}
-
-// MARK: - UITabBar Menu
-extension RemindersViewController {
-
-  func configTabBar() {
-    if #available(iOS 14.0, *) {
-      navigationItem.rightBarButtonItem = UIBarButtonItem(
-        title: nil,
-        image: UIImage(systemName: "ellipsis.circle"),
-        primaryAction: nil,
-        menu: UIMenu(children: menus))
-    } else {
-      navigationItem.rightBarButtonItem =
-        UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain, target: self, action: #selector(didRightBarButtonTapped))
+  
+  // MARK: - Config Binding
+  func configBinding() {
+		viewModel.category.publisher(for: \.colorInt)
+    .receive(on: RunLoop.main)
+    .sink { [weak self] color in
+      let attribute = [NSAttributedString.Key.foregroundColor: UIColor(hex: Int(color) )]
+      self?.navigationController?.navigationBar.largeTitleTextAttributes = attribute
+			self?.tableView.reloadData()
     }
-  }
-
-  func createAction() {
-
-  }
-
-  @objc
-  func didRightBarButtonTapped() {
-    let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-    alert.addAction( UIAlertAction(title: "Name & Appearance", style: .default, handler: { _ in print("action") }) )
-    alert.addAction( UIAlertAction(title: "Share List", style: .default, handler: { _ in print("action") }) )
-    alert.addAction( UIAlertAction(title: "Select Reminders", style: .default, handler: { _ in print("action") }) )
-    alert.addAction( UIAlertAction(title: "Sort By", style: .default, handler: { _ in print("action") }) )
-    alert.addAction( UIAlertAction(title: "Show Completed", style: .default, handler: { _ in print("action") }) )
-    alert.addAction( UIAlertAction(title: "Print", style: .default, handler: { _ in print("action") }) )
-    alert.addAction( UIAlertAction(title: "Delete List", style: .default, handler: { _ in print("action") }) )
-    alert.addAction( UIAlertAction(title: "Cancel", style: .cancel, handler: nil) )
-    present(alert, animated: true, completion: nil)
+    .store(in: &cancelBag)
   }
 }

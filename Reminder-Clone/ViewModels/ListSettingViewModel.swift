@@ -92,7 +92,7 @@ class ListSettingViewModel: NSObject {
   
   func save() {
     manager.saveContext()
-    NotificationCenter.default.post(name: .CategoryChanged, object: nil)
+    NotificationCenter.default.post(name: .CategoryChanged, object: category)
   }
 	
   func unsetUndoManager() {
