@@ -146,6 +146,13 @@ extension RemindersViewController {
     navigationController?.present(
       UINavigationController(rootViewController: vc), animated: true, completion: nil)
   }
+
+  // move cells
+  override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool { true }
+  override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+    viewModel.move(from: sourceIndexPath.row, to: destinationIndexPath.row)
+  }
+
 }
 
 // MARK: - Swipe Action

@@ -65,7 +65,6 @@ class MainViewController: UITableViewController {
 
   @objc
   func didEditButtonTapped() {
-    PersistentManager.shared.deleteAll(request: Category.fetchRequest())
   }
 }
 

@@ -59,6 +59,11 @@ class RemindersTableViewModel: NSObject {
       handler()
     }
   }
+
+  func move(from: Int, to: Int) {
+    let entity = tasks.remove(at: from)
+    tasks.insert(entity, at: to)
+  }
   
   func hide(id objectID: NSManagedObjectID, completion: @escaping (Int) -> Void) {
     guard let index = index(of: objectID) else { return }
