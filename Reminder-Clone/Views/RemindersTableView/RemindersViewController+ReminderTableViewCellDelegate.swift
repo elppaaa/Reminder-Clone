@@ -42,4 +42,14 @@ extension RemindersViewController: ReminderTableViewCellDelegate {
       self?.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
     }
   }
+  
+}
+
+extension RemindersViewController {
+  func hideCell(id objectID: NSManagedObjectID) {
+    if viewModel.category.isShownCompleted { return }
+    viewModel.hide(id: objectID) { [weak self] index in
+      self?.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+    }
+  }
 }

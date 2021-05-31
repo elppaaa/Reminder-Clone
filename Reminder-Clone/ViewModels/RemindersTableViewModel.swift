@@ -55,6 +55,16 @@ class RemindersTableViewModel: NSObject {
     }
   }
   
+  func hide(id objectID: NSManagedObjectID, completion: @escaping (Int) -> Void) {
+    guard let index = index(of: objectID) else { return }
+    _ = tasks.remove(at: index)
+    tasksCancelBag.removeValue(forKey: objectID)
+    DispatchQueue.main.async {
+      completion(index)
+    }
+		manager.saveContext()
+  }
+  
   func delete(id objectID: NSManagedObjectID, completion: @escaping (Int) -> Void) {
     guard let index = index(of: objectID) else { return }
     let task = tasks.remove(at: index)

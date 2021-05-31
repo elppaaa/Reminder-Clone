@@ -122,6 +122,13 @@ extension RemindersViewController {
         .sink { cell.priority = $0 }
     )
 
+    viewModel.tasksCancelBag[data.objectID]?.insert(
+      data.publisher(for: \.isDone)
+        .debounce(for: .seconds(3), scheduler: RunLoop.main)
+        .filter { $0 }
+        .sink { [weak self] _ in self?.hideCell(id: data.objectID) }
+    )
+
     return cell
   }
 }
