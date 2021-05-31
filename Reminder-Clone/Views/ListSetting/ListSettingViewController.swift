@@ -23,8 +23,8 @@ class ListSettingViewController: UIViewController {
 	private var selectedColorCell: IndexPath
 	private var selectedIconCell: IndexPath
 	
-	fileprivate let cancel = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didCancelButtonTapped))
-	fileprivate let done = UIBarButtonItem(barButtonSystemItem: .done, target: self,
+	fileprivate lazy var cancel = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didCancelButtonTapped))
+	fileprivate lazy var done = UIBarButtonItem(barButtonSystemItem: .done, target: self,
 		action: #selector(didDoneButtonTapped))
 	
 	override func loadView() {
@@ -52,6 +52,27 @@ class ListSettingViewController: UIViewController {
 	func didDoneButtonTapped() {
 		viewModel.save()
 		dismiss(animated: true)
+	}
+	
+	@objc
+	func didCancelButtonTapped() {
+		if viewModel.category.hasChanges {
+			let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+			let discardAction = UIAlertAction(title: "Discard Changes", style: .destructive) {[weak self] _ in
+				self?.dismiss(animated: true, completion: {
+					self?.viewModel.cancel()
+					self?.viewModel.unsetUndoManager()
+				})
+			}
+			let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+			
+			alert.addAction(discardAction)
+			alert.addAction(cancelAction)
+			
+			present(alert, animated: true)
+		} else {
+			dismiss(animated: true, completion: nil)
+		}
 	}
 }
 
@@ -155,29 +176,8 @@ extension ListSettingViewController {
 				self?.done.isEnabled = $0.count > 0
 			}
 			.store(in: &cancelBag)
-		
 	}
 	
-	@objc
-	func didCancelButtonTapped() {
-		if viewModel.category.hasChanges {
-			let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-			let discardAction = UIAlertAction(title: "Discard Changes", style: .destructive) {[weak self] _ in
-				self?.dismiss(animated: true, completion: {
-					self?.viewModel.rollBack()
-					self?.viewModel.unsetUndoManager()
-				})
-			}
-			let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-			
-			alert.addAction(discardAction)
-			alert.addAction(cancelAction)
-			
-			present(alert, animated: true)
-		} else {
-			dismiss(animated: true, completion: nil)
-		}
-	}
 }
 
 extension ListSettingViewController: UIAdaptivePresentationControllerDelegate {
