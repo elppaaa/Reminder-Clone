@@ -18,25 +18,18 @@ class RemindersViewController: UITableViewController {
     title = category.name
   }
 
-  @Published var isTableViewEditing = false 
-  
-  var cancelBag = Set<AnyCancellable>()
   fileprivate var isKeyboardHidden = true
-  
+  @Published var isTableViewEditing = false 
+  var cancelBag = Set<AnyCancellable>()
+
   override func loadView() {
     super.loadView()
-    tableView.register(ReminderTableViewCell.self, forCellReuseIdentifier: ReminderTableViewCell.identifier)
-    
-    tableView.rowHeight = UITableView.automaticDimension
-    tableView.estimatedRowHeight = 45
+    tableViewConfig()
   }
   
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = R.Color.defaultBackground
-    tableView.keyboardDismissMode = .interactive
-    tableView.allowsMultipleSelectionDuringEditing = true
-    tableView.allowsSelection = true
     configLayout()
     configGesture()
     configBinding()
@@ -63,13 +56,23 @@ extension RemindersViewController {
     tableView.tableFooterView = UIView()
     tableView.tableHeaderView = UIView()
   }
+
+  fileprivate func tableViewConfig() {
+    tableView.register(ReminderTableViewCell.self, forCellReuseIdentifier: ReminderTableViewCell.identifier)
+    tableView.rowHeight = UITableView.automaticDimension
+    tableView.estimatedRowHeight = 45
+    tableView.keyboardDismissMode = .interactive
+    tableView.allowsMultipleSelectionDuringEditing = true
+    tableView.allowsSelection = true
+    tableView.dragInteractionEnabled = true
+    tableView.dragDelegate = self
+    tableView.dropDelegate = self
+  }
 }
 
 // MARK: - DataSource
 extension RemindersViewController {
-  override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-    true
-  }
+  override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool { true }
   
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     viewModel.tasks.count
@@ -139,7 +142,7 @@ extension RemindersViewController {
           cell.toggleButton.isHidden = $0 ? true : false
         }
     )
-    
+
     return cell
   }
 }
@@ -168,7 +171,8 @@ extension RemindersViewController {
 
   // move cells
   override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool { true }
-  override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+  override func tableView(
+    _ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
     viewModel.move(from: sourceIndexPath.row, to: destinationIndexPath.row)
   }
 
@@ -290,4 +294,29 @@ extension RemindersViewController: UIGestureRecognizerDelegate {
 
   }
 
+}
+
+// MARK: - Drag - Drop. move cells
+extension RemindersViewController: UITableViewDragDelegate {
+  func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+    [UIDragItem(itemProvider: NSItemProvider())]
+  }
+}
+
+extension RemindersViewController: UITableViewDropDelegate {
+	// called when .insertIntoDestinationIndexPath
+  func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
+    guard let parentIndexPath = coordinator.destinationIndexPath,
+          coordinator.proposal.intent == .insertIntoDestinationIndexPath,
+          coordinator.proposal.operation == .move else { return }
+		print(parentIndexPath)
+  }
+  
+  func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
+    if session.localDragSession == nil {
+      return UITableViewDropProposal(operation: .cancel, intent: .unspecified)
+    }
+    
+    return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+  }
 }

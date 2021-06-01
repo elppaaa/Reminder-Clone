@@ -7,7 +7,7 @@
 
 import UIKit
 
-// MARK: - UITabBar Menu
+// MARK: - Create Menu/ActionSheet
 extension RemindersViewController {
   func setBarButtonDone() {
     navigationItem.rightBarButtonItem =
@@ -80,7 +80,7 @@ extension RemindersViewController {
   
 }
 
-// MARK: - UIMenu Actions
+// MARK: - Menu/ActionSheet Actions
 extension RemindersViewController {
   fileprivate func nameAndAppearanceAction() {
     let vc = ListSettingViewController(with: ListSettingViewModel(with: viewModel.category))
