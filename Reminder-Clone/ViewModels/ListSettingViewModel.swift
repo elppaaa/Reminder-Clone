@@ -22,7 +22,7 @@ class ListSettingViewModel: NSObject {
   
 	// New Category
   override init() {
-    category = PersistentManager.shared.newEntity(entity: Category.self)
+    category = PersistentManager.shared.newCategory()
     category.set(key: .name, value: "")
     category.set(key: .color, value: Int32(UIColor.systemBlue.hex))
     category.set(key: .icon, value: R.Image.listBullet.rawValue)

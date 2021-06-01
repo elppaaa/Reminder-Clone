@@ -12,9 +12,8 @@ class NewReminderViewModel: NSObject {
   fileprivate let manager = PersistentManager.shared
 
   override init() {
-    self.task = manager.newEntity(entity: Task.self)
+    self.task = manager.newTask()
     let category = HomeListTableViewModel.shared.data[0] // set default category
-    task.set(key: .title, value: "")
     task.set(key: .category, value: category)
     manager.saveContext()
     super.init()

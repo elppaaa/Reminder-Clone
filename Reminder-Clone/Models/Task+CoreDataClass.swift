@@ -23,6 +23,7 @@ enum TaskAttributesKey: String {
   case parent
   case category
   case isDone
+  case createdDate
 
 }
 
@@ -56,6 +57,8 @@ public class Task: NSManagedObject {
       return subtasks
     case .isDone:
       return isDone
+    case .createdDate:
+      return createdDate
     }
   }
 

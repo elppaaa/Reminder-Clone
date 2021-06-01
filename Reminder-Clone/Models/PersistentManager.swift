@@ -21,8 +21,16 @@ class PersistentManager {
   
   fileprivate lazy var context: NSManagedObjectContext = persistentContainer.viewContext
 
-  func newEntity<T: NSManagedObject>(entity: T.Type) -> T {
-    entity.init(context: context)
+  func newCategory() -> Category {
+    let entity = Category(context: context)
+    return entity
+  }
+
+  func newTask() -> Task {
+    let entity = Task(context: context)
+    entity.set(key: .title, value: "")
+    entity.set(key: .createdDate, value: Date())
+    return entity
   }
   
   func fetch<T: NSManagedObject>(request: NSFetchRequest<T>) -> [T]? {

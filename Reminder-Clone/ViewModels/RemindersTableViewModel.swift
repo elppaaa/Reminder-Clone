@@ -49,9 +49,8 @@ class RemindersTableViewModel: NSObject {
   }
   
   func newTask(index: Int, handler: @escaping () -> Void) {
-    let entity = manager.newEntity(entity: Task.self)
+    let entity = manager.newTask()
     tasksCancelBag[entity.objectID] = Set<AnyCancellable>()
-    entity.set(key: .title, value: "")
     entity.set(key: .category, value: category)
     
     tasks.insert(entity, at: index)

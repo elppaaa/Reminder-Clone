@@ -16,6 +16,7 @@ extension Task {
         return NSFetchRequest<Task>(entityName: "Task")
     }
 
+    @NSManaged public var createdDate: Date
     @NSManaged public var date: Date?
     @NSManaged public var flag: Bool
     @NSManaged public var image: [UIImage]?

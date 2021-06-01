@@ -38,10 +38,9 @@ class DetailReminderViewModel: NSObject {
   }
 
   convenience init(_ newTask: Bool = true) {
-    let entity = PersistentManager.shared.newEntity(entity: Task.self)
+    let entity = PersistentManager.shared.newTask()
     let category = HomeListTableViewModel.shared.data[0] // need to set default
 
-    entity.set(key: .title, value: "")
     entity.set(key: .category, value: category)
     self.init(task: entity)
   }
