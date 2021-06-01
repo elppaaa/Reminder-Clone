@@ -29,7 +29,7 @@ extension RemindersViewController {
   }
   
   @objc
-  func didDoneButtonTapped() {
+  private func didDoneButtonTapped() {
     if tableView.isEditing {
       unsetEditingMode()
     } else {
@@ -38,7 +38,7 @@ extension RemindersViewController {
   }
   
   @objc
-  func didMoreBarButtonTapped() {
+  private func didMoreBarButtonTapped() {
     let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
     alert.addAction( UIAlertAction(title: "Name & Appearance", style: .default,
                                    handler: { [weak self] _ in self?.nameAndAppearanceAction() }) )
