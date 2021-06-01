@@ -270,8 +270,8 @@
 		941102A3523DF24FE2B7EFE4 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				9410B7AE358932677E8318FB /* RemindersViewController+ReminderTableViewCellDelegate.swift */,
 				941E7C2BF004ACF7A902D7FB /* RemindersViewController.swift */,
+				9410B7AE358932677E8318FB /* RemindersViewController+ReminderTableViewCellDelegate.swift */,
 				941EE1E818C082645A2FC6CF /* RemindersViewController+UIMenu.swift */,
 				9418701BB2AEB16F968515E1 /* RemindersViewController+Swipe.swift */,
 				94115688216C3533AA5D41A8 /* RemindersViewController+TapGesture.swift */,

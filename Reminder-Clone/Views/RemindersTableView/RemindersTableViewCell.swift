@@ -16,12 +16,29 @@ class ReminderTableViewCell: UITableViewCell {
     configAction()
     configLayout()
   }
+	
   var cancel = Set<AnyCancellable>()
   var delegate: ReminderTableViewCellDelegate?
   var id: NSManagedObjectID?
-
+  override var indentationLevel: Int {
+    get { _indentationLevel }
+    set { _indentationLevel = newValue }
+  }
+  fileprivate var _indentationLevel = 0  {
+    didSet {
+			let insetWidth = inset * 2 + toggleButton.bounds.width
+			separatorInset.left = _indentationLevel == 0 ?
+        insetWidth : insetWidth * 2.0
+      indentation.constant = _indentationLevel == 0 ?
+        inset : insetWidth * 1.0
+    }
+  }
   fileprivate let inset: CGFloat = 8
-  fileprivate var textViewHeight: NSLayoutConstraint?
+  fileprivate lazy var textViewHeight: NSLayoutConstraint =
+    textView.heightAnchor.constraint(equalToConstant: textView.contentSize.height) .priority(.defaultLow)
+  fileprivate lazy var indentation: NSLayoutConstraint =
+    stack.leadingAnchor.constraint(
+      equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: inset)
   var flagVisible = false {
     didSet { flag.isHidden = !flagVisible }
   }
@@ -110,18 +127,21 @@ class ReminderTableViewCell: UITableViewCell {
   fileprivate func configLayout() {
     priorityView.lineBreakMode = .byWordWrapping
 
-    stack.pin(safe: contentView, margin: inset)
+		contentView.addSubview(stack)
 
     stack.addArrangedSubview(toggleButton)
     stack.addArrangedSubview(priorityView)
     stack.addArrangedSubview(textView)
     stack.addArrangedSubview(flag)
 
-    textViewHeight = textView.heightAnchor.constraint(equalToConstant: textView.contentSize.height)
-      .priority(.defaultLow)
-    textViewHeight?.isActive = true
-
     NSLayoutConstraint.activate([
+      stack.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: inset),
+      stack.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: -1 * inset),
+      indentation,
+      stack.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -1 * inset),
+  
+      textViewHeight,
+			
       toggleButton.heightAnchor.constraint(equalToConstant: iconSize),
       toggleButton.widthAnchor.constraint(equalToConstant: iconSize),
 
@@ -129,8 +149,10 @@ class ReminderTableViewCell: UITableViewCell {
       flag.heightAnchor.constraint(equalToConstant: iconSize),
     ])
 
-    separatorInset.left = inset * 2 + toggleButton.bounds.width
     textViewDidChange(textView)
+		
+    separatorInset.left = inset * 2 + toggleButton.bounds.width
+    indentationWidth = separatorInset.left
   }
 
   fileprivate func configAction() {
@@ -156,7 +178,7 @@ extension ReminderTableViewCell: UITextViewDelegate {
     UIView.setAnimationsEnabled(false)
     let size = CGSize(width: contentView.frame.width, height: .infinity)
     let estimatedSize = textView.sizeThatFits(size)
-    textViewHeight?.constant = estimatedSize.height
+    textViewHeight.constant = estimatedSize.height
     delegate?.updateCellLayout(nil)
     UIView.setAnimationsEnabled(true)
   }

@@ -23,7 +23,6 @@ final class RemindersViewController: UITableViewController {
   var cancelBag = Set<AnyCancellable>()
 }
 
-
 // MARK: - View LifeCycle
 extension RemindersViewController {
   override func loadView() {

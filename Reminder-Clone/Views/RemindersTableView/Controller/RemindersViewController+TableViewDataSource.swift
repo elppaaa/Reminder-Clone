@@ -12,6 +12,10 @@ extension RemindersViewController {
 		viewModel.tasks.count
 	}
 	
+	public override func tableView(_ tableView: UITableView, indentationLevelForRowAt indexPath: IndexPath ) -> Int {
+    viewModel.tasks[indexPath.row].parent == nil ? 0 : 1
+	}
+	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard let cell = tableView.dequeueReusableCell(
 			withIdentifier: ReminderTableViewCell.identifier, for: indexPath) as? ReminderTableViewCell else {
