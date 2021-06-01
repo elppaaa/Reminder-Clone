@@ -308,8 +308,10 @@ extension RemindersViewController: UITableViewDropDelegate {
   func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
     guard let parentIndexPath = coordinator.destinationIndexPath,
           coordinator.proposal.intent == .insertIntoDestinationIndexPath,
-          coordinator.proposal.operation == .move else { return }
-		print(parentIndexPath)
+          coordinator.proposal.operation == .move,
+          let indexPath = coordinator.items.first?.sourceIndexPath else { return }
+		
+    viewModel.setSubtasks(parent: parentIndexPath, child: indexPath)
   }
   
   func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
@@ -317,6 +319,6 @@ extension RemindersViewController: UITableViewDropDelegate {
       return UITableViewDropProposal(operation: .cancel, intent: .unspecified)
     }
     
-    return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+    return UITableViewDropProposal(operation: .move, intent: .automatic)
   }
 }
