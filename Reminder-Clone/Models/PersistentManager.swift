@@ -33,13 +33,13 @@ class PersistentManager {
     return entity
   }
   
-  func fetch<T: NSManagedObject>(request: NSFetchRequest<T>) -> [T]? {
+  func fetch<T: NSManagedObject>(request: NSFetchRequest<T>) -> [T] {
     do {
       let fetchResult = try context.fetch(request)
       return fetchResult
     } catch {
       print(error.localizedDescription)
-      return nil
+      return []
     }
   }
   
@@ -65,7 +65,7 @@ class PersistentManager {
 
   func deleteAll<T: NSManagedObject>(request: NSFetchRequest<T>) {
     let list = fetch(request: request)
-    list?.forEach {
+    list.forEach {
       context.delete($0)
     }
     do {

@@ -22,6 +22,10 @@ class RemindersTableViewModel: NSObject {
   var tasksCancelBag = [NSManagedObjectID: Set<AnyCancellable>]()
   var cancelBag = Set<AnyCancellable>()
   
+  lazy var tasksPredicate = NSPredicate(format: "category == %@", category)
+  lazy var notDonePredicate = NSPredicate(format: "isDone == false")
+  lazy var notChildTaskPredicate = NSPredicate(format: "parent == nil")
+  
   init(category: Category) {
     self.category = category
     super.init()
@@ -30,15 +34,10 @@ class RemindersTableViewModel: NSObject {
   }
   
   func reload() {
-    if let _data = category.tasks?.allObjects as? [Task] {
-      tasksCancelBag.removeAll()
-      if category.isShownCompleted {
-        tasks = _data
-      } else {
-        tasks = _data.filter { $0.isDone == false }
-      }
-      _data.forEach { tasksCancelBag[$0.objectID] = Set<AnyCancellable>() }
-    }
+    tasks = category.isShownCompleted ?
+      allTasks : notDoneTasks
+    tasksCancelBag.removeAll()
+    tasks.forEach { tasksCancelBag[$0.objectID] = Set<AnyCancellable>() }
   }
   
   func isLast(id: NSManagedObjectID) -> Bool {
@@ -85,6 +84,14 @@ class RemindersTableViewModel: NSObject {
     manager.saveContext()
   }
   
+  func subTasksIndexPaths(_ task: Task) -> [IndexPath] {
+		task.subtasks?
+      .compactMap { $0 as? Task }
+      .compactMap { index(of: $0.objectID) }
+      .map { IndexPath(row: $0, section: 0) }
+    ?? []
+  }
+  
   func index(of objectID: NSManagedObjectID) -> Int? {
     tasks.firstIndex(where: { $0.objectID == objectID })
   }
@@ -105,6 +112,32 @@ class RemindersTableViewModel: NSObject {
 // MARK: - setSubTask
 extension RemindersTableViewModel {
 	func setSubtasks(parent: IndexPath, child: IndexPath) {
+    tasks[child.row].setValue(nil, forKey: TaskAttributesKey.subtasks.rawValue)
     tasks[parent.row].addToSubtasks(tasks[child.row])
+  }
+}
+
+// MARK: - Use Predicates
+extension RemindersTableViewModel {
+  var allTasks: [Task] {
+    let request: NSFetchRequest<Task> = Task.fetchRequest()
+    request.sortDescriptors = [Task.sortDescriptor(.createdDate)]
+    return manager.fetch(request: request)
+  }
+  
+  var notDoneTasks: [Task] {
+    let request: NSFetchRequest<Task> = Task.fetchRequest()
+    let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [tasksPredicate, notDonePredicate])
+    request.predicate = predicate
+    request.sortDescriptors = [Task.sortDescriptor(.createdDate)]
+    return manager.fetch(request: request)
+  }
+  
+  var notChildTasks: [Task] {
+    let request: NSFetchRequest<Task> = Task.fetchRequest()
+    let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [tasksPredicate, notChildTaskPredicate])
+    request.predicate = predicate
+    request.sortDescriptors = [Task.sortDescriptor(.createdDate)]
+    return manager.fetch(request: request)
   }
 }

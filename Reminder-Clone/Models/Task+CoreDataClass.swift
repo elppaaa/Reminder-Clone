@@ -72,4 +72,12 @@ public class Task: NSManagedObject {
     }
   }
 
+  class func sortDescriptor(_ key: TaskAttributesKey, acending: Bool = true) -> NSSortDescriptor {
+    NSSortDescriptor(key: key.rawValue, ascending: acending)
+  }
+
+  class func equalPredicate(_ key: TaskAttributesKey, value: String) -> NSPredicate {
+    NSPredicate(format: "%K == %@", key.rawValue, value)
+  }
+
 }

@@ -8,8 +8,8 @@ import UIKit
 extension RemindersViewController: UITableViewDragDelegate {
   func tableView( _ tableView: UITableView, itemsForBeginning
                     session: UIDragSession, at indexPath: IndexPath ) -> [UIDragItem] {
-
-    [UIDragItem(itemProvider: NSItemProvider())]
+		session.localContext = indexPath
+    return [UIDragItem(itemProvider: NSItemProvider())]
   }
 }
 
@@ -17,20 +17,27 @@ extension RemindersViewController: UITableViewDropDelegate {
   // called when .insertIntoDestinationIndexPath
   func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
     guard let parentIndexPath = coordinator.destinationIndexPath,
-          coordinator.proposal.intent == .insertIntoDestinationIndexPath,
-          coordinator.proposal.operation == .move,
-          let indexPath = coordinator.items.first?.sourceIndexPath else { return }
-
-    viewModel.setSubtasks(parent: parentIndexPath, child: indexPath)
+					let sourceIndexPath = coordinator.session.localDragSession?.localContext as? IndexPath else { return }
+    
+		if coordinator.proposal.intent == .insertIntoDestinationIndexPath {
+      viewModel.setSubtasks(parent: parentIndexPath, child: sourceIndexPath)
+    }
   }
-
+  
   func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession,
                  withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
-    
-    if session.localDragSession == nil {
-      return UITableViewDropProposal(operation: .cancel, intent: .unspecified)
-    }
+		
+		var proposal = UITableViewDropProposal(operation: .cancel, intent: .unspecified)
+    guard let sourceIndexPath = session.localDragSession?.localContext as? IndexPath else { return proposal }
+		if sourceIndexPath == destinationIndexPath { return proposal } // cancel when same IndexPath
 
-    return UITableViewDropProposal(operation: .move, intent: .automatic)
+    // if task has subtask, .insertAtDestinationIndexPath only
+    if let count = viewModel.tasks[sourceIndexPath.row].subtasks?.count, count > 0 {
+			proposal = UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+    } else {
+			 proposal = UITableViewDropProposal(operation: .move, intent: .automatic)
+		 }
+	
+		return proposal
   }
 }
