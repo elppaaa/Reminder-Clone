@@ -21,8 +21,8 @@ extension RemindersViewController {
 			withIdentifier: ReminderTableViewCell.identifier, for: indexPath) as? ReminderTableViewCell else {
 			fatalError("Cell Not Founded")
 		}
-		
 		cell.color = viewModel.category.color
+		
 		let data = viewModel.tasks[indexPath.row]
 		cell.textView.text = data.title
 		cell.isDone = data.isDone
@@ -78,6 +78,34 @@ extension RemindersViewController {
 				.sink {
 				cell.selectionStyle = $0 ? .default : .none
 				cell.toggleButton.isHidden = $0 ? true : false
+			}
+		)
+		
+		cell.accessoryType = data.subtasks?.count == 0 ? .none : .disclosureIndicator
+		cell.subTasksCountView.isHidden = false
+		if let count = data.subtasks?.count, count != 0 {
+			cell.subTasksCountView.text = String(count) + " "
+		}
+		
+		viewModel.tasksCancelBag[data.objectID]?.insert(
+			cell.textView.endEditingPublisher
+				.receive(on: RunLoop.main)
+				.sink { [weak self] in
+					cell.accessoryType = data.subtasks?.count == 0 ? .none : .disclosureIndicator
+					cell.subTasksCountView.isHidden = false
+					if let count = data.subtasks?.count, count != 0 {
+						cell.subTasksCountView.text = String(count) + " "
+					}
+					if $0.text == "" { self?.removeCell(id: data.objectID) }
+			}
+		)
+		
+		viewModel.tasksCancelBag[data.objectID]?.insert(
+			cell.textView.beginEditingPublisher
+			.receive(on: RunLoop.main)
+			.sink { _ in
+				cell.accessoryType = .detailButton
+				cell.subTasksCountView.isHidden = true
 			}
 		)
 		

@@ -112,12 +112,15 @@ class ReminderTableViewCell: UITableViewCell {
 
     return $0
   }(UITextView())
+  
+  lazy var subTasksCountView =
+    UILabel.makeView(color: .secondaryLabel, font: .preferredFont(forTextStyle: .body))
 
   fileprivate lazy var flag: UIImageView = {
     $0.bounds.size = CGSize(width: iconSize, height: iconSize)
     $0.translatesAutoresizingMaskIntoConstraints = false
-    $0.preferredSymbolConfiguration = .init(pointSize: iconSize)
-    $0.isUserInteractionEnabled = true
+    $0.preferredSymbolConfiguration = UIImage.SymbolConfiguration(textStyle: .body)
+    $0.isUserInteractionEnabled = false
     $0.contentMode = .center
     $0.image = R.Image.flag.image
 
@@ -133,6 +136,7 @@ class ReminderTableViewCell: UITableViewCell {
     stack.addArrangedSubview(priorityView)
     stack.addArrangedSubview(textView)
     stack.addArrangedSubview(flag)
+    stack.addArrangedSubview(subTasksCountView)
 
     NSLayoutConstraint.activate([
       stack.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: inset),
@@ -144,9 +148,6 @@ class ReminderTableViewCell: UITableViewCell {
 			
       toggleButton.heightAnchor.constraint(equalToConstant: iconSize),
       toggleButton.widthAnchor.constraint(equalToConstant: iconSize),
-
-      flag.widthAnchor.constraint(equalToConstant: iconSize),
-      flag.heightAnchor.constraint(equalToConstant: iconSize),
     ])
 
     textViewDidChange(textView)
@@ -163,16 +164,16 @@ class ReminderTableViewCell: UITableViewCell {
 }
 
 extension ReminderTableViewCell: UITextViewDelegate {
-  func textViewDidEndEditing(_ textView: UITextView) {
-    accessoryType = .none
-    if textView.text == "", let id = id {
-      delegate?.removeCell(id: id)
-    }
-  }
+//  func textViewDidEndEditing(_ textView: UITextView) {
+//    accessoryType = .none
+//    if textView.text == "", let id = id {
+//      delegate?.removeCell(id: id)
+//    }
+//  }
 
-  func textViewDidBeginEditing(_ textView: UITextView) {
-    accessoryType = .detailButton
-  }
+//  func textViewDidBeginEditing(_ textView: UITextView) {
+//    accessoryType = .detailButton
+//  }
 
   func textViewDidChange(_ textView: UITextView) {
     UIView.setAnimationsEnabled(false)

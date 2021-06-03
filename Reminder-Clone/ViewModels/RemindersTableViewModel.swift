@@ -106,6 +106,5 @@ class RemindersTableViewModel: NSObject {
 extension RemindersTableViewModel {
 	func setSubtasks(parent: IndexPath, child: IndexPath) {
     tasks[parent.row].addToSubtasks(tasks[child.row])
-		print("set SubTask")
   }
 }
