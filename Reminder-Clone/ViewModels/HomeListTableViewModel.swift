@@ -16,7 +16,7 @@ class HomeListTableViewModel: NSObject {
     super.init()
     let manager = PersistentManager.shared
 
-    data = manager.fetch(request: Category.fetchRequest()) ?? []
+    data = manager.fetch(request: Category.fetchRequest())
 
     NotificationCenter.default.publisher(for: .CategoryChanged)
       .receive(on: DispatchQueue.global(qos: .userInitiated))

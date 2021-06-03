@@ -2,7 +2,7 @@
 //  Task+CoreDataProperties.swift
 //  Reminder-Clone
 //
-//  Created by JK on 2021/05/18.
+//  Created by JK on 2021/06/03.
 //
 //
 
@@ -29,12 +29,30 @@ extension Task {
     @NSManaged public var title: String
     @NSManaged public var category: Category
     @NSManaged public var parent: Task?
-    @NSManaged public var subtasks: NSSet?
+    @NSManaged public var subtasks: NSOrderedSet?
 
 }
 
 // MARK: Generated accessors for subtasks
 extension Task {
+
+    @objc(insertObject:inSubtasksAtIndex:)
+    @NSManaged public func insertIntoSubtasks(_ value: Task, at idx: Int)
+
+    @objc(removeObjectFromSubtasksAtIndex:)
+    @NSManaged public func removeFromSubtasks(at idx: Int)
+
+    @objc(insertSubtasks:atIndexes:)
+    @NSManaged public func insertIntoSubtasks(_ values: [Task], at indexes: NSIndexSet)
+
+    @objc(removeSubtasksAtIndexes:)
+    @NSManaged public func removeFromSubtasks(at indexes: NSIndexSet)
+
+    @objc(replaceObjectInSubtasksAtIndex:withObject:)
+    @NSManaged public func replaceSubtasks(at idx: Int, with value: Task)
+
+    @objc(replaceSubtasksAtIndexes:withSubtasks:)
+    @NSManaged public func replaceSubtasks(at indexes: NSIndexSet, with values: [Task])
 
     @objc(addSubtasksObject:)
     @NSManaged public func addToSubtasks(_ value: Task)
@@ -43,10 +61,10 @@ extension Task {
     @NSManaged public func removeFromSubtasks(_ value: Task)
 
     @objc(addSubtasks:)
-    @NSManaged public func addToSubtasks(_ values: NSSet)
+    @NSManaged public func addToSubtasks(_ values: NSOrderedSet)
 
     @objc(removeSubtasks:)
-    @NSManaged public func removeFromSubtasks(_ values: NSSet)
+    @NSManaged public func removeFromSubtasks(_ values: NSOrderedSet)
 
 }
 

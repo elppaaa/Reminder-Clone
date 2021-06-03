@@ -13,8 +13,8 @@ import Combine
 class DetailReminderSubtasksViewModel: NSObject {
   init(parent task: Task) {
     parentTask = task
-    guard let result = task.subtasks?.allObjects as? [Task] else { assert(false, "Entity not founded"); return }
-    
+    guard let result = task.subtasks?.array as? [Task] else { assert(false, "Entity not founded"); return }
+
     data = result
   }
   

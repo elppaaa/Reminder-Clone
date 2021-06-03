@@ -51,4 +51,13 @@ public class Category: NSManagedObject {
       setValue(v, forKey: k.rawValue)
     }
   }
+
+  var computedTasks: NSOrderedSet? {
+    isShownCompleted ? tasks : inCompletedTasks
+  }
+
+  var inCompletedTasks: NSOrderedSet? {
+    tasks.filtered(using: NSPredicate(format: "isDone == false"))
+  }
+
 }

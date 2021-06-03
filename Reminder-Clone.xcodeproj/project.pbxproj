@@ -10,12 +10,10 @@
 		4808D8642632A52500DD8D27 /* HomeListTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4808D8632632A52500DD8D27 /* HomeListTableViewModel.swift */; };
 		483E581325B6D3DF004DF782 /* RemindersTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483E581225B6D3DF004DF782 /* RemindersTableViewModel.swift */; };
 		4845DBDC264EDDE2005ED9E1 /* Notification+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4845DBDB264EDDE2005ED9E1 /* Notification+Extension.swift */; };
-		4845DBE2264F785C005ED9E1 /* Category+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4845DBE0264F785C005ED9E1 /* Category+CoreDataProperties.swift */; };
 		485C47F4264ABE8F007A56E1 /* ListSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485C47F3264ABE8F007A56E1 /* ListSettingView.swift */; };
 		4876F27F2664E1EF0001C7A8 /* ListSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876F27E2664E1EF0001C7A8 /* ListSettingViewModel.swift */; };
 		4879438A26568CEB0089A9A3 /* NSLayoutConstraint+Chain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4879438926568CEB0089A9A3 /* NSLayoutConstraint+Chain.swift */; };
 		4879905A2628343100C6F416 /* Task+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487990582628343100C6F416 /* Task+CoreDataClass.swift */; };
-		487EDFCD2653510F00C96C7A /* Task+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487EDFCC2653510F00C96C7A /* Task+CoreDataProperties.swift */; };
 		488EFEF8264BDFBD005A6669 /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488EFEF7264BDFBD005A6669 /* CircleView.swift */; };
 		488EFEFA264E61AE005A6669 /* UIGestureRecognizer+Pulbihser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488EFEF9264E61AE005A6669 /* UIGestureRecognizer+Pulbihser.swift */; };
 		48AC4EA3265817C600D45F28 /* DetailReminderSubtasksViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AC4EA2265817C600D45F28 /* DetailReminderSubtasksViewModel.swift */; };
@@ -29,6 +27,8 @@
 		48BD3F232649A4B4008D4420 /* UITextView+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BD3F222649A4B4008D4420 /* UITextView+Publisher.swift */; };
 		48BFE0572646905000C963B7 /* ListSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BFE0562646905000C963B7 /* ListSettingViewController.swift */; };
 		48BFE05C264822BB00C963B7 /* ListSettingViewControllerHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BFE05B264822BB00C963B7 /* ListSettingViewControllerHeader.swift */; };
+		48CFAD682668D0F700FBB5B4 /* Category+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CFAD642668D0F700FBB5B4 /* Category+CoreDataProperties.swift */; };
+		48CFAD6A2668D0F700FBB5B4 /* Task+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CFAD662668D0F700FBB5B4 /* Task+CoreDataProperties.swift */; };
 		48F16E6025A1B9800036D9A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F16E5F25A1B9800036D9A3 /* AppDelegate.swift */; };
 		48F16E6725A1B9800036D9A3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48F16E6525A1B9800036D9A3 /* Main.storyboard */; };
 		48F16E6A25A1B9800036D9A3 /* Reminder_Clone.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 48F16E6825A1B9800036D9A3 /* Reminder_Clone.xcdatamodeld */; };
@@ -79,12 +79,10 @@
 		4808D8632632A52500DD8D27 /* HomeListTableViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeListTableViewModel.swift; sourceTree = "<group>"; };
 		483E581225B6D3DF004DF782 /* RemindersTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersTableViewModel.swift; sourceTree = "<group>"; };
 		4845DBDB264EDDE2005ED9E1 /* Notification+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extension.swift"; sourceTree = "<group>"; };
-		4845DBE0264F785C005ED9E1 /* Category+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Category+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		485C47F3264ABE8F007A56E1 /* ListSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSettingView.swift; sourceTree = "<group>"; };
 		4876F27E2664E1EF0001C7A8 /* ListSettingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListSettingViewModel.swift; sourceTree = "<group>"; };
 		4879438926568CEB0089A9A3 /* NSLayoutConstraint+Chain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+Chain.swift"; sourceTree = "<group>"; };
 		487990582628343100C6F416 /* Task+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+CoreDataClass.swift"; sourceTree = "<group>"; };
-		487EDFCC2653510F00C96C7A /* Task+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		488EFEF7264BDFBD005A6669 /* CircleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleView.swift; sourceTree = "<group>"; };
 		488EFEF9264E61AE005A6669 /* UIGestureRecognizer+Pulbihser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIGestureRecognizer+Pulbihser.swift"; sourceTree = "<group>"; };
 		48AC4EA2265817C600D45F28 /* DetailReminderSubtasksViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailReminderSubtasksViewModel.swift; sourceTree = "<group>"; };
@@ -97,6 +95,8 @@
 		48BD3F222649A4B4008D4420 /* UITextView+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+Publisher.swift"; sourceTree = "<group>"; };
 		48BFE0562646905000C963B7 /* ListSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSettingViewController.swift; sourceTree = "<group>"; };
 		48BFE05B264822BB00C963B7 /* ListSettingViewControllerHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSettingViewControllerHeader.swift; sourceTree = "<group>"; };
+		48CFAD642668D0F700FBB5B4 /* Category+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Category+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		48CFAD662668D0F700FBB5B4 /* Task+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Task+CoreDataProperties.swift"; path = "../../Task+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		48F16E5C25A1B9800036D9A3 /* Reminder-Clone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Reminder-Clone.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		48F16E5F25A1B9800036D9A3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		48F16E6625A1B9800036D9A3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -248,9 +248,9 @@
 		48F16E7725A1BA4F0036D9A3 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				487EDFCC2653510F00C96C7A /* Task+CoreDataProperties.swift */,
-				4845DBE0264F785C005ED9E1 /* Category+CoreDataProperties.swift */,
 				487990582628343100C6F416 /* Task+CoreDataClass.swift */,
+				48CFAD662668D0F700FBB5B4 /* Task+CoreDataProperties.swift */,
+				48CFAD642668D0F700FBB5B4 /* Category+CoreDataProperties.swift */,
 				48F16E6825A1B9800036D9A3 /* Reminder_Clone.xcdatamodeld */,
 				48F16E8225A1C0F60036D9A3 /* Cateogry+CoreDataClass.swift */,
 				48F16E7D25A1BB080036D9A3 /* CategoryColor.swift */,
@@ -456,10 +456,10 @@
 				48F16E6A25A1B9800036D9A3 /* Reminder_Clone.xcdatamodeld in Sources */,
 				48F16E8625A1C0F60036D9A3 /* Cateogry+CoreDataClass.swift in Sources */,
 				48F16E6025A1B9800036D9A3 /* AppDelegate.swift in Sources */,
+				48CFAD6A2668D0F700FBB5B4 /* Task+CoreDataProperties.swift in Sources */,
 				48BD3F1626494997008D4420 /* UITextField+Publisher.swift in Sources */,
 				483E581325B6D3DF004DF782 /* RemindersTableViewModel.swift in Sources */,
 				48F16E7E25A1BB080036D9A3 /* CategoryColor.swift in Sources */,
-				4845DBE2264F785C005ED9E1 /* Category+CoreDataProperties.swift in Sources */,
 				4879905A2628343100C6F416 /* Task+CoreDataClass.swift in Sources */,
 				94193E174454CE6F5B10AB07 /* R.swift in Sources */,
 				9418D4260F254B9DC4BCB690 /* DetailReminderViewModel.swift in Sources */,
@@ -479,7 +479,6 @@
 				48AE4965265E598F0020A7D2 /* NewReminderViewModel.swift in Sources */,
 				941E39095C183085BBBA3EE2 /* UIViewController+Extension.swift in Sources */,
 				4879438A26568CEB0089A9A3 /* NSLayoutConstraint+Chain.swift in Sources */,
-				487EDFCD2653510F00C96C7A /* Task+CoreDataProperties.swift in Sources */,
 				941CC9C852DD3121EE08E5B7 /* MainListCollectionWrappedView.swift in Sources */,
 				941D07F8ACC45F9A4B836BC0 /* MainListCollectionViewCell.swift in Sources */,
 				48BD3F1A26499560008D4420 /* ListSettingCell.swift in Sources */,
@@ -514,6 +513,7 @@
 				94121527C470800DB98BA67E /* RemindersViewController+TableViewDataSource.swift in Sources */,
 				9415313D6EC1C13829A45D49 /* RemindersViewController+TableViewDelegate.swift in Sources */,
 				941739FD2FC2635A5C018037 /* RemindersViewController+DragDrop.swift in Sources */,
+				48CFAD682668D0F700FBB5B4 /* Category+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

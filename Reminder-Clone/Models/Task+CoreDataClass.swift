@@ -28,7 +28,10 @@ enum TaskAttributesKey: String {
 }
 
 @objc (Task)
-public class Task: NSManagedObject {
+public class Task: NSManagedObject { }
+
+// MARK: - Get / Set
+extension Task {
   func get(_ key: TaskAttributesKey) -> Any? {
     switch key {
     case .title:
@@ -80,4 +83,14 @@ public class Task: NSManagedObject {
     NSPredicate(format: "%K == %@", key.rawValue, value)
   }
 
+}
+
+extension Task {
+  var computedSubtasks: NSOrderedSet? {
+    category.isShownCompleted ? subtasks : inCompletedSubtasks
+  }
+
+  var inCompletedSubtasks: NSOrderedSet? {
+    return subtasks?.filtered(using: NSPredicate(format: "isDone == false"))
+  }
 }
