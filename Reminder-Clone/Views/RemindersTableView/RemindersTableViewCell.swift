@@ -102,7 +102,7 @@ class ReminderTableViewCell: UITableViewCell {
 
   lazy var textView: UITextView = {
     $0.translatesAutoresizingMaskIntoConstraints = false
-    $0.isUserInteractionEnabled = false
+    $0.isUserInteractionEnabled = true
     $0.backgroundColor = .none
     $0.delegate = self
     $0.font = .preferredFont(forTextStyle: .body)
@@ -185,6 +185,11 @@ extension ReminderTableViewCell: UITextViewDelegate {
   }
 
   func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+    if textView.text == "", text == "\n" {
+      textView.resignFirstResponder()
+			return false
+    }
+		
     if text == "\n", let id = id {
       delegate?.insertTask(id: id, animate: .fade)
       return false

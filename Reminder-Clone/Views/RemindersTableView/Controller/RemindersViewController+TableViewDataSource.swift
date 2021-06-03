@@ -77,6 +77,7 @@ extension RemindersViewController {
 			$isTableViewEditing
 				.sink {
 				cell.selectionStyle = $0 ? .default : .none
+				cell.textView.isUserInteractionEnabled = $0 ? false : true
 				cell.toggleButton.isHidden = $0 ? true : false
 			}
 		)
@@ -91,12 +92,12 @@ extension RemindersViewController {
 			cell.textView.endEditingPublisher
 				.receive(on: RunLoop.main)
 				.sink { [weak self] in
+					if $0.text == "" { self?.removeCell(id: data.objectID); return }
 					cell.accessoryType = data.subtasks?.count == 0 ? .none : .disclosureIndicator
 					cell.subTasksCountView.isHidden = false
 					if let count = data.subtasks?.count, count != 0 {
 						cell.subTasksCountView.text = String(count) + " "
 					}
-					if $0.text == "" { self?.removeCell(id: data.objectID) }
 			}
 		)
 		
