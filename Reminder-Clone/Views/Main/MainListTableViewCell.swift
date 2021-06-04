@@ -61,7 +61,7 @@ class MainListTableViewCell: UITableViewCell {
     icon.setImage(v.icon)
     icon.setBackground(v.color)
     text.text = v.name
-    detailText.text = String(v.tasks.count ?? 0)
+    detailText.text = String(v.inCompletedTasksCount)
   }
 
 }

@@ -84,7 +84,7 @@ extension RemindersViewController {
 		
 		cell.accessoryType = data.subtasks?.count == 0 ? .none : .disclosureIndicator
 		cell.subTasksCountView.isHidden = false
-		if let count = data.subtasks?.count, count != 0 {
+    if let count = data.inCompletedSubtasks?.count, count != 0 {
 			cell.subTasksCountView.text = String(count) + " "
 		}
 		

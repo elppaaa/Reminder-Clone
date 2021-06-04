@@ -33,6 +33,10 @@ public class Category: NSManagedObject {
     return dict
   }
 
+  var inCompletedTasksCount: Int {
+    tasks.filtered(using: NSPredicate(format: "isDone == false")).count
+  }
+
   var icon: UIImage? {
     UIImage(systemName: iconString ?? R.Image.listBullet.rawValue)
   }

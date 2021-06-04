@@ -72,7 +72,7 @@ class MainListCollectionViewCell: UICollectionViewCell {
 
   func config(data: Category) {
     titleLabel.text = data.name
-    countLabel.text = String(data.tasks.count ?? 0)
+    countLabel.text = String(data.inCompletedTasksCount)
     icon.setImage(data.icon ?? UIImage())
     icon.setBackground(data.color)
   }
