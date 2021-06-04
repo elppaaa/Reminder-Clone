@@ -8,12 +8,6 @@ import UIKit
 import Combine
 import CoreData
 
-struct MyTask {
-  var id: Int
-  var title: String
-  var isDone: Bool = false
-}
-
 class RemindersTableViewModel: NSObject {
   let manager = PersistentManager.shared
   

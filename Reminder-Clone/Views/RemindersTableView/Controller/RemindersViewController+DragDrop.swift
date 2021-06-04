@@ -8,7 +8,7 @@ import UIKit
 extension RemindersViewController: UITableViewDragDelegate {
   func tableView( _ tableView: UITableView, itemsForBeginning
                     session: UIDragSession, at indexPath: IndexPath ) -> [UIDragItem] {
-		session.localContext = indexPath
+    session.localContext = viewModel.tasks[indexPath.row]
     return [UIDragItem(itemProvider: NSItemProvider())]
   }
 }
@@ -27,17 +27,21 @@ extension RemindersViewController: UITableViewDropDelegate {
   func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession,
                  withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
 		
-		var proposal = UITableViewDropProposal(operation: .cancel, intent: .unspecified)
-    guard let sourceIndexPath = session.localDragSession?.localContext as? IndexPath else { return proposal }
-		if sourceIndexPath == destinationIndexPath { return proposal } // cancel when same IndexPath
+    guard let sourceTask = session.localDragSession?.localContext as? Task,
+          let destinationIndexPath = destinationIndexPath
+    else { return UITableViewDropProposal(operation: .cancel, intent: .unspecified) }
 
-    // if task has subtask, .insertAtDestinationIndexPath only
-    if let count = viewModel.tasks[sourceIndexPath.row].subtasks?.count, count > 0 {
-			proposal = UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
-    } else {
-			 proposal = UITableViewDropProposal(operation: .move, intent: .automatic)
-		 }
-	
-		return proposal
+    var capturedList = viewModel.tasks
+    capturedList.removeAll { $0.objectID == sourceTask.objectID }
+
+    guard destinationIndexPath.row < capturedList.count else {
+      return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+    }
+    let detinationTask = capturedList[destinationIndexPath.row]
+    if sourceTask.isParent || sourceTask == detinationTask || detinationTask.isSubtask {
+      return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+    }
+
+    return UITableViewDropProposal(operation: .move, intent: .automatic)
   }
 }

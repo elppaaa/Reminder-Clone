@@ -86,6 +86,15 @@ extension Task {
 }
 
 extension Task {
+
+  var isParent: Bool {
+    parent == nil && (subtasks?.count ?? 0) > 0
+  }
+
+  var isSubtask: Bool {
+    parent != nil && (subtasks?.count ?? 0) == 0
+  }
+
   var computedSubtasks: NSOrderedSet? {
     category.isShownCompleted ? subtasks : inCompletedSubtasks
   }
