@@ -40,4 +40,40 @@ extension MainViewController {
     let reminderVC = RemindersViewController(category: data)
     navigationController?.pushViewController(reminderVC, animated: true)
   }
+
+  override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    let categoryName = viewModel.data[indexPath.row].name
+
+    // deletion
+    let deleteAction = UIContextualAction(style: .destructive, title: nil) { [weak self] _, _, completion in
+      let alert = UIAlertController(title: "Delete \"\(categoryName)\"",
+                                    message: "This will delete all reminders in this list",
+                                    preferredStyle: .alert)
+      let canelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+
+      let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
+        self?.viewModel.deleteCategory(indexPath: indexPath) {
+          self?.tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+      }
+
+      alert.addAction(canelAction)
+      alert.addAction(deleteAction)
+
+      self?.present(alert, animated: true, completion: nil)
+      completion(true)
+    }
+    deleteAction.image = UIImage(systemName: "trash.fill")
+
+    let detailAction = UIContextualAction(style: .normal, title: nil) { [weak self] _, _, completion in
+      guard let viewModel = self?.viewModel else { return }
+
+      let vc = ListSettingViewController(with: ListSettingViewModel(with: viewModel.data[indexPath.row]))
+      self?.present(UINavigationController(rootViewController: vc), animated: true, completion: nil)
+      completion(true)
+    }
+    detailAction.image = UIImage(systemName: "info.circle.fill")
+
+    return UISwipeActionsConfiguration(actions: [deleteAction, detailAction])
+  }
 }

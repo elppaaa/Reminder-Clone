@@ -5,11 +5,12 @@
 import UIKit
 import Foundation
 import Combine
+import CoreData.NSManagedObjectID
 
 class HomeListTableViewModel: NSObject {
   static let shared = HomeListTableViewModel()
   
-  var data = [Category]()
+  var data = [Category]() 
   fileprivate var cancelBag = Set<AnyCancellable>()
 
   override init() {
@@ -25,4 +26,17 @@ class HomeListTableViewModel: NSObject {
       .store(in: &cancelBag)
   }
 
+  func deleteCategory(indexPath: IndexPath, handler: @escaping () -> Void) {
+    DispatchQueue.global().sync {
+      let manager = PersistentManager.shared
+      let category = data.remove(at: indexPath.row)
+      manager.delete(category)
+
+      DispatchQueue.main.async {
+        handler()
+      }
+
+      manager.saveContext()
+    }
+  }
 }

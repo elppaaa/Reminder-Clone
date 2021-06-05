@@ -81,13 +81,13 @@ extension RemindersViewController {
 				cell.toggleButton.isHidden = $0 ? true : false
 			}
 		)
-		
-		cell.accessoryType = data.subtasks?.count == 0 ? .none : .disclosureIndicator
-		cell.subTasksCountView.isHidden = false
-    if let count = data.inCompletedSubtasks?.count, count != 0 {
-			cell.subTasksCountView.text = String(count) + " "
-		}
-		
+
+    cell.accessoryType = data.isParent ? .disclosureIndicator : .none
+    cell.subTasksCountView.isHidden = data.isParent ? false : true
+    if let count = data.computedSubtasks?.count, count != 0 {
+      cell.subTasksCountView.text = String(count) + " "
+    }
+
 		viewModel.tasksCancelBag[data.objectID]?.insert(
 			cell.textView.endEditingPublisher
 				.receive(on: RunLoop.main)
