@@ -12,7 +12,7 @@ class RemindersTableViewModel: NSObject {
   let manager = PersistentManager.shared
   
   let category: Category
-  var tasks = [Task]()
+  var tasks: [Task] { category.computedTasks?.array as? [Task] ?? [] }
   var tasksCancelBag = [NSManagedObjectID: Set<AnyCancellable>]()
   var cancelBag = Set<AnyCancellable>()
   
@@ -26,10 +26,15 @@ class RemindersTableViewModel: NSObject {
     reload()
     configBinding()
   }
+
+  deinit { save() }
+
+  func save() {
+    manager.saveContext()
+  }
   
   func reload() {
-    tasks = category.isShownCompleted ?
-      allTasks : notDoneTasks
+//    tasks = category.computedTasks?.array as? [Task] ?? []
     tasksCancelBag.removeAll()
     tasks.forEach { tasksCancelBag[$0.objectID] = Set<AnyCancellable>() }
   }
@@ -44,38 +49,38 @@ class RemindersTableViewModel: NSObject {
   func newTask(index: Int, handler: @escaping () -> Void) {
     let entity = manager.newTask()
     tasksCancelBag[entity.objectID] = Set<AnyCancellable>()
-    entity.set(key: .category, value: category)
-    
-    tasks.insert(entity, at: index)
+    category.insertIntoTasks(entity, at: index)
     DispatchQueue.main.async {
       handler()
     }
   }
 
   func move(from: Int, to: Int) {
-    let entity = tasks.remove(at: from)
-    tasks.insert(entity, at: to)
+    guard let entity = category.tasks[from] as? Task else { return }
+    category.removeFromTasks(at: from)
+    category.insertIntoTasks(entity, at: to)
   }
   
   func hide(id objectID: NSManagedObjectID, completion: @escaping (Int) -> Void) {
     guard let index = index(of: objectID) else { return }
-    _ = tasks.remove(at: index)
+
     tasksCancelBag.removeValue(forKey: objectID)
     DispatchQueue.main.async {
       completion(index)
     }
-    manager.saveContext()
+    save()
   }
   
   func delete(id objectID: NSManagedObjectID, completion: @escaping (Int) -> Void) {
-    guard let index = index(of: objectID) else { return }
-    let task = tasks.remove(at: index)
+    guard let index = index(of: objectID),
+          let task = category.tasks[index] as? Task else { return }
+//    let task = tasks.remove(at: index)
     tasksCancelBag.removeValue(forKey: objectID)
     DispatchQueue.main.async {
       completion(index)
     }
     manager.delete(task)
-    manager.saveContext()
+    save()
   }
   
   func subTasksIndexPaths(_ task: Task) -> [IndexPath] {
@@ -108,30 +113,5 @@ extension RemindersTableViewModel {
 	func setSubtasks(parent: IndexPath, child: IndexPath) {
     tasks[child.row].setValue(nil, forKey: TaskAttributesKey.subtasks.rawValue)
     tasks[parent.row].addToSubtasks(tasks[child.row])
-  }
-}
-
-// MARK: - Use Predicates
-extension RemindersTableViewModel {
-  var allTasks: [Task] {
-    let request: NSFetchRequest<Task> = Task.fetchRequest()
-    request.sortDescriptors = [Task.sortDescriptor(.createdDate)]
-    return manager.fetch(request: request)
-  }
-  
-  var notDoneTasks: [Task] {
-    let request: NSFetchRequest<Task> = Task.fetchRequest()
-    let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [tasksPredicate, notDonePredicate])
-    request.predicate = predicate
-    request.sortDescriptors = [Task.sortDescriptor(.createdDate)]
-    return manager.fetch(request: request)
-  }
-  
-  var notChildTasks: [Task] {
-    let request: NSFetchRequest<Task> = Task.fetchRequest()
-    let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [tasksPredicate, notChildTaskPredicate])
-    request.predicate = predicate
-    request.sortDescriptors = [Task.sortDescriptor(.createdDate)]
-    return manager.fetch(request: request)
   }
 }

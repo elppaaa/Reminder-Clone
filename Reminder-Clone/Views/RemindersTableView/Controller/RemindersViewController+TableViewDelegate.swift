@@ -27,7 +27,7 @@ extension RemindersViewController {
 	}
 	
 	// move cells
-	override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool { true }
+  override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool { tableView.isEditing }
 	override func tableView(
 		_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
 		viewModel.move(from: sourceIndexPath.row, to: destinationIndexPath.row)
