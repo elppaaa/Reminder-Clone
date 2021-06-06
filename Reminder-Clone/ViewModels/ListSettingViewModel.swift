@@ -71,7 +71,7 @@ class ListSettingViewModel: NSObject {
   }
   
   func delete() {
-    DispatchQueue.global().async { [weak self] in
+    DispatchQueue.global().sync { [weak self] in
       if let category = self?.category {
         PersistentManager.shared.deleteAndSave(category)
       }
