@@ -115,3 +115,16 @@ extension RemindersTableViewModel {
     tasks[parent.row].addToSubtasks(tasks[child.row])
   }
 }
+
+extension RemindersTableViewModel {
+  func deleteCategory() {
+    DispatchQueue.global().sync { [weak self] in
+      guard let cateogry = self?.category else { return }
+      let manager = PersistentManager.shared
+      cateogry.tasks
+        .compactMap { $0 as? Task }
+        .forEach { manager.delete($0) }
+      manager.deleteAndSave(cateogry)
+    }
+  }
+}

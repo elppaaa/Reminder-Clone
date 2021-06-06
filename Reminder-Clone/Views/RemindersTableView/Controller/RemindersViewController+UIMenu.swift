@@ -52,7 +52,9 @@ extension RemindersViewController {
                       style: .default,
                       handler: { [weak self] _ in self?.viewModel.category.isShownCompleted.toggle() } ))
     alert.addAction( UIAlertAction(title: "Print", style: .default, handler: { _ in print("action") }) )
-    alert.addAction( UIAlertAction(title: "Delete List", style: .default, handler: { _ in print("action") }) )
+    alert.addAction( UIAlertAction(title: "Delete List", style: .default, handler: { [weak self] _ in
+      self?.deleteAction()
+    }) )
     alert.addAction( UIAlertAction(title: "Cancel", style: .cancel, handler: nil) )
     present(alert, animated: true, completion: nil)
   }
@@ -73,7 +75,10 @@ extension RemindersViewController {
       handler: { [weak self] _ in self?.viewModel.category.isShownCompleted.toggle() }
     )
     let printer = UIAction(title: "Print", image: UIImage(systemName: "printer"), handler: { _ in print("action called") })
-    let delete = UIAction(title: "Delete List", image: UIImage(systemName: "trash"), attributes: .destructive, handler: { _ in print("action called") })
+    let delete = UIAction(title: "Delete List", image: UIImage(systemName: "trash"),
+                          attributes: .destructive, handler: { [weak self] _ in
+      self?.deleteAction()
+    })
     
     return [nameAppearance, selectReminders, sortBy, showCompleted, printer, delete]
   }
@@ -98,6 +103,19 @@ extension RemindersViewController {
     tableView.setEditing(false, animated: true)
     setBarButtonMore()
     isTableViewEditing = false
+  }
+
+  fileprivate func deleteAction() {
+    let alert = UIAlertController(title: "Delete \"\(viewModel.category.name)\"",
+                                  message: "This will delete all reminders in this list",
+                                  preferredStyle: .alert)
+    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+    alert.addAction(UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
+      self?.navigationController?.popViewController(animated: true)
+      self?.viewModel.deleteCategory()
+    })
+
+    present(alert, animated: true, completion: nil)
   }
 
 }

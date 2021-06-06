@@ -30,6 +30,9 @@ class HomeListTableViewModel: NSObject {
     DispatchQueue.global().sync {
       let manager = PersistentManager.shared
       let category = data.remove(at: indexPath.row)
+      category.tasks
+        .compactMap{ $0 as? Task }
+        .forEach { manager.delete($0) }
       manager.delete(category)
 
       DispatchQueue.main.async {
