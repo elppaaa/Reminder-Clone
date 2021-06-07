@@ -13,7 +13,7 @@ class MainViewController: UITableViewController {
   let viewModel = HomeListTableViewModel.shared
 
   fileprivate let collection = MainListCollectionWrappedView()
-  fileprivate lazy var collectionView = collection.collectionView
+  lazy var collectionView = collection.collectionView
 
   var cancelBag = Set<AnyCancellable>()
 
@@ -40,7 +40,7 @@ class MainViewController: UITableViewController {
 
     tableView.dataSource = self
     tableView.delegate = self
-
+    
     tableView.register(MainListTableViewCell.self, forCellReuseIdentifier: MainListTableViewCell.identifier)
     collectionView.register(MainListCollectionViewCell.self, forCellWithReuseIdentifier: MainListCollectionViewCell.identifier)
 
@@ -63,15 +63,12 @@ class MainViewController: UITableViewController {
     navigationController?.present(UINavigationController(rootViewController: vc), animated: true)
   }
 
-  @objc
-  func didEditButtonTapped() {
-  }
 }
 
 // MARK: -  Config Layout
 extension MainViewController {
   fileprivate func searchBarSetting() {
-    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(didEditButtonTapped))
+    setBarButtonEdit()
     navigationItem.searchController = controller
     navigationItem.searchController?.isActive = true
     navigationItem.hidesSearchBarWhenScrolling = false
@@ -106,7 +103,7 @@ extension MainViewController {
         
         attach.image = image
         attach.bounds = CGRect(x: 0, y: (font.capHeight - 25).rounded() / 2,
-          width: 25, height: 25)
+                               width: 25, height: 25)
         return attach
       }()
       
@@ -140,4 +137,30 @@ extension MainViewController {
       }
       .store(in: &cancelBag)
   }
+}
+
+// MARK: - UIBarButton
+extension MainViewController {
+  @objc
+  fileprivate func didEditButtonTapped() {
+    tableView.setEditing(true, animated: true)
+    setBarButtonDone()
+  }
+
+  @objc
+  fileprivate func didDoneButtonTapped() {
+    tableView.setEditing(false, animated: true)
+    setBarButtonEdit()
+  }
+
+  fileprivate func setBarButtonDone() {
+    navigationItem.rightBarButtonItem =
+    UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(didDoneButtonTapped))
+  }
+
+  fileprivate func setBarButtonEdit() {
+    navigationItem.rightBarButtonItem =
+    UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(didEditButtonTapped))
+  }
+
 }

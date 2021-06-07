@@ -30,19 +30,38 @@ class HomeListTableViewModel: NSObject {
   }
 
   func deleteCategory(indexPath: IndexPath, handler: @escaping () -> Void) {
-    DispatchQueue.global().sync {
+    DispatchQueue.global().sync { [weak self] in
+      guard let category = self?.data.remove(at: indexPath.row) else { return }
       let manager = PersistentManager.shared
-      let category = data.remove(at: indexPath.row)
+
       category.tasks
         .compactMap{ $0 as? Task }
         .forEach { manager.delete($0) }
-      manager.delete(category)
 
       DispatchQueue.main.async {
         handler()
       }
-
-      manager.saveContext()
+      
+      manager.delete(category)
+      reorder()
     }
+  }
+
+  func move(from: Int, to: Int) {
+    let category = data.remove(at: from)
+    data.insert(category, at: to)
+
+    reorder()
+  }
+
+  func reorder() {
+    for (i, v) in data.enumerated() {
+      v.set(key: .order, value: i)
+    }
+    save()
+  }
+
+  func save() {
+    PersistentManager.shared.saveContext()
   }
 }

@@ -54,6 +54,7 @@ extension MainViewController {
       let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
         self?.viewModel.deleteCategory(indexPath: indexPath) {
           self?.tableView.deleteRows(at: [indexPath], with: .automatic)
+          self?.collectionView.reloadData()
         }
       }
 
@@ -75,5 +76,12 @@ extension MainViewController {
     detailAction.image = UIImage(systemName: "info.circle.fill")
 
     return UISwipeActionsConfiguration(actions: [deleteAction, detailAction])
+  }
+}
+
+extension MainViewController {
+  override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool { tableView.isEditing }
+  override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+    viewModel.move(from: sourceIndexPath.row, to: destinationIndexPath.row)
   }
 }
