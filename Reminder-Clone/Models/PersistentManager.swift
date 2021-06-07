@@ -22,7 +22,10 @@ class PersistentManager {
   fileprivate lazy var context: NSManagedObjectContext = persistentContainer.viewContext
 
   func newCategory() -> Category {
+    let count = fetch(request: Category.fetchRequest()).count
     let entity = Category(context: context)
+    entity.set(key: .order, value: count)
+
     return entity
   }
 

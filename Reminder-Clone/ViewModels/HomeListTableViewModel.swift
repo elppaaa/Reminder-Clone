@@ -12,12 +12,15 @@ class HomeListTableViewModel: NSObject {
   
   var data = [Category]() 
   fileprivate var cancelBag = Set<AnyCancellable>()
+  let orderSortDescriptor = NSSortDescriptor(key: CategoryAttributeKey.order.rawValue, ascending: true)
 
   override init() {
     super.init()
     let manager = PersistentManager.shared
 
-    data = manager.fetch(request: Category.fetchRequest())
+    let request: NSFetchRequest<Category> = Category.fetchRequest()
+    request.sortDescriptors = [orderSortDescriptor]
+    data = manager.fetch(request: request)
 
     NotificationCenter.default.publisher(for: .CategoryChanged)
       .receive(on: DispatchQueue.global(qos: .userInitiated))
