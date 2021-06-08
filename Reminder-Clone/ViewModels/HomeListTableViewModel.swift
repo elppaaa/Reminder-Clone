@@ -6,25 +6,32 @@ import UIKit
 import Foundation
 import Combine
 import CoreData.NSManagedObjectID
+import CoreData
 
 class HomeListTableViewModel: NSObject {
   static let shared = HomeListTableViewModel()
   
-  var data = [Category]() 
+  var data = [Category]()
   fileprivate var cancelBag = Set<AnyCancellable>()
-  let orderSortDescriptor = NSSortDescriptor(key: CategoryAttributeKey.order.rawValue, ascending: true)
+  let defaultFetchReqeust: NSFetchRequest<Category> = {
+    let orderSortDescriptor = NSSortDescriptor(key: CategoryAttributeKey.order.rawValue, ascending: true)
+    let request: NSFetchRequest<Category> = Category.fetchRequest()
+    request.sortDescriptors = [orderSortDescriptor]
+    return request
+  }()
 
   override init() {
     super.init()
     let manager = PersistentManager.shared
 
-    let request: NSFetchRequest<Category> = Category.fetchRequest()
-    request.sortDescriptors = [orderSortDescriptor]
-    data = manager.fetch(request: request)
+    data = manager.fetch(request: defaultFetchReqeust)
 
-    NotificationCenter.default.publisher(for: .CategoryChanged)
+    NotificationCenter.default.publisher(for: .CategoryChanged, object: nil)
       .receive(on: DispatchQueue.global(qos: .userInitiated))
-      .compactMap { _ in manager.fetch(request: Category.fetchRequest()) }
+      .compactMap { [weak self] _ in
+        guard let request = self?.defaultFetchReqeust else { return nil }
+        return manager.fetch(request: request)
+      }
       .assign(to: \.data, on: self)
       .store(in: &cancelBag)
   }
@@ -37,12 +44,12 @@ class HomeListTableViewModel: NSObject {
       category.tasks
         .compactMap{ $0 as? Task }
         .forEach { manager.delete($0) }
+      manager.delete(category)
 
       DispatchQueue.main.async {
         handler()
       }
       
-      manager.delete(category)
       reorder()
     }
   }

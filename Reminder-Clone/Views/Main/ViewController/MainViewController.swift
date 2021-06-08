@@ -129,7 +129,7 @@ extension MainViewController {
 extension MainViewController {
   func configBinding() {
     NotificationCenter.default.publisher(for: .CategoryChanged)
-      .receive(on: RunLoop.main)
+      .debounce(for: .milliseconds(500), scheduler: RunLoop.main)
       .sink { [weak self] _ in
         self?.collectionView.reloadData()
         self?.tableView.reloadData()

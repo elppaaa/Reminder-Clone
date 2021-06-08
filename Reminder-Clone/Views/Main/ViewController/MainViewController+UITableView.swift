@@ -55,6 +55,7 @@ extension MainViewController {
         self?.viewModel.deleteCategory(indexPath: indexPath) {
           self?.tableView.deleteRows(at: [indexPath], with: .automatic)
           self?.collectionView.reloadData()
+          self?.view.layoutSubviews()
         }
       }
 

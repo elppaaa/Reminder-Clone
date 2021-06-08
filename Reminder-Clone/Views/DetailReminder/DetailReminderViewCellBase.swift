@@ -5,7 +5,7 @@
 import UIKit
 
 class DetailReminderViewCellBase: UITableViewCell {
-  var delegate: DetailReminderViewCellBaseDelegate?
+  weak var delegate: DetailReminderViewCellBaseDelegate?
   var dataType: TaskAttributesKey?
   
   required init?(coder: NSCoder) { fatalError("Do not use this initializer") }
@@ -20,6 +20,6 @@ class DetailReminderViewCellBase: UITableViewCell {
   
 }
 
-protocol DetailReminderViewCellBaseDelegate {
+protocol DetailReminderViewCellBaseDelegate: AnyObject {
   func updateLayout(_ handler: (() -> Void)?)
 }
