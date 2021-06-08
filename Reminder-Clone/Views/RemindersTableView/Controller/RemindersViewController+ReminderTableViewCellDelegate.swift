@@ -8,7 +8,7 @@
 import UIKit
 import CoreData.NSManagedObjectID
 
-protocol ReminderTableViewCellDelegate {
+protocol ReminderTableViewCellDelegate: AnyObject {
   func updateCellLayout(_ handler: (() -> Void)?)
   func insertTask(id objectID: NSManagedObjectID, animate: UITableView.RowAnimation)
   func removeCell(id objectID: NSManagedObjectID)

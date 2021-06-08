@@ -24,7 +24,6 @@ class RemindersTableViewModel: NSObject {
     self.category = category
     super.init()
     reload()
-    configBinding()
   }
 
   deinit { save() }
@@ -97,14 +96,6 @@ class RemindersTableViewModel: NSObject {
   
   func index(of task: Task) -> Int? {
     tasks.firstIndex(where: { $0.objectID == task.objectID }) 
-  }
-  
-  func configBinding() {
-    category.publisher(for: \.isShownCompleted)
-      .sink { _ in
-        NotificationCenter.default.post(name: .CategoryChanged, object: self.category)
-      }
-      .store(in: &cancelBag)
   }
 }
 

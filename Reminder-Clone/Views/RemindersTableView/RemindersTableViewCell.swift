@@ -18,7 +18,7 @@ class ReminderTableViewCell: UITableViewCell {
   }
 	
   var cancel = Set<AnyCancellable>()
-  var delegate: ReminderTableViewCellDelegate?
+  weak var delegate: ReminderTableViewCellDelegate?
   var id: NSManagedObjectID?
   override var indentationLevel: Int {
     get { _indentationLevel }

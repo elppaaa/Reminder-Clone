@@ -14,18 +14,15 @@ extension RemindersViewController {
 		NotificationCenter.default
 			.publisher(for: UIResponder.keyboardWillHideNotification)
 			.receive(on: RunLoop.main)
-			.sink {
-				[weak self] _ in
+			.sink { [weak self] _ in
 				self?.isKeyboardHidden = true
 				self?.setBarButtonMore()
 			}
 			.store(in: &cancelBag)
 		
-		NotificationCenter.default
-			.publisher(for: UIResponder.keyboardWillShowNotification)
+		NotificationCenter.default .publisher(for: UIResponder.keyboardWillShowNotification)
 			.receive(on: RunLoop.main)
-			.sink {
-				[weak self] _ in
+			.sink { [weak self] _ in
 				self?.isKeyboardHidden = false
 				self?.setBarButtonDone()
 			}

@@ -77,11 +77,9 @@ extension RemindersViewController {
 extension RemindersViewController {
   fileprivate func configBinding() {
     
-    //  Reload when data updated
-    NotificationCenter.default
-      .publisher(for: .CategoryChanged, object: viewModel.category)
-      .sink {
-        [weak self] _ in
+    // Reload when data updated
+    NotificationCenter.default.publisher(for: .CategoryChanged, object: viewModel.category)
+      .sink { [weak self] _ in
         self?.viewModel.reload()
         self?.tableView.reloadData()
       }
@@ -90,8 +88,7 @@ extension RemindersViewController {
     viewModel.category
       .publisher(for: \.colorInt)
       .receive(on: RunLoop.main)
-      .sink {
-        [weak self] color in
+      .sink { [weak self] color in
         let attribute = [NSAttributedString.Key.foregroundColor: UIColor(hex: Int(color))]
         self?.navigationController?.navigationBar.largeTitleTextAttributes = attribute
         self?.tableView.reloadData()
@@ -101,12 +98,14 @@ extension RemindersViewController {
     viewModel.category.publisher(for: \.name)
       .compactMap { $0 }
       .receive(on: RunLoop.main)
-      .assign(to: \.title, on: self)
+      .sink { [weak self] in self?.title = $0 }
       .store(in: &cancelBag)
     
     viewModel.category.publisher(for: \.isShownCompleted)
       .receive(on: RunLoop.main)
       .sink { [weak self] _ in
+        self?.viewModel.reload()
+        self?.tableView.reloadData()
         self?.setBarButtonMore()
       }
       .store(in: &cancelBag)
